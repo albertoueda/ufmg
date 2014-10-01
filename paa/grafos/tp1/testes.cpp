@@ -1,7 +1,14 @@
+#include <cstdlib>
 #include <iostream>
+
 using namespace std;
- 
-int main() {
-    cout << "Hello World!" << endl;
-    system("pause");
+
+int main()
+{
+    string a = "Hello World! ";
+
+    for ( int i = 0; i < 10; i++ )
+    {
+        cout << a << i << endl;
+    }
 }
