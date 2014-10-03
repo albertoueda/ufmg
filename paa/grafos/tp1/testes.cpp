@@ -11,4 +11,11 @@ int main()
     {
         cout << a << i << endl;
     }
+
+    return 0;
+}
+
+int nada()
+{
+    return 0;
 }
