@@ -1,5 +1,13 @@
 # depslib dependency file v1.0
-1412296724 source:/home/alberto/ufmg/paa/grafos/tp1/testes.cpp
+1412340078 source:/home/alberto/ufmg/paa/grafos/tp1/testes.cpp
 	<cstdlib>
 	<iostream>
+
+1412339976 source:/home/alberto/ufmg/paa/grafos/tp1/src/AdjacencyMatrix.cpp
+
+1412449677 source:/home/alberto/ufmg/paa/grafos/tp1/src/Main.cpp
+	<cstdlib>
+	<iostream>
+	<fstream>
+	<vector>
 
