@@ -118,7 +118,7 @@ vector<Edge> merge(vector<Edge> left, vector<Edge> right)
             break;
         }
 
-        if (left[iLeft].weight < right[iRight].weight) {
+        if (left[iLeft].weight > right[iRight].weight) {
             sorted[i++] = left[iLeft++];
         } else {
             sorted[i++] = right[iRight++];
@@ -149,44 +149,56 @@ vector<Edge> mergesort(vector<Edge> edges, int p, int q)
     }
 
     vector<Edge> single_vector(1);
-    single_vector.push_back(edges[p]);
+    single_vector[0] = edges[p];
 
     return single_vector;
 }
 
 Graph kruskal(Graph graph)
 {
-    int size = graph.size();
+    int V = graph.size();
+
     // each v -> new group(v)
-    vector<int> colors(size);
+    vector<int> colors(V);
     for (int i = 1; i < colors.size(); i++) {
         colors[i] = i;
     }
 
-    // sort edges decreasingly
+    // get all edges
     vector<Edge> all_edges;
-    for (int i = 1; i < size; i++) {
-        for (int j = 1; j < size; j++) {
-            if (graph[i][j].weight != 0) { // dangerous != 0
+    for (int i = 1; i < V; i++) {
+        for (int j = 1; j < V; j++) {
+            if (graph[i][j].d != 0) { // dangerous != 0
                 all_edges.push_back(graph[i][j]);
                 // cout << "Inserting [" << i << "] -> [" << j << "] to collection" << endl;
             }
         }
     }
 
-    vector<Edge> sorted = mergesort(all_edges, 0, all_edges.size() - 1);
-    for (int i = 1; i < size; i++) {
-        cout << sorted[i].weight << ' ';
+    // sort edges decreasingly
+    vector<Edge> sorted_edges = mergesort(all_edges, 0, all_edges.size() - 1);
+    cout << "sorted edges: ";
+    for (int i = 0; i < sorted_edges.size(); i++) {
+        cout << sorted_edges[i].weight << ' ';
     }
-    cout << endl;
+    cout << "\n\n";
 
+    int i = 0;
     Graph mst;
-    // while MST < N-1
-    //      choose the maximum cost edge e
-    //      if group(A) != group (B)
-    //          add e to MST
-    //          group(B) -> group(A)
-    // return MST
+
+    while (mst.size() < V-1) {
+        Edge candidate = sorted_edges[i++];
+
+        if (colors[candidate.source] != colors[candidate.target]) {
+            mst.push_back(candidate);
+        }
+
+        // 0 x 1 based!
+        for (int i = 1; i < colors.size(); i++) {
+            colors[i] = i;
+        }
+    }
+
     return mst;
 }
 
