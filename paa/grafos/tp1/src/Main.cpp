@@ -10,50 +10,64 @@ using namespace std;
 
 typedef struct
 {
-    // friendship
+    // friendship and distance
     int f;
-
-    // distance
     int d;
 
+    // adopted weight based on 'f' and 'd'
     double weight;
 
-} Node;
+    // useful for Kruskal
+    int source;
+    int target;
 
-typedef vector<vector<Node> > Graph;
+} Edge;
 
-void printMatrix(vector<vector<Node> > matrix)
+typedef vector<vector<Edge> > Graph;
+
+void print_graph(Graph g, bool all_info)
 {
-    int size = matrix.size();
+    int size = g.size();
 
     for (int i = 1; i < size; i++) {
         for (int j = 1; j < size; j++) {
-            cout << matrix[i][j].f << '/' << matrix[i][j].d << '/' << matrix[i][j].weight << ' ';
+
+            if (all_info) {
+                cout << g[i][j].f << '/' << g[i][j].d << '/' << g[i][j].weight << ' ';
+            } else {
+                cout << g[i][j].weight << ' ';
+            }
+
         }
         cout << endl;
     }
     cout << endl;
 }
 
-vector<vector<Node> > initializeMatrix(int n, bool randomized)
+void print_graph(Graph g)
+{
+    print_graph(g, false);
+}
+
+Graph initialize_graph(int n, bool randomized)
 {
     // 1-based
     int size = n + 1;
-    vector<vector<Node> > matrix(size);
+    Graph g(size);
 
     for (int i = 1; i < size; i++) {
-        matrix[i].resize(size);
+        g[i].resize(size);
 
         if (randomized)
             for (int j = 1; j < size; j++)
-                matrix[i][j].f = rand() % n;
+                g[i][j].f = rand() % n;
     }
 
-    return matrix;
+    return g;
 }
 
-vector<vector<Node> > initializeMatrix(int n) {
-    return initializeMatrix(n, false);
+Graph initialize_graph(int n) {
+    return initialize_graph(n, false);
 }
 
 void visit(Graph g, int root, vector<int>* visited)
@@ -62,7 +76,7 @@ void visit(Graph g, int root, vector<int>* visited)
         if (g[root][i].f != 0 && (*visited)[i] == 0) {
             (*visited)[i] = 1;
 
-            cout << "Visited [" << root << "] -> [" << i << "]..." << endl;
+            // cout << "Visited [" << root << "] -> [" << i << "]..." << endl;
             visit(g, i, visited);
         }
     }
@@ -85,7 +99,7 @@ bool connected_graph(Graph g)
 
     for (int i = 1; i < visited_nodes.size(); i++) {
         if (visited_nodes[i] == 0) {
-            cout << "Node " << i << " not visited." << endl;
+            cout << "Node " << i << " not visited. The graph is not connected." << endl;
             return false;
         }
     }
@@ -93,19 +107,90 @@ bool connected_graph(Graph g)
     return true;
 }
 
-vector<vector<Node> > kruskal(vector<vector<Node> > graph)
+vector<Edge> merge(vector<Edge> left, vector<Edge> right)
 {
+    int i = 0, iLeft = 0, iRight = 0;
+    int size = left.size() + right.size();
+    vector<Edge> sorted(size);
+
+    while (i < size) {
+        if (iLeft == left.size() || iRight == right.size()) {
+            break;
+        }
+
+        if (left[iLeft].weight < right[iRight].weight) {
+            sorted[i++] = left[iLeft++];
+        } else {
+            sorted[i++] = right[iRight++];
+        }
+    }
+
+    // Just at maximum one of the conditions below will be true
+    while (iRight < right.size()) {
+        sorted[i++] = right[iRight++];
+    }
+
+    while (iLeft < left.size()) {
+        sorted[i++] = left[iLeft++];
+    }
+
+    return sorted;
+}
+
+// fix
+vector<Edge> mergesort(vector<Edge> edges, int p, int q)
+{
+    if (p < q) {
+        int r = (p + q) / 2;
+        vector<Edge> left = mergesort(edges, p, r);
+        vector<Edge> right = mergesort(edges, r + 1, q);
+
+        return merge(left, right);
+    }
+
+    vector<Edge> single_vector(1);
+    single_vector.push_back(edges[p]);
+
+    return single_vector;
+}
+
+Graph kruskal(Graph graph)
+{
+    int size = graph.size();
     // each v -> new group(v)
+    vector<int> colors(size);
+    for (int i = 1; i < colors.size(); i++) {
+        colors[i] = i;
+    }
+
     // sort edges decreasingly
+    vector<Edge> all_edges;
+    for (int i = 1; i < size; i++) {
+        for (int j = 1; j < size; j++) {
+            if (graph[i][j].weight != 0) { // dangerous != 0
+                all_edges.push_back(graph[i][j]);
+                // cout << "Inserting [" << i << "] -> [" << j << "] to collection" << endl;
+            }
+        }
+    }
+
+    vector<Edge> sorted = mergesort(all_edges, 0, all_edges.size() - 1);
+    for (int i = 1; i < size; i++) {
+        cout << sorted[i].weight << ' ';
+    }
+    cout << endl;
+
+    Graph mst;
     // while MST < N-1
     //      choose the maximum cost edge e
     //      if group(A) != group (B)
     //          add e to MST
     //          group(B) -> group(A)
     // return MST
+    return mst;
 }
 
-double returnRatio()
+double return_ratio()
 {
     return 2.42;
 }
@@ -116,8 +201,9 @@ int main()
     srand (time(NULL));
 
     // Initialization
-    vector<vector<Node> > matrix;
+    Graph g;
     int n;
+    double best_quality;
 
     // Input Reader
     string line;
@@ -137,7 +223,7 @@ int main()
         // number of nodes
         n = atoi(line.c_str());
 
-        matrix = initializeMatrix(n);
+        g = initialize_graph(n);
 
         while (getline(inputFile, line) && isdigit(line[0])) {
             stringstream stream(line);
@@ -147,20 +233,30 @@ int main()
 
             w = d - (f * RATIO);
 
-            matrix[i][j].f = f;
-            matrix[i][j].d = d;
-            matrix[i][j].weight = w;
+            g[i][j].f = f;
+            g[i][j].d = d;
+            g[i][j].weight = w;
+
+            g[i][j].source = i;
+            g[i][j].target = j;
         }
 
-        cout << "graph(" << n << "): " << connected_graph(matrix) << endl;
+        print_graph(g);
 
-        printMatrix(matrix);
+        if (!connected_graph(g)) {
+            best_quality = -1.000;
+        } else {
+            kruskal(g);
+
+            best_quality = return_ratio();
+        }
+
+        // Output Ratio
+        cout << "graph(" << n << ") -> best quality: " << best_quality << endl;
+        cout << "**************************************************************" << endl;
     }
 
     inputFile.close();
 
-
-    // Output Ratio
-    cout << returnRatio();
 }
 
