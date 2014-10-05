@@ -4,6 +4,8 @@
 #include <vector>
 #include <sstream>
 
+#define RATIO 10
+
 using namespace std;
 
 typedef struct
@@ -15,9 +17,12 @@ typedef struct
     int d;
 
     double weight;
-} node;
 
-void printMatrix(vector<vector<node> > matrix)
+} Node;
+
+typedef vector<vector<Node> > Graph;
+
+void printMatrix(vector<vector<Node> > matrix)
 {
     int size = matrix.size();
 
@@ -30,11 +35,11 @@ void printMatrix(vector<vector<node> > matrix)
     cout << endl;
 }
 
-vector<vector<node> > initializeMatrix(int n, bool randomized)
+vector<vector<Node> > initializeMatrix(int n, bool randomized)
 {
     // 1-based
     int size = n + 1;
-    vector<vector<node> > matrix(size);
+    vector<vector<Node> > matrix(size);
 
     for (int i = 1; i < size; i++) {
         matrix[i].resize(size);
@@ -47,9 +52,57 @@ vector<vector<node> > initializeMatrix(int n, bool randomized)
     return matrix;
 }
 
-
-vector<vector<node> > initializeMatrix(int n) {
+vector<vector<Node> > initializeMatrix(int n) {
     return initializeMatrix(n, false);
+}
+
+void visit(Graph g, int root, vector<int>* visited)
+{
+    for (int i = 1; i < g.size(); i++) {
+        if (g[root][i].f != 0 && (*visited)[i] == 0) {
+            (*visited)[i] = 1;
+
+            cout << "Visited [" << root << "] -> [" << i << "]..." << endl;
+            visit(g, i, visited);
+        }
+    }
+}
+
+vector<int> single_dfs(Graph g) {
+    vector<int> visited(g.size());
+
+    // to check if...
+    visited[1] = 1;
+
+    visit(g, 1, &visited);
+
+    return visited;
+}
+
+bool connected_graph(Graph g)
+{
+    vector<int> visited_nodes = single_dfs(g);
+
+    for (int i = 1; i < visited_nodes.size(); i++) {
+        if (visited_nodes[i] == 0) {
+            cout << "Node " << i << " not visited." << endl;
+            return false;
+        }
+    }
+
+    return true;
+}
+
+vector<vector<Node> > kruskal(vector<vector<Node> > graph)
+{
+    // each v -> new group(v)
+    // sort edges decreasingly
+    // while MST < N-1
+    //      choose the maximum cost edge e
+    //      if group(A) != group (B)
+    //          add e to MST
+    //          group(B) -> group(A)
+    // return MST
 }
 
 double returnRatio()
@@ -63,7 +116,7 @@ int main()
     srand (time(NULL));
 
     // Initialization
-    vector<vector<node> > matrix;
+    vector<vector<Node> > matrix;
     int n;
 
     // Input Reader
@@ -89,14 +142,17 @@ int main()
         while (getline(inputFile, line) && isdigit(line[0])) {
             stringstream stream(line);
 
-            int i, j, f, d, w = 1.2;
+            int i, j, f, d, w;
             stream >> i >> j >> f >> d;
+
+            w = d - (f * RATIO);
 
             matrix[i][j].f = f;
             matrix[i][j].d = d;
             matrix[i][j].weight = w;
-
         }
+
+        cout << "graph(" << n << "): " << connected_graph(matrix) << endl;
 
         printMatrix(matrix);
     }
