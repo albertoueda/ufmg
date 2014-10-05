@@ -51,15 +51,13 @@ void print_graph(Graph g)
 
 Graph initialize_graph(int n, bool randomized)
 {
-    // 1-based
-    int size = n + 1;
-    Graph g(size);
+    Graph g(n);
 
-    for (int i = 1; i < size; i++) {
-        g[i].resize(size);
+    for (int i = 0; i < n; i++) {
+        g[i].resize(n);
 
         if (randomized)
-            for (int j = 1; j < size; j++)
+            for (int j = 0; j < n; j++)
                 g[i][j].f = rand() % n;
     }
 
@@ -183,19 +181,36 @@ Graph kruskal(Graph graph)
     }
     cout << "\n\n";
 
-    int i = 0;
-    Graph mst;
+    int k = 0, mst_size = 0;
+    Graph mst = initialize_graph(V);
 
-    while (mst.size() < V-1) {
-        Edge candidate = sorted_edges[i++];
+    while (mst_size < V-2 && k < colors.size()) {
+        Edge candidate = sorted_edges[k++];
 
         if (colors[candidate.source] != colors[candidate.target]) {
-            mst.push_back(candidate);
-        }
+            mst[candidate.source][candidate.target].weight = 1;
+            mst_size++;
 
-        // 0 x 1 based!
-        for (int i = 1; i < colors.size(); i++) {
-            colors[i] = i;
+            int old_color = colors[candidate.target];
+            int new_color = colors[candidate.source];
+
+            // make union based on source color
+            for (int i = 1; i < colors.size(); i++) {
+                if (colors[i] == old_color) {
+                    colors[i] = new_color;
+                }
+            }
+
+            cout << "colors: ";
+            for (int i = 1; i < colors.size(); i++) {
+                cout << colors[i] << ' ';
+            }
+            cout << endl;
+
+            cout << "mst:" << endl;
+            print_graph(mst);
+            cout << endl;
+
         }
     }
 
@@ -235,7 +250,8 @@ int main()
         // number of nodes
         n = atoi(line.c_str());
 
-        g = initialize_graph(n);
+        // 1-based: n + 1
+        g = initialize_graph(n + 1);
 
         while (getline(inputFile, line) && isdigit(line[0])) {
             stringstream stream(line);
@@ -243,7 +259,7 @@ int main()
             int i, j, f, d, w;
             stream >> i >> j >> f >> d;
 
-            w = d - (f * RATIO);
+            w = f - (d * RATIO);
 
             g[i][j].f = f;
             g[i][j].d = d;
