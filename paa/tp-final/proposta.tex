@@ -1,0 +1,79 @@
+\documentclass[a4paper,12pt,titlepage]{article}
+%\usepackage[T1]{fontenc}
+
+\usepackage{titlesec}
+\usepackage{titling}
+\usepackage[portuguese]{babel}
+\usepackage[utf8x]{inputenc}
+\usepackage{indentfirst}
+\usepackage{graphicx}
+%\usepackage{times}
+\usepackage{ucs}
+\usepackage{float}    
+\usepackage{fancyvrb}   
+\usepackage{verbatim}
+\usepackage{listings}
+\usepackage{hyperref}
+\usepackage{epigraph}
+\usepackage{listings}
+\usepackage{tabularx}
+\usepackage{lipsum}
+
+\hypersetup{
+    colorlinks=true,       
+    linkcolor=black,          
+    citecolor=black,   
+    filecolor=black,  
+    urlcolor=black  
+}
+
+\hyphenation {di-re-cio-na-men-to} 
+
+%\renewcommand*{\familydefault}{\ttdefault}
+\lstset{columns=fullflexible,basicstyle=\ttfamily}
+
+\title{\large
+Universidade Federal de Minas Gerais \\ \
+Instituto de Ciências Exatas \\ \ 
+Departamento de Ciência da Computação \\ \
+\\[1cm]
+Projeto de Final de Curso\\ \
+Projeto e Análise de Algoritmos\\ \
+\\[1cm]
+\textbf{\Large Proposta de Trabalho }
+\\[1cm]
+}
+
+\author{\large Alberto Hideki Ueda \\[0.5cm] 
+	Orientador: Berthier Ribeiro Neto 
+\\[3cm] }
+
+\date{\textsc{Belo Horizonte\\ \
+7 de outubro de 2014}}
+
+\begin{document}
+\maketitle
+
+\pagebreak
+
+
+% Qual o problema?
+Coletores de páginas da \textit{Web} constituem o primeiro passo para a implementação de máquinas de busca modernas. De forma geral, um coletor - em inglês, \textit{crawler} - é um sistema que faz requisições a servidores da \textit{Web} de forma planejada, coleta parte ou todo o conteúdo dos dados devolvidos pelas requisições e utiliza este novo conteúdo para realizar novas requisições. Estima-se que hoje mais de 10\% das visitas a \textit{Websites} sejam feitas por coletores.
+
+O primeiro coletor \textit{Web} conhecido foi criado em 1993 por Matthew Gray, então graduando do MIT, e chamava-se WWWW (\textit{World Wide Web Wanderer). Comprovando a forte relação com a história dos sistemas de busca na \textit{Web}, no mesmo ano foi lançada também a primeira máquina de busca conhecida, ALIWEB, criada por Martijn Koster. Nesta época, um número razoável de servidores que deveriam ser analisados para se obter uma boa cobertura da rede girava em torno de apenas alguns milhares. Desde então, o número de \textit{hosts} tem aumentado em alta velocidade - chegando a praticamente dobrar a cada ano, de 1993 a 1996 -, tornando as máquinas de busca ainda mais necessárias e, consequentemente, também os coletores de dados.
+
+% Por que ele é um problema difícil?
+Hoje, porém, mesmo as principais máquinas de busca cobrem apenas uma parte da \textit{Web} atual. Em 2005, foi demonstrado que o nível de cobertura das principais máquinas de buscas existentes está entre 58\% e 76\% da \textit{Web}. Além disso, o custo da utilização da rede também deve ser considerado. Em 2004, tal custo foi estimado em US\$ 1,5 milhão para coletas em larga escala. 
+
+Portanto, tal problema pode ser considerado de difícil resolução, dado o tamanho da entrada necessária para uma solução exata. A ideia deste trabalho é modificar um algoritmo existente de um coletor genérico (\textit{General Crawler}) e transformá-lo em um coletor temático (\textit{Focused Crawler}) - que concentra-se em um único tópico de interesse - visando aumentar tanto a qualidade quanto a cobertura das páginas coletadas em relação ao algoritmo original.
+
+% Referências
+
+\newpage  
+\bibliographystyle{plain}%amsalpha
+\bibliography{bibliografia}
+\newpage
+
+\end{document}
+
+
