@@ -5,7 +5,7 @@
 #include <sstream>
 #include <cmath>
 
-# define EPSILON 0.0000001
+# define EPSILON 0.0001
 
 using namespace std;
 
@@ -269,7 +269,7 @@ int main()
     // Input Reader
     string line;
     ifstream inputFile;
-    inputFile.open("entrada1.txt");
+    inputFile.open("test.in.alberto");
 
     if (!inputFile.is_open())
     {
@@ -347,7 +347,7 @@ int main()
 
                     if (d != 0)   // dangerous != 0
                     {
-                        int new_weight = f - (d * quality_candidate);
+                        double new_weight = f - (d * quality_candidate);
 
                         g[i][j].weight = new_weight;
                         g[j][i].weight = new_weight;
@@ -380,17 +380,17 @@ int main()
                 }
             }
 
-            // print_graph(candidate);
-
-            // stop if quality is good enough
             /*
+            print_graph(candidate);
+
+            // stop if equation equals zero
             cout << "sum of weights: " << sum_weights << endl;
             cout << "-------------------------------" << endl;
             */
 
-            if (abs(sum_weights) < EPSILON)
+            if (abs(sum_weights) == 0)
             {
-                cout << "sum_weights < " << EPSILON << "!\n\n";
+                cout << "sum_weights = zero!\n\n";
                 break;
             }
 
