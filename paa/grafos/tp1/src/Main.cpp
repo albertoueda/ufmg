@@ -35,18 +35,12 @@ Graph initialize_graph(int n, bool randomized)
 {
     Graph g(n);
 
-    for (int i = 0; i < n; i++)
+    for (int i = 1; i < n; i++)
     {
         g[i] = NULL;
-
-    Cell new_cell = (Cell) malloc(sizeof(Cell));
-    new_cell->v = 1;
-    // new_cell->weight = 1;
-    new_cell->next = NULL;
-    g[i] = new_cell;
-    //        if (randomized)
-    //            for (int j = 0; j < n; j++)
-    //                g[i][j].f = rand() % n;
+//      if (randomized)
+//          for (int j = 0; j < n; j++)
+//              g[i][j].f = rand() % n;
     }
 
     return g;
@@ -57,21 +51,22 @@ Graph initialize_graph(int n)
     return initialize_graph(n, false);
 }
 
-void insert(Graph g, int parent, Cell new_cell)
+void insert(Graph* g, int parent, Cell new_cell)
 {
     // Push front the new cell to g[i]
-    new_cell->next = g[parent];
-    g[parent] = new_cell;
+    new_cell->next = (*g)[parent];
+    (*g)[parent] = new_cell;
 }
 
 // Always insert
-void insert(Graph g, int i, int j, int f, int d)
+void insert(Graph* g, int i, int j, int f, int d)
 {
-    Cell new_cell = (Cell) malloc(sizeof(Cell));
+    Cell new_cell = (Cell) malloc(sizeof(cell));
     new_cell->parent = i;
     new_cell->v = j;
     new_cell->f = f;
     new_cell->d = d;
+    new_cell->weight = -1;
 
     insert(g, i, new_cell);
 }
@@ -270,10 +265,7 @@ Graph kruskal(Graph g)
 
         if (colors[candidate->parent] != colors[candidate->v])
         {
-            insert(mst, candidate->parent, candidate);
-
-            // For each node i, mst[i] must contain at most one element
-            mst[candidate->parent]->next = NULL; // danger
+            insert(&mst, candidate->parent, candidate);
             mst_size++;
 
             int old_color = colors[candidate->v];
@@ -306,11 +298,11 @@ Graph kruskal(Graph g)
 }
 
 // define a new weight to edges based on new quality
-void recalculate_weights(Graph g, double quality_candidate)
+void recalculate_weights(Graph* g, double quality_candidate)
 {
-    for (int i = 1; i < g.size(); i++)
+    for (int i = 1; i < (*g).size(); i++)
     {
-        for (Cell cell = g[i]; cell != NULL; cell = cell->next)
+        for (Cell cell = (*g)[i]; cell != NULL; cell = cell->next)
         {
             int f = cell->f;
             int d = cell->d;
@@ -333,7 +325,7 @@ int main()
     // Input Reader
     string line;
     ifstream inputFile;
-    inputFile.open("entrada1.txt");
+    inputFile.open("test.in.alberto");
 
     if (!inputFile.is_open())
     {
@@ -371,12 +363,12 @@ int main()
             // increases first upper bound to binary search
             upper_bound += f;
 
-            insert(g, i, j, f, d);
-            insert(g, j, i, f, d);
+            insert(&g, i, j, f, d);
+            insert(&g, j, i, f, d);
         }
 
-        print_graph(g);
-/*
+        // print_graph(g);
+
         if (!connected_graph(g))
         {
             quality_candidate = -1.000;
@@ -394,9 +386,7 @@ int main()
 
             double sum_weights = 0.0;
 
-            recalculate_weights(g, quality_candidate);
-
-            // print_graph(g);
+            recalculate_weights(&g, quality_candidate);
 
             Graph candidate_graph = kruskal(g);
 
@@ -415,22 +405,20 @@ int main()
                         sum_weights += cell->weight;
 
                         // Just for visualization of solution graph
-                        insert(candidate_graph, i, cell);
+                        insert(&candidate_graph, i, cell);
                     }
                 }
             }
 
-
-            // print_graph(candidate);
+            // print_graph(candidate_graph);
 
             // stop if equation equals zero
             // cout << "sum of weights: " << sum_weights << endl;
-            // cout << "-------------------------------" << endl;
+            //cout << "-------------------------------" << endl;
 
-
-            if (abs(sum_weights) == 0)
+            if (abs(sum_weights) <= EPSILON)
             {
-                cout << "sum_weights = zero!\n\n";
+                cout << "sum_weights < " << EPSILON << "!\n\n";
                 break;
             }
 
@@ -454,6 +442,7 @@ int main()
         // Output Ratio
         cout << "graph(" << n << ") -> best quality: " << best_quality << endl;
         cout << "**************************************************************" << endl;
+    /*
     */
     }
 
