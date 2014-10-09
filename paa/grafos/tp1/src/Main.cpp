@@ -9,8 +9,11 @@
 
 using namespace std;
 
-typedef struct
+typedef struct cell
 {
+    // node id
+    int v;
+
     // friendship and distance
     int f;
     int d;
@@ -19,41 +22,14 @@ typedef struct
     double weight;
 
     // useful for Kruskal
-    int source;
-    int target;
+    int parent;
 
-} Edge;
+    // Next element in the linked list
+    struct cell* next;
 
-typedef vector<vector<Edge> > Graph;
+} *Cell;
 
-void print_graph(Graph g, bool all_info)
-{
-    int size = g.size();
-    cout << endl;
-
-    for (int i = 1; i < size; i++)
-    {
-        for (int j = 1; j < size; j++)
-        {
-
-            if (all_info)
-            {
-                cout << g[i][j].f << '/' << g[i][j].d << '/' << g[i][j].weight << ' ';
-            }
-            else
-            {
-                cout << g[i][j].weight << ' ';
-            }
-        }
-        cout << endl;
-    }
-    cout << endl;
-}
-
-void print_graph(Graph g)
-{
-    print_graph(g, false);
-}
+typedef vector<Cell> Graph;
 
 Graph initialize_graph(int n, bool randomized)
 {
@@ -61,11 +37,16 @@ Graph initialize_graph(int n, bool randomized)
 
     for (int i = 0; i < n; i++)
     {
-        g[i].resize(n);
+        g[i] = NULL;
 
-        if (randomized)
-            for (int j = 0; j < n; j++)
-                g[i][j].f = rand() % n;
+    Cell new_cell = (Cell) malloc(sizeof(Cell));
+    new_cell->v = 1;
+    // new_cell->weight = 1;
+    new_cell->next = NULL;
+    g[i] = new_cell;
+    //        if (randomized)
+    //            for (int j = 0; j < n; j++)
+    //                g[i][j].f = rand() % n;
     }
 
     return g;
@@ -76,16 +57,88 @@ Graph initialize_graph(int n)
     return initialize_graph(n, false);
 }
 
-void visit(Graph g, int root, vector<int>* visited)
+void insert(Graph g, int parent, Cell new_cell)
 {
+    // Push front the new cell to g[i]
+    new_cell->next = g[parent];
+    g[parent] = new_cell;
+}
+
+// Always insert
+void insert(Graph g, int i, int j, int f, int d)
+{
+    Cell new_cell = (Cell) malloc(sizeof(Cell));
+    new_cell->parent = i;
+    new_cell->v = j;
+    new_cell->f = f;
+    new_cell->d = d;
+
+    insert(g, i, new_cell);
+}
+
+bool exists_edge(Cell linked_list, int target)
+{
+    for (Cell cell = linked_list; cell != NULL; cell = cell->next)
+    {
+        if (cell->v == target) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+bool exists_edge(Graph g, int source, int target)
+{
+    return exists_edge(g[source], target);
+}
+
+void print_linked_list(Cell linked_list, bool show_all_info)
+{
+    Cell cell;
+
+    for (cell = linked_list; cell != NULL; cell = cell->next)
+    {
+        if (show_all_info)
+        {
+            cout << cell->v << ":" << cell->f << '/' << cell->d << ':' << cell->weight << ' ';
+        }
+        else
+        {
+            cout << cell->v << ":" << cell->weight << ' ';
+        }
+    }
+    cout << endl;
+}
+
+void print_graph(Graph g, bool show_all_info)
+{
+    cout << endl;
+
     for (int i = 1; i < g.size(); i++)
     {
-        if (g[root][i].f != 0 && (*visited)[i] == 0)
+        cout << i << ": ";
+        print_linked_list(g[i], show_all_info);
+    }
+
+    cout << endl;
+}
+
+void print_graph(Graph g)
+{
+    print_graph(g, false);
+}
+
+void visit(Graph g, int source, vector<int>* visited)
+{
+    for (int j = 1; j < g.size(); j++)
+    {
+        if (exists_edge(g, source, j) && (*visited)[j] == 0)
         {
-            (*visited)[i] = 1;
+            (*visited)[j] = 1;
 
             // cout << "Visited [" << root << "] -> [" << i << "]..." << endl;
-            visit(g, i, visited);
+            visit(g, j, visited);
         }
     }
 }
@@ -118,11 +171,11 @@ bool connected_graph(Graph g)
     return true;
 }
 
-vector<Edge> merge(vector<Edge> left, vector<Edge> right)
+vector<Cell> merge(vector<Cell> left, vector<Cell> right)
 {
     int i = 0, iLeft = 0, iRight = 0;
     int size = left.size() + right.size();
-    vector<Edge> sorted(size);
+    vector<Cell> sorted(size);
 
     while (i < size)
     {
@@ -131,7 +184,7 @@ vector<Edge> merge(vector<Edge> left, vector<Edge> right)
             break;
         }
 
-        if (left[iLeft].weight > right[iRight].weight)
+        if (left[iLeft]->weight > right[iRight]->weight)
         {
             sorted[i++] = left[iLeft++];
         }
@@ -141,7 +194,7 @@ vector<Edge> merge(vector<Edge> left, vector<Edge> right)
         }
     }
 
-    // Just at maximum one of the conditions below will be true
+    // At maximum one of the conditions below will be true
     while (iRight < right.size())
     {
         sorted[i++] = right[iRight++];
@@ -155,27 +208,27 @@ vector<Edge> merge(vector<Edge> left, vector<Edge> right)
     return sorted;
 }
 
-// fix
-vector<Edge> mergesort(vector<Edge> edges, int p, int q)
+vector<Cell> mergesort(vector<Cell> cells, int p, int q)
 {
     if (p < q)
     {
         int r = (p + q) / 2;
-        vector<Edge> left = mergesort(edges, p, r);
-        vector<Edge> right = mergesort(edges, r + 1, q);
+        vector<Cell> left = mergesort(cells, p, r);
+        vector<Cell> right = mergesort(cells, r + 1, q);
 
         return merge(left, right);
     }
 
-    vector<Edge> single_vector(1);
-    single_vector[0] = edges[p];
+    // p == q. Just creates a vector of one element
+    vector<Cell> single_vector(1);
+    single_vector[0] = cells[p];
 
     return single_vector;
 }
 
-Graph kruskal(Graph graph)
+Graph kruskal(Graph g)
 {
-    int V = graph.size();
+    int V = g.size();
 
     // each v -> new group(v)
     vector<int> colors(V);
@@ -185,27 +238,25 @@ Graph kruskal(Graph graph)
     }
 
     // get all edges
-    vector<Edge> all_edges;
+    vector<Cell> all_edges;
     for (int i = 1; i < V; i++)
     {
-        for (int j = i + 1; j < V; j++)  // j = i ?
+        for (Cell cell = g[i]; cell != NULL; cell = cell->next)
         {
-            if (graph[i][j].d != 0)   // dangerous != 0
-            {
-                all_edges.push_back(graph[i][j]);
-                // all_edges.push_back(graph[j][i]);
-                // cout << "Inserting [" << i << "] -> [" << j << "] to collection" << endl;
-            }
+            all_edges.push_back(cell);
+            // all_edges.push_back(graph[j][i]);
+            // cout << "Inserting [" << i << "] -> [" << j << "] to collection" << endl;
         }
     }
 
     // sort edges decreasingly
-    vector<Edge> sorted_edges = mergesort(all_edges, 0, all_edges.size() - 1);
+    vector<Cell> sorted_edges = mergesort(all_edges, 0, all_edges.size() - 1);
+
     /*
     cout << "sorted edges: ";
     for (int i = 0; i < sorted_edges.size(); i+=2) // sorted duplicate
     {
-        cout << sorted_edges[i].weight << ' ';
+        cout << sorted_edges[i]->weight << ' ';
     }
     cout << endl;
     */
@@ -215,15 +266,18 @@ Graph kruskal(Graph graph)
 
     while (mst_size < V-2 && k < colors.size())
     {
-        Edge candidate = sorted_edges[k++];
+        Cell candidate = sorted_edges[k++];
 
-        if (colors[candidate.source] != colors[candidate.target])
+        if (colors[candidate->parent] != colors[candidate->v])
         {
-            mst[candidate.source][candidate.target].weight = 1;
+            insert(mst, candidate->parent, candidate);
+
+            // For each node i, mst[i] must contain at most one element
+            mst[candidate->parent]->next = NULL; // danger
             mst_size++;
 
-            int old_color = colors[candidate.target];
-            int new_color = colors[candidate.source];
+            int old_color = colors[candidate->v];
+            int new_color = colors[candidate->parent];
 
             // make union based on source color
             for (int i = 1; i < colors.size(); i++)
@@ -251,25 +305,35 @@ Graph kruskal(Graph graph)
     return mst;
 }
 
-double return_ratio()
+// define a new weight to edges based on new quality
+void recalculate_weights(Graph g, double quality_candidate)
 {
-    return 2.42;
+    for (int i = 1; i < g.size(); i++)
+    {
+        for (Cell cell = g[i]; cell != NULL; cell = cell->next)
+        {
+            int f = cell->f;
+            int d = cell->d;
+
+            double new_weight = f - (d * quality_candidate);
+
+            cell->weight = new_weight;
+            // cout << "Inserting [" << i << "] -> [" << j << "] to collection" << endl;
+            // sum_weights += new_weight;
+        }
+    }
 }
+
 
 int main()
 {
     // initialize random seed:
     srand (time(NULL));
 
-//    // Initialization
-//    Graph g;
-//    int n;
-//    double quality_candidate = 0.0;
-
     // Input Reader
     string line;
     ifstream inputFile;
-    inputFile.open("test.in.alberto");
+    inputFile.open("entrada1.txt");
 
     if (!inputFile.is_open())
     {
@@ -307,18 +371,12 @@ int main()
             // increases first upper bound to binary search
             upper_bound += f;
 
-            g[i][j].f = f;
-            g[i][j].d = d;
-            g[i][j].source = i;
-            g[i][j].target = j;
-
-            // the inversed edge also is added
-            g[j][i].f = f;
-            g[j][i].d = d;
-            g[j][i].source = j;
-            g[j][i].target = i;
+            insert(g, i, j, f, d);
+            insert(g, j, i, f, d);
         }
 
+        print_graph(g);
+/*
         if (!connected_graph(g))
         {
             quality_candidate = -1.000;
@@ -336,57 +394,39 @@ int main()
 
             double sum_weights = 0.0;
 
-            // horror
-            // define a new weight to edges based on new quality
-            for (int i = 1; i < g.size(); i++)
-            {
-                for (int j = i + 1; j < g.size(); j++)  // j = i ?
-                {
-                    int f = g[i][j].f;
-                    int d = g[i][j].d;
-
-                    if (d != 0)   // dangerous != 0
-                    {
-                        double new_weight = f - (d * quality_candidate);
-
-                        g[i][j].weight = new_weight;
-                        g[j][i].weight = new_weight;
-                        // cout << "Inserting [" << i << "] -> [" << j << "] to collection" << endl;
-
-                        // sum_weights += new_weight;
-                    }
-                }
-            }
+            recalculate_weights(g, quality_candidate);
 
             // print_graph(g);
 
-            Graph candidate = kruskal(g);
+            Graph candidate_graph = kruskal(g);
 
-            // add edges that will increase the ratio
+            // add edges of MST and also edges that will increase the ratio
             // if  w > 0  =>  f - r*d > 0  =>  f > r*d   =>  f/d > r
-            for (int i = 1; i < candidate.size(); i++)
+            for (int i = 1; i < candidate_graph.size(); i++)
             {
-                for (int j = i + 1; j < candidate.size(); j++)
+                for (Cell cell = g[i]; cell != NULL; cell = cell->next)
                 {
-                    if (candidate[i][j].weight == 1)
+                    if (exists_edge(candidate_graph, i, cell->v))
                     {
-                        sum_weights += g[i][j].weight;
+                        sum_weights += cell->weight;
                     }
-                    else if (candidate[i][j].weight == 0 && g[i][j].weight > 0)
+                    else if (cell->weight > 0)
                     {
-                        candidate[i][j].weight = 1;
-                        sum_weights += g[i][j].weight;
+                        sum_weights += cell->weight;
+
+                        // Just for visualization of solution graph
+                        insert(candidate_graph, i, cell);
                     }
                 }
             }
 
-            /*
-            print_graph(candidate);
+
+            // print_graph(candidate);
 
             // stop if equation equals zero
-            cout << "sum of weights: " << sum_weights << endl;
-            cout << "-------------------------------" << endl;
-            */
+            // cout << "sum of weights: " << sum_weights << endl;
+            // cout << "-------------------------------" << endl;
+
 
             if (abs(sum_weights) == 0)
             {
@@ -414,6 +454,7 @@ int main()
         // Output Ratio
         cout << "graph(" << n << ") -> best quality: " << best_quality << endl;
         cout << "**************************************************************" << endl;
+    */
     }
 
     inputFile.close();
