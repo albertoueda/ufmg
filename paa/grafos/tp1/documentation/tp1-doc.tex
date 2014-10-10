@@ -1,0 +1,103 @@
+\documentclass[a4paper,12pt,titlepage]{article}
+%\usepackage[T1]{fontenc}
+
+\usepackage{titlesec}
+\usepackage{titling}
+\usepackage[portuguese]{babel}
+\usepackage[utf8x]{inputenc}
+\usepackage{indentfirst}
+\usepackage{graphicx}
+%\usepackage{times}
+\usepackage{ucs}
+\usepackage{float}    
+\usepackage{fancyvrb}   
+\usepackage{verbatim}
+\usepackage{listings}
+\usepackage{hyperref}
+\usepackage{epigraph}
+\usepackage{listings}
+\usepackage{tabularx}
+\usepackage{lipsum}
+\usepackage{amsfonts}
+
+\hypersetup{
+    colorlinks=true,       
+    linkcolor=black,          
+    citecolor=black,   
+    filecolor=black,  
+    urlcolor=black  
+}
+
+\hyphenation {di-re-cio-na-men-to} 
+
+%\renewcommand*{\familydefault}{\ttdefault}
+\lstset{columns=fullflexible,basicstyle=\ttfamily}
+
+\title{\large
+Universidade Federal de Minas Gerais \\ \
+Instituto de Ciências Exatas \\ \ 
+Departamento de Ciência da Computação \\ \
+\\[1cm]
+Projeto e Análise de Algoritmos\\ \
+Trabalho Prático 1\\ \
+\\[1cm]
+\textbf{\Large Orkato}
+\\[1cm]
+}
+
+\author{\large Alberto Hideki Ueda \\[0.5cm] 
+Matrícula: 2014765817
+\\[3cm] }
+
+\date{\textsc{Belo Horizonte\\ \
+9 de outubro de 2014}}
+
+\begin{document}
+\maketitle
+
+\pagebreak
+
+\section{Introdução}
+Dado um conjunto de amigos, deseja-se descobrir qual é a melhor configuração possível entre todas as possibilidades de unir todos os amigos em uma única rede. Para cada amizade entre duas pessoas, são fornecidas duas informações: o \textit{nível} da amizade e a \textit{distância} física entre elas. Define-se a qualidade de uma configuração a divisão da soma de todos os valores de amizade desta configuração pela soma de todas as distâncias. Em outras palavras, deseja-se a configuração de amizades de maior qualidade possível.
+
+\section{Modelagem}
+Seja cada indivíduo um vértice e cada amizade entre duas pessoas uma aresta ligando dois vértices, podemos definir o conjunto de amigos original como um grafo $G$ contendo todas as amizades possíveis de acordo com o conjunto fornecido. Deste modo, cada configuração de amizades pode ser vista como um possível \textit{subgrafo} de $G$. 
+
+Considerando a restrição de que uma configuração viável deve alcançar todos as pessoas do conjunto, é natural considerar como subgrafos válidos apenas os que conectam todos os vértices do grafo original $G$. Assim, caso não seja possível conectar todos os amigos, o valor da função qualidade para todo subgrafo possível não é definido e consequentemente o problema não tem solução. Neste caso, seguindo a especificação do trabalho, o algoritmo implementado devolve um valor pré-estabelecido.
+
+A grande peculiaridade deste problema é que o \textit{peso} de uma aresta não pode ser simplesmente a) o nível de amizade, b) a distância, ou c) a divisão da amizade pela distância, pois nestes casos o algoritmo descartará informações relevantes. Por exemplo, se for utilizada a divisão amizade/distância como peso da aresta, amizades como (2000/1000) e (2/1) serão consideradas equivalentes, o que não é verdadeiro, dada a função de qualidade.
+
+Porém, se nível de amizade e distância forem considerados separadamente, a única solução conhecida para maximizar a qualidade seria utilizar algoritmos de força-bruta, testando configuração por configuração. Sendo $E$ o número de arestas no grafo original $G$, o número de subgrafos possíveis é da ordem de $2^E$ e o algoritmo teria complexidade exponencial. 
+
+Felizmente, podemos adotar o custo de cada aresta $i$ como $f_i - (d_i * r)$, onde $f$ e $d$ são os valores do nível da amizade e da distância, respectivamente. e $r$ um candidato ao valor da qualidade ótima do subgrafo. Tal atribuição vem diretamente da definição da função de qualidade.
+
+Seja $r$ a qualidade de um subgrafo. Temos que:
+
+$ r = (f_1 + f_2 + ... + f_n)  /  (d_1 + d_2 + ... + d_n) => $
+\ \\  
+
+$ (f_1 - (d_1 * r)) + (f_2 - (d_2 * r)) + ... + (f_n - (d_n * r)) = 0 $
+\ \\ 
+
+Podemos então adotar tal peso para as arestas e solucionar o problema buscando o valor de $r$ que satisfaça a equação, conforme descrito a seguir.
+
+\section{Breve Descrição da Solução}
+
+Dado um grafo $G$ não-direcionado, verificamos primeiramente se ele é conectado (i.e. se há caminhos entre todos os vértices de $G$). Caso não seja, paramos a execução e informamos que ele não é conectado. Caso contrário, definimos dois limitantes - um inferior e um superior - para escolher um candidato $r_{cand}$ à qualidade ótima. Calculamos então a árvore espalhadora máxima de $G$, baseando-se nos pesos calculados com o valor de $r_{cand}$. Em seguida, adicionamos à árvore todas as arestas que \textit{aumentam} a qualidade do subgrafo. Verificamos então se o somatório de todos os pesos equivale a zero, conforme equação da seção anterior. Em caso positivo, $r_{cand}$ é o valor ótimo para qualidade de $G$ e o programa é finalizado. Em caso negativo, atualizamos ou o limitante superior ou o inferior, dependendo do valor resultante da soma dos pesos. Definimos em seguida um novo $r_{cand}$ (seguindo em uma busca binária para o $r_{cand}$ ótimo), recalculamos todos os pesos das arestas repetindo o processo.
+
+\section{Etapas da Solução}
+
+\section{Dificuldades Encontradas}
+
+\section{Conclusão}
+
+\cite{cormen} 
+
+% Referências
+\bibliographystyle{plain}%amsalpha
+\bibliography{bibliografia}
+\newpage
+
+\end{document}
+
+
