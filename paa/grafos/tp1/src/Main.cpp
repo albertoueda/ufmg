@@ -5,7 +5,7 @@
 #include <sstream>
 #include <cmath>
 
-# define EPSILON 0.00000001
+# define EPSILON 0.00001
 
 using namespace std;
 
@@ -287,7 +287,7 @@ Graph kruskal(const Graph g)
 
     /*
     cout << "sorted edges: ";
-    for (int i = 0; i < sorted_edges.size(); i++) // sorted duplicate
+    for (int i = 0; i < sorted_edges.size(); i++)
     {
         cout << sorted_edges[i]->weight << ' ';
     }
@@ -297,7 +297,7 @@ Graph kruskal(const Graph g)
     int k = 0, mst_size = 0;
     Graph mst = initialize_graph(V);
 
-    while (mst_size < V-2 && k < colors.size())
+    while (mst_size < V-2)
     {
         Cell candidate = sorted_edges[k++];
 
@@ -382,16 +382,7 @@ int main()
     // Input Reader
     string line;
     ifstream inputFile;
-    inputFile.open("test.in.alberto");
-
-
-
-    // PAREI AQUI
-
-    // rever o exemplo se é o mesmo, se há msg no forum
-    // desenhar na mão o grafo e verificar se é possível
-
-
+    inputFile.open("entrada1.txt");
 
     if (!inputFile.is_open())
     {
@@ -520,6 +511,7 @@ int main()
 
         //
         best_quality = calculate_quality(candidate_graph);
+
 
         /*
         cout << "G:";

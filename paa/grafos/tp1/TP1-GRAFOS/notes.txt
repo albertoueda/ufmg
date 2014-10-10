@@ -14,3 +14,22 @@
 4) arestas repetidas mudou boa parte da implementação
 
 5) utilizar int achando que estou utiilzando double. 1.2324 --> 1
+
+6) Condição de parada: evitar parar por medo!!!
+
+
+Oi Gabriel,
+
+Se o vértice não aparece na entrada considere que esse vértice não existe e não precisa imprimir ele em nenhum dos arquivos de saída.
+
+Veja que podemos identificar um vértice desconexo colocando uma aresta com entrada e saída apontando para o próprio vértice (um laço), como exemplificamos na especificação os vértices 14 e 15.
+
+Também não é para renomear a identificação dos vértices. Você deve mantê-la assim como aparece na entrada. Nos testes que faremos utilizaremos apenas identificadores entre 1 e |V|, como já foi discutido.
+
+
+
+
+
+Caso algum grafo que indicamos na especificação para testar o TP não tenha vértices identificados de 1 a |V|, vocês podem corrigir os identificadores e manter a mesma estrutura do grafo. Creio que isso vai ser mais simples do que modificar o TP já implementado.
+
+
