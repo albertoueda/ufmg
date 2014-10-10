@@ -5,11 +5,11 @@
 #include <sstream>
 #include <cmath>
 
-# define EPSILON 0.0001
+# define EPSILON 0.00000001
 
 using namespace std;
 
-typedef struct cell
+struct cell
 {
     // node id
     int v;
@@ -27,7 +27,9 @@ typedef struct cell
     // Next element in the linked list
     struct cell* next;
 
-} *Cell;
+};
+
+typedef struct cell *Cell;
 
 typedef vector<Cell> Graph;
 
@@ -51,33 +53,60 @@ Graph initialize_graph(int n)
     return initialize_graph(n, false);
 }
 
-void insert(Graph* g, int parent, Cell new_cell)
-{
-    // Push front the new cell to g[i]
-    new_cell->next = (*g)[parent];
-    (*g)[parent] = new_cell;
-}
-
 // Always insert
-void insert(Graph* g, int i, int j, int f, int d)
+void insert(Graph* g, int i, int j, int f, int d, double weight)
 {
     Cell new_cell = (Cell) malloc(sizeof(cell));
     new_cell->parent = i;
     new_cell->v = j;
     new_cell->f = f;
     new_cell->d = d;
-    new_cell->weight = -1;
+    new_cell->weight = weight;
 
-    insert(g, i, new_cell);
+    // Push front the new cell to g[i]
+    new_cell->next = (*g)[i];
+    (*g)[i] = new_cell;
 }
 
-bool exists_edge(Cell linked_list, int target)
+// Avoid to manipulate pointers. Its better to deal with values.
+void insert(Graph* g, Cell node_info)
+{
+    int i = node_info->parent;
+    int j = node_info->v;
+    int f = node_info->f;
+    int d = node_info->d;
+    double w = node_info->weight;
+
+    insert(g, i, j, f, d, w);
+}
+
+// Always insert
+void insert(Graph* g, int i, int j, int f, double d)
+{
+    insert(g, i, j, f, d, -1);
+}
+
+bool exists_edge(Cell linked_list, int target, double weight)
 {
     for (Cell cell = linked_list; cell != NULL; cell = cell->next)
     {
-        if (cell->v == target) {
+        if (cell->v == target && weight == -1)
+        {
             return true;
         }
+        else if (cell->v == target && cell->weight == weight)
+        {
+            // cout << "Found with same weight! " << cell->parent << "->" << target << endl;
+            return true;
+        }
+
+        /*
+        if (cell->v == target && cell->weight != weight) {
+            cout << "Found target but with different weight: ";
+            cout << cell->weight << " <-> " << weight << " (wanted) ";
+            cout << cell->parent << "->" << target << endl;
+        }
+        */
     }
 
     return false;
@@ -85,7 +114,12 @@ bool exists_edge(Cell linked_list, int target)
 
 bool exists_edge(Graph g, int source, int target)
 {
-    return exists_edge(g[source], target);
+    return exists_edge(g[source], target, -1);
+}
+
+bool exists_edge(Graph g, int source, int target, double weight)
+{
+    return exists_edge(g[source], target, weight);
 }
 
 void print_linked_list(Cell linked_list, bool show_all_info)
@@ -221,7 +255,7 @@ vector<Cell> mergesort(vector<Cell> cells, int p, int q)
     return single_vector;
 }
 
-Graph kruskal(Graph g)
+Graph kruskal(const Graph g)
 {
     int V = g.size();
 
@@ -238,9 +272,13 @@ Graph kruskal(Graph g)
     {
         for (Cell cell = g[i]; cell != NULL; cell = cell->next)
         {
-            all_edges.push_back(cell);
-            // all_edges.push_back(graph[j][i]);
-            // cout << "Inserting [" << i << "] -> [" << j << "] to collection" << endl;
+            //
+            if (i < cell->v)
+            {
+                all_edges.push_back(cell);
+                // all_edges.push_back(graph[j][i]);
+                // cout << "Inserting [" << i << "] -> [" << j << "] to collection" << endl;
+            }
         }
     }
 
@@ -249,7 +287,7 @@ Graph kruskal(Graph g)
 
     /*
     cout << "sorted edges: ";
-    for (int i = 0; i < sorted_edges.size(); i+=2) // sorted duplicate
+    for (int i = 0; i < sorted_edges.size(); i++) // sorted duplicate
     {
         cout << sorted_edges[i]->weight << ' ';
     }
@@ -265,7 +303,7 @@ Graph kruskal(Graph g)
 
         if (colors[candidate->parent] != colors[candidate->v])
         {
-            insert(&mst, candidate->parent, candidate);
+            insert(&mst, candidate);
             mst_size++;
 
             int old_color = colors[candidate->v];
@@ -310,12 +348,31 @@ void recalculate_weights(Graph* g, double quality_candidate)
             double new_weight = f - (d * quality_candidate);
 
             cell->weight = new_weight;
-            // cout << "Inserting [" << i << "] -> [" << j << "] to collection" << endl;
-            // sum_weights += new_weight;
         }
     }
 }
 
+double calculate_quality(Graph g)
+{
+    double sum_friendship = 0.0;
+    double sum_distance = 0.0;
+
+    for (int i = 1; i < g.size(); i++)
+    {
+        for (Cell cell = g[i]; cell != NULL; cell = cell->next)
+        {
+            sum_friendship += cell->f;
+            sum_distance += cell->d;
+        }
+    }
+
+    if (sum_distance == 0) {
+        cout << "Probably there is some problem in the input file. Sum of distances equals zero." << endl;
+        return 0.0;
+    }
+
+    return sum_friendship / sum_distance;
+}
 
 int main()
 {
@@ -326,6 +383,15 @@ int main()
     string line;
     ifstream inputFile;
     inputFile.open("test.in.alberto");
+
+
+
+    // PAREI AQUI
+
+    // rever o exemplo se é o mesmo, se há msg no forum
+    // desenhar na mão o grafo e verificar se é possível
+
+
 
     if (!inputFile.is_open())
     {
@@ -346,6 +412,7 @@ int main()
 
         // 1-based: n + 1
         Graph g = initialize_graph(n + 1);
+        Graph candidate_graph;
 
         double lower_bound = 0.0;
         double upper_bound = 0.0;
@@ -367,7 +434,10 @@ int main()
             insert(&g, j, i, f, d);
         }
 
-        // print_graph(g);
+        /*
+        cout << "Read graph:" << endl;
+        print_graph(g);
+        */
 
         if (!connected_graph(g))
         {
@@ -388,7 +458,14 @@ int main()
 
             recalculate_weights(&g, quality_candidate);
 
-            Graph candidate_graph = kruskal(g);
+            candidate_graph = kruskal(g);
+
+            /*
+            cout << "G:";
+            print_graph(g);
+            cout << "MST:";
+            print_graph(candidate_graph);
+            */
 
             // add edges of MST and also edges that will increase the ratio
             // if  w > 0  =>  f - r*d > 0  =>  f > r*d   =>  f/d > r
@@ -396,29 +473,31 @@ int main()
             {
                 for (Cell cell = g[i]; cell != NULL; cell = cell->next)
                 {
-                    if (exists_edge(candidate_graph, i, cell->v))
+                    if (exists_edge(candidate_graph, i, cell->v, cell->weight))
                     {
+                        // cout << "Added: " << i << "->" << cell->v << endl;
                         sum_weights += cell->weight;
                     }
-                    else if (cell->weight > 0)
+                    else if (i < cell->v && cell->weight > 0)
                     {
+                        // cout << "Added: " << i << "->" << cell->v << endl;
                         sum_weights += cell->weight;
 
-                        // Just for visualization of solution graph
-                        insert(&candidate_graph, i, cell);
+                        // For visualization of solution graph
+                        insert(&candidate_graph, cell);
                     }
                 }
             }
 
-            // print_graph(candidate_graph);
+            /*
+            cout << "sum of weights: " << sum_weights << endl;
+            cout << "-------------------------------" << endl;
+            */
 
-            // stop if equation equals zero
-            // cout << "sum of weights: " << sum_weights << endl;
-            //cout << "-------------------------------" << endl;
-
+            // stop if the sum of weights is good enough
             if (abs(sum_weights) <= EPSILON)
             {
-                cout << "sum_weights < " << EPSILON << "!\n\n";
+                // cout << "sum_weights < " << EPSILON << "!\n\n";
                 break;
             }
 
@@ -433,13 +512,24 @@ int main()
             }
         }
 
-        best_quality = quality_candidate;
+        // best_quality = quality_candidate;
 
         if (abs(upper_bound - lower_bound) < EPSILON) {
             cout << "upper_bound - lower_bound < " << EPSILON << "!\n\n";
         }
 
+        //
+        best_quality = calculate_quality(candidate_graph);
+
+        /*
+        cout << "G:";
+        print_graph(g);
+        cout << "last candidate:";
+        print_graph(candidate_graph);
+        */
+
         // Output Ratio
+        cout << "maybe? " << quality_candidate << endl;
         cout << "graph(" << n << ") -> best quality: " << best_quality << endl;
         cout << "**************************************************************" << endl;
     /*

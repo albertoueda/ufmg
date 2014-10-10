@@ -32,14 +32,7 @@
 		<Compiler>
 			<Add option="-Wall" />
 		</Compiler>
-		<Unit filename="../include/AdjacencyMatrix.h">
-			<Option virtualFolder="include/" />
-			<Option target="Debug" />
-		</Unit>
 		<Unit filename="../include/Main.h">
-			<Option target="Debug" />
-		</Unit>
-		<Unit filename="../src/AdjacencyMatrix.cpp">
 			<Option target="Debug" />
 		</Unit>
 		<Unit filename="../src/Main.cpp">

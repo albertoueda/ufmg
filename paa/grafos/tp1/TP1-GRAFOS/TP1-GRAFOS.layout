@@ -1,17 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <CodeBlocks_layout_file>
 	<ActiveTarget name="Debug" />
-	<File name="../include/AdjacencyMatrix.h" open="0" top="0" tabpos="1">
-		<Cursor position="152" topLine="0" />
-	</File>
 	<File name="../include/Main.h" open="0" top="0" tabpos="3">
 		<Cursor position="38" topLine="0" />
 	</File>
-	<File name="../src/AdjacencyMatrix.cpp" open="0" top="0" tabpos="2">
-		<Cursor position="0" topLine="0" />
-	</File>
 	<File name="../src/Main.cpp" open="1" top="1" tabpos="1">
-		<Cursor position="5603" topLine="151" />
+		<Cursor position="8229" topLine="375" />
 	</File>
 	<File name="../src/entrada1.txt" open="0" top="0" tabpos="0">
 		<Cursor position="71" topLine="0" />

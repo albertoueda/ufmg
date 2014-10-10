@@ -1,0 +1,16 @@
+
+1) brigando com ponteiros
+        - *d, pointer*, &x
+        - o que malloc devolve e o que é necessário fazer cast (c x c++)
+        - procurar usar const
+        - muito cuidado com ponteiros
+        - null no c++
+        - por que o feofiloff utiliza ponteiros ao invés do próprio struct
+
+2) quais elementos eu adiciono a lista (i < j)
+
+3) inicialização de variáveis
+
+4) arestas repetidas mudou boa parte da implementação
+
+5) utilizar int achando que estou utiilzando double. 1.2324 --> 1
