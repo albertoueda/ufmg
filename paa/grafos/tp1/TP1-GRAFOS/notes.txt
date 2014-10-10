@@ -17,6 +17,9 @@
 
 6) Condição de parada: evitar parar por medo!!!
 
+7) assume que a entrada está ok (v < V, 1 vertices nok)
+
+
 
 Oi Gabriel,
 
