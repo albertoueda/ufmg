@@ -87,9 +87,39 @@ Dado um grafo $G$ não-direcionado, verificamos primeiramente se ele é conectad
 
 \section{Etapas da Solução}
 
+\begin{enumerate}
+\item\textbf{Verificação de grafo conectado} \\
+a
+\item\textbf{Escolha do candidato à qualidade ótima} \\
+b
+\item\textbf{Cálculo da Árvore Espalhadora Máxima} \\
+b
+\item\textbf{Adição de arestas que aumentam a qualidade} \\
+b
+\item\textbf{Atualização dos limitantes} \\
+b
+\item\textbf{Condições de parada} \\
+b
+figura
+
+\end{enumerate}
+
 \section{Dificuldades Encontradas}
 
+\begin{itemize}
+\item {Suporte às arestas duplicadas:} como apresentadas no grafo do terceiro exemplo do enunciado do TP, assim como no terceiro do arquivo $test.in$ disponibilizado no Moodle, algumas arestas poderiam estar duplicadas no grafo de entrada. Embora no fórum tenha sido dito que as chances disso acontecer na correção eram pequenas, a probabilidade positiva causou uma mudança considerável na implementação do programa no final do trabalho. Em um dado momento optei por substituir a estrutura de dados, de matriz a listas de adjacências, visando maior qualidade na modelagem e de código.
+
+\item {Cálculo do peso/custo das arestas:} sem o auxílio do professor ou dos monitores seria bastante difícil encontrar a solução do problema.
+
+\item {Linguagem C++:} já há algum tempo não programava com C ou C++ e a utilização de ponteiros mostrou-se desafiadora em alguns momentos. Porém serviu como uma ótima revisão. 
+
+\end{itemize}
+
 \section{Conclusão}
+
+Apesar de ser um problema aparentemente muito difícil, a atribuição de pesos utilizada no trabalho o torna factível em tempo polinomial. O uso de algoritmos como o de Kruskal dentro de um laço com busca binária foi bastante interessante, assim como de visualizar o algoritmo "buscando" a melhor configuração de amizades possível.
+
+Muitos erros foram encontrados e corrigidos ao decorrer da implementação, porém a maioria deles relacionados ao uso de ponteiros em C++, não aos algoritmos em si. Outro ponto a destacar foi o aumento do conhecimento em relação às estruturas de dados, que tiveram de ser substituídas durante a implementação do programa.
 
 \cite{cormen} 
 
