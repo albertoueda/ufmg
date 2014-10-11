@@ -63,7 +63,7 @@ Dado um conjunto de amigos, deseja-se descobrir qual é a melhor configuração 
 \section{Modelagem}
 Seja cada indivíduo um vértice e cada amizade entre duas pessoas uma aresta ligando dois vértices, podemos definir o conjunto de amigos original como um grafo $G$ contendo todas as amizades possíveis de acordo com o conjunto fornecido. Deste modo, cada configuração de amizades pode ser vista como um possível \textit{subgrafo} de $G$. 
 
-Considerando a restrição de que uma configuração viável deve alcançar todos as pessoas do conjunto, é natural considerar como subgrafos válidos apenas os que conectam todos os vértices do grafo original $G$. Assim, caso não seja possível conectar todos os amigos, o valor da função qualidade para todo subgrafo possível não é definido e consequentemente o problema não tem solução. Neste caso, seguindo a especificação do trabalho, o algoritmo implementado devolve um valor pré-estabelecido.
+Considerando a restrição de que uma configuração viável deve alcançar todas as pessoas do conjunto, é natural considerar como subgrafos válidos apenas os que conectam todos os vértices do grafo original $G$. Assim, caso não seja possível conectar todos os amigos, o valor da função qualidade para todo subgrafo possível não é definido e consequentemente o problema não tem solução. Neste caso, seguindo a especificação do trabalho, o algoritmo implementado devolve um valor pré-estabelecido.
 
 A grande peculiaridade deste problema é que o \textit{peso} de uma aresta não pode ser simplesmente a) o nível de amizade, b) a distância, ou c) a divisão da amizade pela distância, pois nestes casos o algoritmo descartará informações relevantes. Por exemplo, se for utilizada a divisão amizade/distância como peso da aresta, amizades como (2000/1000) e (2/1) serão consideradas equivalentes, o que não é verdadeiro, dada a função de qualidade.
 
@@ -73,7 +73,7 @@ Felizmente, podemos adotar o custo de cada aresta $i$ como $f_i - (d_i * r)$, on
 
 Seja $r$ a qualidade de um subgrafo. Temos que:
 
-$ r = (f_1 + f_2 + ... + f_n)  /  (d_1 + d_2 + ... + d_n) => $
+$ r = (f_1 + f_2 + ... + f_n)  /  (d_1 + d_2 + ... + d_n) \Rightarrow $
 \ \\  
 
 $ (f_1 - (d_1 * r)) + (f_2 - (d_2 * r)) + ... + (f_n - (d_n * r)) = 0 $
@@ -90,7 +90,7 @@ Dado um grafo $G$ não-direcionado, verificamos primeiramente se ele é conectad
 \begin{enumerate}
 \item\textbf{Leitura da entrada padrão} \\
 A leitura dos dados é trivial. Apenas algumas observações: \begin{itemize} 
-    \item Como não existe o significado de \textit{direção} neste problema, para toda aresta $i->j$ a aresta $j->i$ também é adicionada;
+    \item Como não existe o significado de \textit{direção} neste problema, para toda aresta $i\rightarrow j$ a aresta $j\rightarrow i$ também é adicionada;
     \item Espera-se uma entrada válida. Ou seja: as linhas em branco separando as instâncias, quatro inteiros em cada linha para aresta, um único inteiro para o número de vértices, etc;
     \item Não são consideradas arestas que partem e chegam ao mesmo vértice, por exemplo: 2 2 10 5;
     \item É esperado um $V > 1$ para o número de vértices.
@@ -114,14 +114,14 @@ Portanto adicionamos à árvore espalhadora máxima todas as arestas que possuem
 
 \item\textbf{Atualização dos limitantes} \\
 Caso a soma dos pesos seja maior que zero, segundo a equação definida na seção de modelagem, significa que escolhemos um candidato muito baixo para qualidade. Portanto, atualizamos o limitante inferior para o valor do candidato e mantemos o superior como antes. Analogamente para a soma de pesos negativa: atualizamos o limitante superior para o valor do candidato e mantemos o limitante inferior.
-Assim, o tempo que o algoritmo leva para encontrar o valor correto é no pior caso $O(\sum{f_i})$, ou seja, a soma de todos os níveis de amizade do grafo original.
+Assim, o tempo que o algoritmo leva para encontrar o valor correto é no pior caso $O(\log(\sum{f_i}))$, ou seja, a soma de todos os níveis de amizade do grafo original.
 
 \item\textbf{Condições de parada} \\
 O algoritmo para quando encontra um candidato suficientemente bom (soma dos pesos é suficientemente próxima de zero) ou se os limitantes inferior e superior estão próximos demais (diferença entre os limitantes está suficientemente próxima de zero). 
 
 \end{enumerate}
 
-Portanto, o custo total do algoritmo é $O(\sum({f_i}) * E\log(E))$ em termos de tempo e $O(V + E)$ para a memória utilizando listas ligadas. Para todas as instâncias fornecidas e também algumas criadas manualmente, o programa executou em menos de 0.02 segundo na máquina de teste.
+Portanto, o custo total do algoritmo é $O(E\log(E)\log(\sum({f_i})))$ em termos de tempo e $O(V + E)$ para a memória utilizando listas ligadas. Para todas as instâncias fornecidas e também algumas criadas manualmente, o programa executou em menos de 0.02 segundo na máquina de teste.
 
 \section{Dificuldades Encontradas}
 
@@ -138,7 +138,7 @@ Portanto, o custo total do algoritmo é $O(\sum({f_i}) * E\log(E))$ em termos de
 
 Apesar de ser um problema aparentemente muito difícil, a atribuição de pesos utilizada no trabalho o torna factível em tempo polinomial. O uso de algoritmos como o de Kruskal dentro de um laço com busca binária foi bastante interessante, assim como de visualizar o algoritmo "buscando" a melhor configuração de amizades possível.
 
-Muitos erros foram encontrados e corrigidos ao decorrer da implementação, porém a maioria deles relacionados ao uso de ponteiros em C++, não aos algoritmos em si. Outro ponto a destacar foi o aumento do conhecimento em relação às estruturas de dados, que tiveram de ser substituídas durante a implementação do programa.
+Muitos erros foram encontrados e corrigidos no decorrer da implementação, porém a maioria deles relacionados ao uso de ponteiros em C++, não aos algoritmos em si. Outro ponto a destacar foi o aumento do conhecimento em relação às estruturas de dados, que tiveram de ser substituídas durante a implementação do programa.
 
 % Referências
 \bibliographystyle{plain}%amsalpha
