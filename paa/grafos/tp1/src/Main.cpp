@@ -459,10 +459,10 @@ int main()
             }
         }
 
-        /*
+
         cout << "last candidate:";
         print_graph(candidate_graph);
-        */
+
 
         // Output Optimal Quality
         cout << fixed << quality_candidate << endl;

@@ -88,21 +88,40 @@ Dado um grafo $G$ não-direcionado, verificamos primeiramente se ele é conectad
 \section{Etapas da Solução}
 
 \begin{enumerate}
+\item\textbf{Leitura da entrada padrão} \\
+A leitura dos dados é trivial. Apenas algumas observações: \begin{itemize} 
+    \item Como não existe o significado de \textit{direção} neste problema, para toda aresta $i->j$ a aresta $j->i$ também é adicionada;
+    \item Espera-se uma entrada válida. Ou seja: as linhas em branco separando as instâncias, quatro inteiros em cada linha para aresta, um único inteiro para o número de vértices, etc;
+    \item Não são consideradas arestas que partem e chegam ao mesmo vértice, por exemplo: 2 2 10 5;
+    \item É esperado um $V > 1$ para o número de vértices.
+\end{itemize}
+
 \item\textbf{Verificação de grafo conectado} \\
-a
+Por meio de uma DFS partindo de um único ponto já é possível verificar se o grafo é conectado, dado que as arestas invertidas também são adicionadas no passo anterior. O custo é $O(V + E)$ em termos de tempo e $O(V + E)$ para o grafo armazenado com listas ligadas, em termos de memória.
+
 \item\textbf{Escolha do candidato à qualidade ótima} \\
-b
-\item\textbf{Cálculo da Árvore Espalhadora Máxima} \\
-b
+O limitante inferior utilizado é 0 (zero) e o superior é a soma dos níveis de amizade (sempre maior que a qualidade ótima). O candidato é então a média entre os dois limitantes.
+
+\item\textbf{Cálculo da àrvore espalhadora máxima} \\
+Utilizado Kruskal \cite{cormen}, com algoritmo de ordenação Mergesort ($O(E\log(E))$.
+
 \item\textbf{Adição de arestas que aumentam a qualidade} \\
-b
+Com a equação dos pesos definida na seção de modelagem, segue que, para cada $f$ e $d$ de uma aresta qualquer:
+
+\ \ \ \ \ \ $ peso > 0  =>  f - r*d > 0  =>  f > r*d   =>  f/d > r $
+
+Portanto adicionamos à árvore espalhadora máxima todas as arestas que possuem peso positivo.
+
 \item\textbf{Atualização dos limitantes} \\
-b
+Caso a soma dos pesos seja maior que zero, segundo a equação definida na seção de modelagem, significa que escolhemos um candidato muito baixo para qualidade. Portanto, atualizamos o limitante inferior para o valor do candidato e mantemos o superior como antes. Analogamente para a soma de pesos negativa: atualizamos o limitante superior para o valor do candidato e mantemos o limitante inferior.
+Assim, o tempo que o algoritmo leva para encontrar o valor correto é no pior caso $O(\sum{f_i})$, ou seja, a soma de todos os níveis de amizade do grafo original.
+
 \item\textbf{Condições de parada} \\
-b
-figura
+O algoritmo para quando encontra um candidato suficientemente bom (soma dos pesos é suficientemente próxima de zero) ou se os limitantes inferior e superior estão próximos demais (diferença entre os limitantes está suficientemente próxima de zero). 
 
 \end{enumerate}
+
+Portanto, o custo total do algoritmo é $O(\sum({f_i}) * E\log(E))$ em termos de tempo e $O(V + E)$ para a memória utilizando listas ligadas. Para todas as instâncias fornecidas e também algumas criadas manualmente, o programa executou em menos de 0.02 segundo na máquina de teste.
 
 \section{Dificuldades Encontradas}
 
@@ -120,8 +139,6 @@ figura
 Apesar de ser um problema aparentemente muito difícil, a atribuição de pesos utilizada no trabalho o torna factível em tempo polinomial. O uso de algoritmos como o de Kruskal dentro de um laço com busca binária foi bastante interessante, assim como de visualizar o algoritmo "buscando" a melhor configuração de amizades possível.
 
 Muitos erros foram encontrados e corrigidos ao decorrer da implementação, porém a maioria deles relacionados ao uso de ponteiros em C++, não aos algoritmos em si. Outro ponto a destacar foi o aumento do conhecimento em relação às estruturas de dados, que tiveram de ser substituídas durante a implementação do programa.
-
-\cite{cormen} 
 
 % Referências
 \bibliographystyle{plain}%amsalpha
