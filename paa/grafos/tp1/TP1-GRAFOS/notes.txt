@@ -19,20 +19,375 @@
 
 7) assume que a entrada está ok (v < V, 1 vertices nok)
 
+--- tp2
 
+8) reserve : good, but more important when using iterators possibly invalidated by reallocation
+32767 (215-1) or greater*
 
-Oi Gabriel,
+9) test in future: reserve, emplace, emplace_back (complex parameter)
 
-Se o vértice não aparece na entrada considere que esse vértice não existe e não precisa imprimir ele em nenhum dos arquivos de saída.
-
-Veja que podemos identificar um vértice desconexo colocando uma aresta com entrada e saída apontando para o próprio vértice (um laço), como exemplificamos na especificação os vértices 14 e 15.
-
-Também não é para renomear a identificação dos vértices. Você deve mantê-la assim como aparece na entrada. Nos testes que faremos utilizaremos apenas identificadores entre 1 e |V|, como já foi discutido.
-
-
+10) lembrar: pouco tempo = não ficar inventando moda
 
 
 
-Caso algum grafo que indicamos na especificação para testar o TP não tenha vértices identificados de 1 a |V|, vocês podem corrigir os identificadores e manter a mesma estrutura do grafo. Creio que isso vai ser mais simples do que modificar o TP já implementado.
+/** ------------------------------------------------
+Universidade Federal de Minas Gerais
+Projeto e Analise de Algoritmos - 2014/2
+2nd module - Graphs
+
+TP2 - The Bow-Tie Structure of Web
+Student: Alberto Hideki Ueda
+Student ID: 2014765817
+------------------------------------------------- **/
+
+#include <cstdlib>
+#include <iostream>
+#include <fstream>
+#include <vector>
+#include <sstream>
+#include <cmath>
+
+#define INITIAL_CAPACITY 1000000
+
+using namespace std;
+
+struct cell
+{
+    // node id
+    int v;
+    int parent;
+
+    // Next element in the linked list
+    struct cell* next;
+};
+
+typedef struct cell *Cell;
+
+typedef vector<Cell> Graph;
+
+Graph initialize_graph(int n, bool randomized)
+{
+    Graph g(n);
+    for (int i = 1; i < n; i++)
+    {
+        g[i] = NULL;
+    }
+
+    return g;
+}
+
+Graph initialize_graph(int n)
+{
+    return initialize_graph(n, false);
+}
+
+/**
+Always inserts, never updates.
+*/
+void insert(Graph* g, int i, int j)
+{
+    Cell new_cell = (Cell) malloc(sizeof(cell));
+    new_cell->parent = i;
+    new_cell->v = j;
+
+    // Push front the new cell to g[i]
+    new_cell->next = (*g)[i];
+    (*g)[i] = new_cell;
+}
+
+/**
+Avoid to manipulate pointers. Its better to deal with values.
+*/
+void insert(Graph* g, Cell node_info)
+{
+    int i = node_info->parent;
+    int j = node_info->v;
+
+    insert(g, i, j);
+}
+
+bool exists_edge(Cell linked_list, int target)
+{
+    for (Cell cell = linked_list; cell != NULL; cell = cell->next)
+    {
+        if (cell->v == target)
+        {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+bool exists_edge(Graph g, int source, int target)
+{
+    return exists_edge(g[source], target);
+}
+
+void print_linked_list(Cell linked_list, bool show_all_info)
+{
+    for (Cell cell = linked_list; cell != NULL; cell = cell->next)
+    {
+        if (show_all_info)
+        {
+            cout << cell->v << "(" << cell->parent << ")  "; //
+        }
+        else
+        {
+            cout << cell->v << " ";
+        }
+    }
+    cout << endl;
+}
+
+void print_graph(Graph g, bool show_all_info)
+{
+    cout << endl;
+
+    for (int i = 1; i < g.size(); i++)
+    {
+        cout << i << ": ";
+        print_linked_list(g[i], show_all_info);
+    }
+}
+
+void print_graph(Graph g)
+{
+    print_graph(g, false);
+}
+
+void print_statistics(Graph g)
+{
+    cout << "\nTotal nodes: " << g.size() - 1 << endl;
+
+    int total_edges = 0;
+
+    for (int i = 1; i < g.size(); i++)
+        for (Cell cell = g[i]; cell != NULL; cell = cell->next)
+            total_edges++;
+
+    cout << "Total edges: " << total_edges << endl;
+}
+
+void visit(Graph g, int source, vector<int>* visited)
+{
+    for (int j = 1; j < g.size(); j++)
+    {
+        if (exists_edge(g, source, j) && (*visited)[j] == 0)
+        {
+            (*visited)[j] = 1;
+            visit(g, j, visited);
+        }
+    }
+}
+
+/**
+Try to visit each node of graph from a single source, with a DFS.
+*/
+vector<int> single_dfs(Graph g)
+{
+    vector<int> visited(g.size());
+    visited[1] = 1;
+    visit(g, 1, &visited);
+
+    return visited;
+}
+
+bool connected_graph(Graph g)
+{
+    vector<int> visited_nodes = single_dfs(g);
+
+    for (int i = 1; i < visited_nodes.size(); i++)
+    {
+        if (visited_nodes[i] == 0)
+        {
+            // cout << "Node " << i << " not visited. The graph is not connected." << endl;
+            return false;
+        }
+    }
+
+    return true;
+}
+
+vector<Cell> merge(vector<Cell> left, vector<Cell> right)
+{
+    int i = 0, iLeft = 0, iRight = 0;
+    int size = left.size() + right.size();
+    vector<Cell> sorted(size);
+
+    while (i < size)
+    {
+        if (iLeft == left.size() || iRight == right.size())
+        {
+            break;
+        }
+
+        if (left[iLeft]->v > right[iRight]->v)
+        {
+            sorted[i++] = left[iLeft++];
+        }
+        else
+        {
+            sorted[i++] = right[iRight++];
+        }
+    }
+
+    // At maximum one of the conditions below will be true
+    while (iRight < right.size())
+    {
+        sorted[i++] = right[iRight++];
+    }
+
+    while (iLeft < left.size())
+    {
+        sorted[i++] = left[iLeft++];
+    }
+
+    return sorted;
+}
+
+vector<Cell> mergesort(vector<Cell> cells, int p, int q)
+{
+    if (p < q)
+    {
+        int r = (p + q) / 2;
+        vector<Cell> left = mergesort(cells, p, r);
+        vector<Cell> right = mergesort(cells, r + 1, q);
+
+        return merge(left, right);
+    }
+
+    // p == q. Just creates a vector of one element
+    vector<Cell> single_vector(1);
+    single_vector[0] = cells[p];
+
+    return single_vector;
+}
+
+int main(int argc, char** argv)
+{
+    cout.precision(3);
+
+    // Input Reader
+    string line;
+    ifstream inputFile;
+
+    // TOREMOVE
+    if (argc == 1)
+    {
+        inputFile.open("input-tp2-specification.txt");
+    }
+    else if (argc > 1)
+    {
+        inputFile.open(argv[1]);
+    } else
+    {
+        cout << "Input file not specified." << endl;
+        return 1;
+    }
+
+    if (!inputFile.is_open())
+    {
+        cout << "Problem reading input file." << endl;
+        return 1;
+    }
+
+    vector<int> sources, targets;
+    sources.resize(INITIAL_CAPACITY);
+    targets.resize(INITIAL_CAPACITY);
+    int i, j, greatest = 0;
+
+    // Input File Reader
+    while (getline(inputFile, line))
+    {
+        // skip all lines beginning with anything different from digits
+        // useful for web graphs txts from Stanford Website
+        if (isdigit(line[0]) == false)
+        {
+            continue;
+        }
+
+        stringstream stream(line);
+
+        stream >> i >> j;
+
+        sources.push_back(i);
+        targets.push_back(j);
+
+        // keep the greatest node id found
+        if (i > greatest)
+        {
+            greatest = i;
+        }
+        if (j > greatest)
+        {
+            greatest = j;
+        }
+    }
+
+    inputFile.close();
+
+
+    // number of nodes
+    int n = greatest;
+
+    // 1-based: n + 1
+    Graph g = initialize_graph(n + 1);
+
+    for (int k = 0; k < sources.size(); k++)
+    {
+        insert(&g, sources[k], targets[k]);
+    }
+
+    // print_graph(g);
+    print_statistics(g);
+}
+
+
+
+
+
+
+
+
+
+    // number of nodes
+    int n = 30;
+
+    // 1-based: n + 1
+    Graph g = initialize_graph(n + 1);
+
+    // Input File Reader
+    while (getline(inputFile, line))
+    {
+        // skip all lines beginning with anything different from digits
+        // useful for web graphs txts from Stanford Website
+        if (isdigit(line[0]) == false)
+        {
+            continue;
+        }
+
+        stringstream stream(line);
+
+        int i, j;
+        stream >> i >> j;
+
+        insert(&g, i, j);
+
+    }
+
+    inputFile.close();
+
+    // print_graph(g);
+    print_statistics(g);
+
+
+    Total nodes: 30000000
+Total edges: 2312497
+
+
+Total nodes: 281903
+Total edges: 2312497
+
 
 

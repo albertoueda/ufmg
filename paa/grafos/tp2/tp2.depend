@@ -1,0 +1,9 @@
+# depslib dependency file v1.0
+1413092439 source:/home/alberto/ufmg/paa/grafos/tp2/alberto-ueda-tp2.cpp
+	<cstdlib>
+	<iostream>
+	<fstream>
+	<vector>
+	<sstream>
+	<cmath>
+
