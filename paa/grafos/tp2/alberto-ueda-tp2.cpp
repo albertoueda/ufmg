@@ -45,20 +45,18 @@ typedef vector<Cell> Graph;
 
 typedef struct SCC* sccPointer;
 
-Graph initialize_graph(int n, bool randomized)
+void initialize_graph(Graph* graph, int n, bool randomized)
 {
-    Graph g(n);
+    (*graph).resize(n);
     for (int i = 1; i < n; i++)
     {
-        g[i] = NULL;
+        (*graph)[i] = NULL;
     }
-
-    return g;
 }
 
-Graph initialize_graph(int n)
+void initialize_graph(Graph* graph, int n)
 {
-    return initialize_graph(n, false);
+    return initialize_graph(graph, n, false);
 }
 
 /**
@@ -99,9 +97,9 @@ bool exists_edge(Cell linked_list, int target)
     return false;
 }
 
-bool exists_edge(Graph g, int source, int target)
+bool exists_edge(Graph* g, int source, int target)
 {
-    return exists_edge(g[source], target);
+    return exists_edge((*g)[source], target);
 }
 
 void print_linked_list(Cell linked_list, bool show_all_info)
@@ -120,41 +118,41 @@ void print_linked_list(Cell linked_list, bool show_all_info)
     cout << endl;
 }
 
-void print_graph(Graph g, bool show_all_info)
+void print_graph(Graph* g, bool show_all_info)
 {
     cout << endl;
 
-    for (int i = 1; i < g.size(); i++)
+    for (int i = 1; i < (*g).size(); i++)
     {
         cout << i << ": ";
-        print_linked_list(g[i], show_all_info);
+        print_linked_list((*g)[i], show_all_info);
     }
 }
 
-void print_graph(Graph g)
+void print_graph(Graph* g)
 {
     print_graph(g, false);
 }
 
-void print_statistics(Graph g)
+void print_statistics(Graph* g)
 {
     // 1-based
-    cout << "\nTotal of Nodes: " << g.size() - 1 << endl;
+    cout << "\nTotal of Nodes: " << (*g).size() - 1 << endl;
 
     int total_edges = 0;
 
-    for (int i = 1; i < g.size(); i++)
-        for (Cell cell = g[i]; cell != NULL; cell = cell->next)
+    for (int i = 1; i < (*g).size(); i++)
+        for (Cell cell = (*g)[i]; cell != NULL; cell = cell->next)
             total_edges++;
 
     cout << "Total of Edges: " << total_edges << endl;
 }
 
-void print_all_sccs(vector<SCC> sccs)
+void print_all_sccs(vector<SCC>* sccs)
 {
-    for (int k = 0; k < sccs.size(); k++) {
-        vector<int> all_nodes_scc = sccs[k].nodes;
-        cout << "SCC #" << k << ": Type = " << sccs[k].type << ", ";
+    for (int k = 0; k < (*sccs).size(); k++) {
+        vector<int> all_nodes_scc = (*sccs)[k].nodes;
+        cout << "SCC #" << k << ": Type = " << (*sccs)[k].type << ", ";
         cout << "Total of Nodes = " << all_nodes_scc.size() << ", " << endl;
         cout << "Nodes = [ ";
         for (int l = 0; l < all_nodes_scc.size(); l++)
@@ -218,32 +216,29 @@ vector<Cell> mergesort(vector<Cell> cells, int p, int q)
     return single_vector;
 }
 
-Graph calculate_transpose(Graph g)
+void calculate_transpose(Graph* g, Graph* gt)
 {
-    Graph gt = initialize_graph(g.size());
+    initialize_graph(gt, (*g).size());
 
-    for (int i = 1; i < g.size(); i++)
-        for (Cell cell = g[i]; cell != NULL; cell = cell->next)
-            insert(&gt, cell->v, i);
-
-    return gt;
+    for (int i = 1; i < (*g).size(); i++)
+        for (Cell cell = (*g)[i]; cell != NULL; cell = cell->next)
+            insert(gt, cell->v, i);
 }
 
-vector<int> inverse(vector<int> original)
+void inverse(vector<int>* original, vector<int>* inverted)
 {
-    vector<int> inverted(original.size());
+    (*inverted).resize((*original).size());
 
-    for (int i = 1; i < original.size(); i++)
-        inverted[original[i]] = i;
+    for (int i = 1; i < (*original).size(); i++)
+        (*inverted)[(*original)[i]] = i;
 
-    return inverted;
 }
 
-void visit(Graph g, int source, vector<bool>* visited, vector<int>* finish_times, int* time, vector<bool> ignored_nodes)
+void visit(Graph* g, int source, vector<bool>* visited, vector<int>* finish_times, int* time, vector<bool>* ignored_nodes)
 {
 
     // cout << "  trying to visit from source = " << source << endl;
-    if (g[source] == NULL || (*visited)[source] || ignored_nodes[source])
+    if ((*g)[source] == NULL || (*visited)[source] || (*ignored_nodes)[source])
     {
         return;
     }
@@ -251,7 +246,7 @@ void visit(Graph g, int source, vector<bool>* visited, vector<int>* finish_times
     (*visited)[source] = true;
     // cout << "  new node! I will do dfs from = " << source << endl;
 
-    for (Cell cell = g[source]; cell != NULL; cell = cell->next)
+    for (Cell cell = (*g)[source]; cell != NULL; cell = cell->next)
     {
         visit(g, cell->v, visited, finish_times, time, ignored_nodes);
         // cout << "    trying to visit from source = " << source << " and target = " << cell->v << endl;
@@ -263,59 +258,57 @@ void visit(Graph g, int source, vector<bool>* visited, vector<int>* finish_times
     (*finish_times)[source] = (*time)++;
 }
 
-vector<int> dfs(Graph g, vector<bool> ignored_nodes)
+void dfs(Graph* g, vector<bool>* ignored_nodes, vector<int>* finish_times)
 {
-    vector<bool> visited(g.size());
-    vector<int> finish_times(g.size());
+    vector<bool> visited((*g).size());
+    (*finish_times).resize((*g).size());
+
     int time = 1;
 
-    for (int i = 1; i < g.size(); i++) {
+    for (int i = 1; i < (*g).size(); i++) {
 
-        if (g[i] == NULL || visited[i] || ignored_nodes[i])
+        if ((*g)[i] == NULL || visited[i] || (*ignored_nodes)[i])
         {
             continue;
         }
 
         // cout << "main dfs for i = " << i << endl;
-        visit(g, i, &visited, &finish_times, &time, ignored_nodes);
+        visit(g, i, &visited, finish_times, &time, ignored_nodes);
     }
 
-    return finish_times;
 }
 
 // like visit
-vector<int> single_dfs(Graph g, int root, vector<bool> ignored_nodes)
+void single_dfs(Graph* g, int root, vector<bool>* ignored_nodes, vector<int>* visited_nodes)
 {
-    vector<bool> visited(g.size());
-    vector<int> finish_times(g.size());
+    vector<bool> all_visited((*g).size());
+    vector<int> finish_times((*g).size());
     int time = 1;
 
-    visit(g, root, &visited, &finish_times, &time, ignored_nodes);
+    visit(g, root, &all_visited, &finish_times, &time, ignored_nodes);
 
-    // Mark all the visited nodes in a single vector
-    vector<int> visited_nodes;
-    for (int i = 1; i < visited.size(); i++) {
-        if (visited[i] && !ignored_nodes[i]) // ignored_nodes need ?
-            visited_nodes.push_back(i);
+    // Copy from all nodes only the visited nodes to a single vector
+    for (int i = 1; i < all_visited.size(); i++) {
+        if (all_visited[i] && !(*ignored_nodes)[i]) // ignored_nodes need ?
+            (*visited_nodes).push_back(i);
     }
-
-    return visited_nodes;
 }
 
-vector<SCC> calculate_sccs(Graph g, Graph gt)
+void calculate_sccs(Graph* g, Graph* gt, vector<SCC>* all_sccs)
 {
-    vector<SCC> all_sccs;
     int largest_scc_size = 0;
 
     // Nodes that will be ignored from next DFSs
-    vector<bool> ignored_nodes(g.size());
+    vector<bool> ignored_nodes((*g).size());
 
     cout << "Starting first dfs..." << endl;
-    vector<int> finish_times = dfs(g, ignored_nodes);
+    vector<int> finish_times;
+    dfs(g, &ignored_nodes, &finish_times);
     cout << "First dfs ok." << endl;
 
     // Considering that for every node i, 1 <= i <= |V|
-    vector<int> sorted_nodes = inverse(finish_times);
+    vector<int> sorted_nodes;
+    inverse(&finish_times, &sorted_nodes);
 
     for (int i = sorted_nodes.size() - 1; i > 0; i--)
     {
@@ -326,12 +319,13 @@ vector<SCC> calculate_sccs(Graph g, Graph gt)
             continue;
         }
 
-        vector<int> visited_nodes = single_dfs(gt, root, ignored_nodes);
+        vector<int> visited_nodes;
+        single_dfs(gt, root, &ignored_nodes, &visited_nodes);
 
         SCC new_scc;
-        new_scc.nodes = visited_nodes;
+        new_scc.nodes = visited_nodes; // use pointer
         new_scc.type = 1;
-        all_sccs.push_back(new_scc);
+        (*all_sccs).push_back(new_scc);
 
         for (int k = 0; k < visited_nodes.size(); k++)
         {
@@ -342,15 +336,14 @@ vector<SCC> calculate_sccs(Graph g, Graph gt)
         if (visited_nodes.size() > largest_scc_size)
         {
             largest_scc_size = visited_nodes.size();
-            cout << "Found a new bigger SCC! " << largest_scc_size << endl;
+            cout << "Found a new bigger SCC! Id: #" << (*all_sccs).size() - 1 << ", ";
+            cout << " Size: " << largest_scc_size << endl;
         }
     }
 
     cout << "Largest SCC Size: " << largest_scc_size << endl;
 
     // print_all_sccs(all_sccs);
-
-    return all_sccs;
 }
 
 int main(int argc, char** argv)
@@ -397,9 +390,7 @@ int main(int argc, char** argv)
         }
 
         stringstream stream(line);
-
         stream >> i >> j;
-
         sources.push_back(i);
         targets.push_back(j);
 
@@ -420,7 +411,8 @@ int main(int argc, char** argv)
     int n = greatest;
 
     // 1-based: n + 1
-    Graph g = initialize_graph(n + 1);
+    Graph g;
+    initialize_graph(&g, n + 1);
 
     for (int k = 0; k < sources.size(); k++)
     {
@@ -430,12 +422,13 @@ int main(int argc, char** argv)
     cout << "Reading ok." << endl;
     // print_graph(g);
 
-    Graph gt = calculate_transpose(g);
+    Graph gt;
+    calculate_transpose(&g, &gt);
 
-    vector<SCC> sccs = calculate_sccs(g, gt);
+    vector<SCC> sccs;
+    calculate_sccs(&g, &gt, &sccs);
 
-    // print_all_sccs(sccs);
-
-    // print_graph(g);
-    print_statistics(g);
+    // print_all_sccs(&sccs);
+    // print_graph(&g);
+    print_statistics(&g);
 }
