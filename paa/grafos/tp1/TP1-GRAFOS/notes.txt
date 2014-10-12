@@ -28,6 +28,8 @@
 
 10) lembrar: pouco tempo = não ficar inventando moda
 
+11) iterando de 0 a n  para descobrir vizinhança sendo que utilizo listas......
+
 
 
 /** ------------------------------------------------
@@ -388,6 +390,8 @@ Total edges: 2312497
 
 Total nodes: 281903
 Total edges: 2312497
+
+inicio: 4:51
 
 
 

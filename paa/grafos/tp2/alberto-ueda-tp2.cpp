@@ -139,7 +139,7 @@ void print_graph(Graph g)
 void print_statistics(Graph g)
 {
     // 1-based
-    cout << "\nTotal nodes: " << g.size() - 1 << endl;
+    cout << "\nTotal of Nodes: " << g.size() - 1 << endl;
 
     int total_edges = 0;
 
@@ -147,7 +147,7 @@ void print_statistics(Graph g)
         for (Cell cell = g[i]; cell != NULL; cell = cell->next)
             total_edges++;
 
-    cout << "Total edges: " << total_edges << endl;
+    cout << "Total of Edges: " << total_edges << endl;
 }
 
 void print_all_sccs(vector<SCC> sccs)
@@ -155,11 +155,11 @@ void print_all_sccs(vector<SCC> sccs)
     for (int k = 0; k < sccs.size(); k++) {
         vector<int> all_nodes_scc = sccs[k].nodes;
         cout << "SCC #" << k << ": Type = " << sccs[k].type << ", ";
-        cout << "Total of nodes = " << all_nodes_scc.size() << ", " << endl;
-        cout << "Nodes = [";
+        cout << "Total of Nodes = " << all_nodes_scc.size() << ", " << endl;
+        cout << "Nodes = [ ";
         for (int l = 0; l < all_nodes_scc.size(); l++)
-            cout << all_nodes_scc[l] << ", ";
-        cout << "] " << endl;
+            cout << all_nodes_scc[l] << " ";
+        cout << "]\n\n";
     }
 }
 
@@ -229,57 +229,73 @@ Graph calculate_transpose(Graph g)
     return gt;
 }
 
-vector<int> inverse(vector<int> x)
+vector<int> inverse(vector<int> original)
 {
-    vector<int> inverted(x.size());
+    vector<int> inverted(original.size());
 
-    for (int i = 1; i < x.size(); i++)
-        inverted[x[i]] = i;
+    for (int i = 1; i < original.size(); i++)
+        inverted[original[i]] = i;
 
     return inverted;
 }
 
-void visit(Graph g, int source, vector<bool>* visited, vector<int>* finish_times, int* time)
+void visit(Graph g, int source, vector<bool>* visited, vector<int>* finish_times, int* time, vector<bool> ignored_nodes)
 {
-    (*visited)[source] = true;
 
-    for (int j = 1; j < g.size(); j++)
+    // cout << "  trying to visit from source = " << source << endl;
+    if (g[source] == NULL || (*visited)[source] || ignored_nodes[source])
     {
-        if (exists_edge(g, source, j) && (*visited)[j] == false)
-        {
-            visit(g, j, visited, finish_times, time);
-        }
+        return;
+    }
+
+    (*visited)[source] = true;
+    // cout << "  new node! I will do dfs from = " << source << endl;
+
+    for (Cell cell = g[source]; cell != NULL; cell = cell->next)
+    {
+        visit(g, cell->v, visited, finish_times, time, ignored_nodes);
+        // cout << "    trying to visit from source = " << source << " and target = " << cell->v << endl;
+        // if ((*visited)[cell->v] == false && !ignored_nodes[cell->v])
+        // {
+        // }
     }
 
     (*finish_times)[source] = (*time)++;
 }
 
-vector<int> dfs(Graph g)
+vector<int> dfs(Graph g, vector<bool> ignored_nodes)
 {
     vector<bool> visited(g.size());
     vector<int> finish_times(g.size());
     int time = 1;
 
     for (int i = 1; i < g.size(); i++) {
-        if (!visited[i]) {
-            visit(g, i, &visited, &finish_times, &time);
+
+        if (g[i] == NULL || visited[i] || ignored_nodes[i])
+        {
+            continue;
         }
+
+        // cout << "main dfs for i = " << i << endl;
+        visit(g, i, &visited, &finish_times, &time, ignored_nodes);
     }
 
     return finish_times;
 }
 
-vector<int> single_dfs(Graph g, int root)
+// like visit
+vector<int> single_dfs(Graph g, int root, vector<bool> ignored_nodes)
 {
     vector<bool> visited(g.size());
     vector<int> finish_times(g.size());
     int time = 1;
 
-    visit(g, root, &visited, &finish_times, &time);
+    visit(g, root, &visited, &finish_times, &time, ignored_nodes);
 
+    // Mark all the visited nodes in a single vector
     vector<int> visited_nodes;
     for (int i = 1; i < visited.size(); i++) {
-        if (visited[i])
+        if (visited[i] && !ignored_nodes[i]) // ignored_nodes need ?
             visited_nodes.push_back(i);
     }
 
@@ -289,34 +305,56 @@ vector<int> single_dfs(Graph g, int root)
 vector<SCC> calculate_sccs(Graph g, Graph gt)
 {
     vector<SCC> all_sccs;
+    int largest_scc_size = 0;
 
-    // Nodes that will be excluded from next DFSs
-    vector<int> excluded_nodes;
+    // Nodes that will be ignored from next DFSs
+    vector<bool> ignored_nodes(g.size());
 
-    vector<int> finish_times = dfs(g);
+    cout << "Starting first dfs..." << endl;
+    vector<int> finish_times = dfs(g, ignored_nodes);
+    cout << "First dfs ok." << endl;
 
     // Considering that for every node i, 1 <= i <= |V|
     vector<int> sorted_nodes = inverse(finish_times);
 
     for (int i = sorted_nodes.size() - 1; i > 0; i--)
     {
-        vector<int> visited_nodes = single_dfs(gt, i);
+        int root = sorted_nodes[i];
+
+        if (root == 0 || ignored_nodes[root])
+        {
+            continue;
+        }
+
+        vector<int> visited_nodes = single_dfs(gt, root, ignored_nodes);
 
         SCC new_scc;
         new_scc.nodes = visited_nodes;
         new_scc.type = 1;
         all_sccs.push_back(new_scc);
 
+        for (int k = 0; k < visited_nodes.size(); k++)
+        {
+            int already_visited = visited_nodes[k];
+            ignored_nodes[already_visited] = true;
+        }
 
+        if (visited_nodes.size() > largest_scc_size)
+        {
+            largest_scc_size = visited_nodes.size();
+            cout << "Found a new bigger SCC! " << largest_scc_size << endl;
+        }
     }
+
+    cout << "Largest SCC Size: " << largest_scc_size << endl;
+
+    // print_all_sccs(all_sccs);
 
     return all_sccs;
 }
 
 int main(int argc, char** argv)
 {
-    cout.precision(3);
-
     // Input Reader
     string line;
     ifstream inputFile;
@@ -324,8 +362,8 @@ int main(int argc, char** argv)
     // TOREMOVE
     if (argc == 1)
     {
-        inputFile.open("input-tp2-specification.txt"); // web-Stanford.txt
-    }
+        inputFile.open("web-Stanford.txt"); // web-Stanford.txt
+    }                                   // input-tp2-specification.txt
     else if (argc > 1)
     {
         inputFile.open(argv[1]);
@@ -378,7 +416,6 @@ int main(int argc, char** argv)
 
     inputFile.close();
 
-
     // number of nodes
     int n = greatest;
 
@@ -390,13 +427,15 @@ int main(int argc, char** argv)
         insert(&g, sources[k], targets[k]);
     }
 
+    cout << "Reading ok." << endl;
+    // print_graph(g);
+
     Graph gt = calculate_transpose(g);
 
     vector<SCC> sccs = calculate_sccs(g, gt);
 
-    print_all_sccs(sccs);
+    // print_all_sccs(sccs);
 
     // print_graph(g);
     print_statistics(g);
-
 }
