@@ -32,6 +32,8 @@
 
 12) C++ std::bad_alloc error
 
+13) Utilizar ponteiros ao invés de copiar dados
+
 /** ------------------------------------------------
 Universidade Federal de Minas Gerais
 Projeto e Analise de Algoritmos - 2014/2

@@ -33,8 +33,9 @@ struct cell
 
 struct SCC
 {
-    // node id
-    vector<int> nodes;
+    int id;
+
+    vector<int>* nodes;
 
     int type;
 };
@@ -42,8 +43,6 @@ struct SCC
 typedef struct cell* Cell;
 
 typedef vector<Cell> Graph;
-
-typedef struct SCC* sccPointer;
 
 void initialize_graph(Graph* graph, int n, bool randomized)
 {
@@ -151,12 +150,12 @@ void print_statistics(Graph* g)
 void print_all_sccs(vector<SCC>* sccs)
 {
     for (int k = 0; k < (*sccs).size(); k++) {
-        vector<int> all_nodes_scc = (*sccs)[k].nodes;
+        vector<int>* all_nodes_scc = (*sccs)[k].nodes;
         cout << "SCC #" << k << ": Type = " << (*sccs)[k].type << ", ";
-        cout << "Total of Nodes = " << all_nodes_scc.size() << ", " << endl;
+        cout << "Total of Nodes = " << (*all_nodes_scc).size() << ", " << endl;
         cout << "Nodes = [ ";
-        for (int l = 0; l < all_nodes_scc.size(); l++)
-            cout << all_nodes_scc[l] << " ";
+        for (int l = 0; l < (*all_nodes_scc).size(); l++)
+            cout << (*all_nodes_scc)[l] << " ";
         cout << "]\n\n";
     }
 }
@@ -294,12 +293,18 @@ void single_dfs(Graph* g, int root, vector<bool>* ignored_nodes, vector<int>* vi
     }
 }
 
-void calculate_sccs(Graph* g, Graph* gt, vector<SCC>* all_sccs)
+void calculate_sccs(Graph* g, Graph* gt, vector<SCC>* all_sccs, vector<SCC*>* nodes_sccs)
 {
     int largest_scc_size = 0;
+    int g_size = (*g).size();
 
     // Nodes that will be ignored from next DFSs
-    vector<bool> ignored_nodes((*g).size());
+    vector<bool> ignored_nodes(g_size);
+
+    // Vector that maps the nodes to theirs SCCs
+    (*nodes_sccs).resize(g_size);
+    for (int i = 0; i < g_size; i++)
+        (*nodes_sccs)[i] = NULL;
 
     cout << "Starting first dfs..." << endl;
     vector<int> finish_times;
@@ -323,27 +328,53 @@ void calculate_sccs(Graph* g, Graph* gt, vector<SCC>* all_sccs)
         single_dfs(gt, root, &ignored_nodes, &visited_nodes);
 
         SCC new_scc;
-        new_scc.nodes = visited_nodes; // use pointer
-        new_scc.type = 1;
+        new_scc.id = root;
+        new_scc.nodes = &visited_nodes;
+        new_scc.type = 0;
+        (*nodes_sccs)[root] = &new_scc;
+
         (*all_sccs).push_back(new_scc);
+
+        // cout << "New SCC: #" << root << endl;
 
         for (int k = 0; k < visited_nodes.size(); k++)
         {
             int already_visited = visited_nodes[k];
             ignored_nodes[already_visited] = true;
+            (*nodes_sccs)[already_visited] = &new_scc;
+
+            // cout << "  Node " << already_visited << " is at SCC #";
+            // cout << (*nodes_sccs)[already_visited]->id << endl;
         }
 
         if (visited_nodes.size() > largest_scc_size)
         {
             largest_scc_size = visited_nodes.size();
             cout << "Found a new bigger SCC! Id: #" << (*all_sccs).size() - 1 << ", ";
-            cout << " Size: " << largest_scc_size << endl;
+            cout << "Size: " << largest_scc_size << endl;
         }
     }
 
     cout << "Largest SCC Size: " << largest_scc_size << endl;
 
     // print_all_sccs(all_sccs);
+}
+
+void compress_graph(Graph* g, vector<SCC>* all_sccs, Graph* compressed_graph)
+{
+    int sccs_size = (*all_sccs).size();
+    int g_size = (*g_sccs).size();
+
+    (*compressed_graph).resize(sccs_size)
+
+    for (int i = 1; i < g_size; i++)
+        for (Cell cell = (*g)[i]; cell != NULL; cell = cell->next)
+        {
+            // if different groups, insert edge from A -> B
+            // PAREI AQUI
+
+        }
+
 }
 
 int main(int argc, char** argv)
@@ -355,7 +386,7 @@ int main(int argc, char** argv)
     // TOREMOVE
     if (argc == 1)
     {
-        inputFile.open("web-Stanford.txt"); // web-Stanford.txt
+        inputFile.open("input-tp2-specification.txt"); // web-Stanford.txt
     }                                   // input-tp2-specification.txt
     else if (argc > 1)
     {
@@ -426,9 +457,14 @@ int main(int argc, char** argv)
     calculate_transpose(&g, &gt);
 
     vector<SCC> sccs;
-    calculate_sccs(&g, &gt, &sccs);
+    vector<SCC*> nodes_sccs;
+    calculate_sccs(&g, &gt, &sccs, &nodes_sccs);
 
+    Graph compressed_graph;
+    compress_graph(&g, &sccs, &compressed_graph);
+
+    print_graph(&compressed_graph);
     // print_all_sccs(&sccs);
     // print_graph(&g);
-    print_statistics(&g);
+    print_statistics(&compressed_graph);
 }
