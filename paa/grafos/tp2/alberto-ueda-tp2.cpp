@@ -149,9 +149,12 @@ void print_statistics(Graph* g)
 
 void print_all_sccs(vector<SCC>* sccs)
 {
+    cout << "Total of SCCs: " << (*sccs).size() << endl << endl;
+
     for (int k = 0; k < (*sccs).size(); k++) {
+        cout << "SCC Adr: " << &((*sccs)[k]) << endl;
         vector<int>* all_nodes_scc = (*sccs)[k].nodes;
-        cout << "SCC #" << k << ": Type = " << (*sccs)[k].type << ", ";
+        cout << "SCC #" << (*sccs)[k].id << ": Type = " << (*sccs)[k].type << ", ";
         cout << "Total of Nodes = " << (*all_nodes_scc).size() << ", " << endl;
         cout << "Nodes = [ ";
         for (int l = 0; l < (*all_nodes_scc).size(); l++)
@@ -302,9 +305,11 @@ void calculate_sccs(Graph* g, Graph* gt, vector<SCC>* all_sccs, vector<SCC*>* no
     vector<bool> ignored_nodes(g_size);
 
     // Vector that maps the nodes to theirs SCCs
+    /*
     (*nodes_sccs).resize(g_size);
-    for (int i = 0; i < g_size; i++)
+    for (int i = 1; i < g_size; i++)
         (*nodes_sccs)[i] = NULL;
+    */
 
     cout << "Starting first dfs..." << endl;
     vector<int> finish_times;
@@ -331,7 +336,7 @@ void calculate_sccs(Graph* g, Graph* gt, vector<SCC>* all_sccs, vector<SCC*>* no
         new_scc.id = root;
         new_scc.nodes = &visited_nodes;
         new_scc.type = 0;
-        (*nodes_sccs)[root] = &new_scc;
+        // (*nodes_sccs)[root] = &new_scc;
 
         (*all_sccs).push_back(new_scc);
 
@@ -341,40 +346,61 @@ void calculate_sccs(Graph* g, Graph* gt, vector<SCC>* all_sccs, vector<SCC*>* no
         {
             int already_visited = visited_nodes[k];
             ignored_nodes[already_visited] = true;
-            (*nodes_sccs)[already_visited] = &new_scc;
+            // (*nodes_sccs)[already_visited] = &new_scc;
 
-            // cout << "  Node " << already_visited << " is at SCC #";
+
+
+            // PAREI AQUI
+            // NÃO ESTÁ PRINTANDO MSG ABAIXO PARA 1 -> 2
+            // PRINT DOS SCCS NO MAIN ESTÁ BIZARRO
+
+
+
+            cout << "  Node " << already_visited << " is at SCC #" << root << endl; // as imprime pro root as vezes não o.O
             // cout << (*nodes_sccs)[already_visited]->id << endl;
         }
 
         if (visited_nodes.size() > largest_scc_size)
         {
             largest_scc_size = visited_nodes.size();
-            cout << "Found a new bigger SCC! Id: #" << (*all_sccs).size() - 1 << ", ";
+            cout << "Found a new bigger SCC! Id: #" << new_scc.id << ", ";
             cout << "Size: " << largest_scc_size << endl;
         }
+
+        cout << "************ Todos SCCs: " << endl;
+        print_all_sccs(all_sccs);
     }
 
     cout << "Largest SCC Size: " << largest_scc_size << endl;
 
-    // print_all_sccs(all_sccs);
+    print_all_sccs(all_sccs);
 }
 
-void compress_graph(Graph* g, vector<SCC>* all_sccs, Graph* compressed_graph)
+void compress_graph(Graph* g, int sccs_size, vector<SCC*>* nodes_sccs, Graph* compressed_graph)
 {
-    int sccs_size = (*all_sccs).size();
-    int g_size = (*g_sccs).size();
+    initialize_graph(compressed_graph, sccs_size);
 
-    (*compressed_graph).resize(sccs_size)
-
-    for (int i = 1; i < g_size; i++)
+    for (int i = 1; i < (*g).size(); i++)
         for (Cell cell = (*g)[i]; cell != NULL; cell = cell->next)
         {
-            // if different groups, insert edge from A -> B
-            // PAREI AQUI
+            cout << i << ":" << cell->v << endl;
+            // if different groups, insert edge from Source SCC -> Target SCC
+            int sourceSCCId = (*nodes_sccs)[i]->id;
+            int targetSCCid = (*nodes_sccs)[cell->v]->id;
 
+
+            cout << "Analysing SCC edge " << sourceSCCId << " -> " << targetSCCid << endl;
+
+            if (sourceSCCId != targetSCCid && !exists_edge(compressed_graph, sourceSCCId, targetSCCid))
+            {
+                cout << "  Inserting SCC edge " << sourceSCCId << " -> " << targetSCCid << endl;
+                insert(compressed_graph, sourceSCCId, targetSCCid);
+            }
+
+            cout << "  End analysing SCC edge " << sourceSCCId << " -> " << targetSCCid << endl;
         }
 
+    cout << "termina?" << endl;
 }
 
 int main(int argc, char** argv)
@@ -386,7 +412,7 @@ int main(int argc, char** argv)
     // TOREMOVE
     if (argc == 1)
     {
-        inputFile.open("input-tp2-specification.txt"); // web-Stanford.txt
+        inputFile.open("my-tests.txt"); // web-Stanford.txt my-tests.txt
     }                                   // input-tp2-specification.txt
     else if (argc > 1)
     {
@@ -461,10 +487,10 @@ int main(int argc, char** argv)
     calculate_sccs(&g, &gt, &sccs, &nodes_sccs);
 
     Graph compressed_graph;
-    compress_graph(&g, &sccs, &compressed_graph);
+    // compress_graph(&g, sccs.size(), &nodes_sccs, &compressed_graph);
 
-    print_graph(&compressed_graph);
+    // print_graph(&compressed_graph);
     // print_all_sccs(&sccs);
-    // print_graph(&g);
-    print_statistics(&compressed_graph);
+    print_graph(&g);
+    // print_statistics(&compressed_graph);
 }
