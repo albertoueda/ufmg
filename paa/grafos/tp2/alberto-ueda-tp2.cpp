@@ -14,6 +14,7 @@ Student ID: 2014765817
 #include <vector>
 #include <sstream>
 #include <cmath>
+#include <map>
 
 #define INITIAL_CAPACITY 500000
 
@@ -35,7 +36,7 @@ struct SCC
 {
     int id;
 
-    vector<int>* nodes;
+    vector<int> nodes;
 
     int type;
 };
@@ -85,6 +86,7 @@ void insert(Graph* g, Cell node_info)
 
 bool exists_edge(Cell linked_list, int target)
 {
+    // FIXME if linked list is badly allocated, this loop possibly never ends
     for (Cell cell = linked_list; cell != NULL; cell = cell->next)
     {
         if (cell->v == target)
@@ -153,69 +155,16 @@ void print_all_sccs(vector<SCC>* sccs)
 
     for (int k = 0; k < (*sccs).size(); k++) {
         cout << "SCC Adr: " << &((*sccs)[k]) << endl;
-        vector<int>* all_nodes_scc = (*sccs)[k].nodes;
+
+        vector<int> all_nodes = (*sccs)[k].nodes;
+
         cout << "SCC #" << (*sccs)[k].id << ": Type = " << (*sccs)[k].type << ", ";
-        cout << "Total of Nodes = " << (*all_nodes_scc).size() << ", " << endl;
+        cout << "Total of Nodes = " << all_nodes.size() << ", " << endl;
         cout << "Nodes = [ ";
-        for (int l = 0; l < (*all_nodes_scc).size(); l++)
-            cout << (*all_nodes_scc)[l] << " ";
+        for (int l = 0; l < all_nodes.size(); l++)
+            cout << all_nodes[l] << " ";
         cout << "]\n\n";
     }
-}
-
-vector<Cell> merge(vector<Cell> left, vector<Cell> right)
-{
-    int i = 0, iLeft = 0, iRight = 0;
-    int size = left.size() + right.size();
-    vector<Cell> sorted(size);
-
-    while (i < size)
-    {
-        if (iLeft == left.size() || iRight == right.size())
-        {
-            break;
-        }
-
-        if (left[iLeft]->v > right[iRight]->v)
-        {
-            sorted[i++] = left[iLeft++];
-        }
-        else
-        {
-            sorted[i++] = right[iRight++];
-        }
-    }
-
-    // At maximum one of the conditions below will be true
-    while (iRight < right.size())
-    {
-        sorted[i++] = right[iRight++];
-    }
-
-    while (iLeft < left.size())
-    {
-        sorted[i++] = left[iLeft++];
-    }
-
-    return sorted;
-}
-
-vector<Cell> mergesort(vector<Cell> cells, int p, int q)
-{
-    if (p < q)
-    {
-        int r = (p + q) / 2;
-        vector<Cell> left = mergesort(cells, p, r);
-        vector<Cell> right = mergesort(cells, r + 1, q);
-
-        return merge(left, right);
-    }
-
-    // p == q. Just creates a vector of one element
-    vector<Cell> single_vector(1);
-    single_vector[0] = cells[p];
-
-    return single_vector;
 }
 
 void calculate_transpose(Graph* g, Graph* gt)
@@ -232,22 +181,32 @@ void inverse(vector<int>* original, vector<int>* inverted)
     (*inverted).resize((*original).size());
 
     for (int i = 1; i < (*original).size(); i++)
+    {
         (*inverted)[(*original)[i]] = i;
-
+    }
 }
 
 void visit(Graph* g, int source, vector<bool>* visited, vector<int>* finish_times, int* time, vector<bool>* ignored_nodes)
 {
-
     // cout << "  trying to visit from source = " << source << endl;
-    if ((*g)[source] == NULL || (*visited)[source] || (*ignored_nodes)[source])
+    // if the node was already visited or if it must be ignored, do nothing
+    if ((*visited)[source] || (*ignored_nodes)[source])
     {
         return;
     }
 
-    (*visited)[source] = true;
     // cout << "  new node! I will do dfs from = " << source << endl;
+    // flag the node as visited
+    (*visited)[source] = true;
 
+    // if node has no children, increments time and return
+    if ((*g)[source] == NULL)
+    {
+        (*finish_times)[source] = (*time)++;
+        return;
+    }
+
+    // if the node has children, visit them recursively
     for (Cell cell = (*g)[source]; cell != NULL; cell = cell->next)
     {
         visit(g, cell->v, visited, finish_times, time, ignored_nodes);
@@ -280,7 +239,7 @@ void dfs(Graph* g, vector<bool>* ignored_nodes, vector<int>* finish_times)
 
 }
 
-// like visit
+// Calls visit
 void single_dfs(Graph* g, int root, vector<bool>* ignored_nodes, vector<int>* visited_nodes)
 {
     vector<bool> all_visited((*g).size());
@@ -291,12 +250,12 @@ void single_dfs(Graph* g, int root, vector<bool>* ignored_nodes, vector<int>* vi
 
     // Copy from all nodes only the visited nodes to a single vector
     for (int i = 1; i < all_visited.size(); i++) {
-        if (all_visited[i] && !(*ignored_nodes)[i]) // ignored_nodes need ?
+        if (all_visited[i] && !(*ignored_nodes)[i]) // ignored_nodes need | dont think so
             (*visited_nodes).push_back(i);
     }
 }
 
-void calculate_sccs(Graph* g, Graph* gt, vector<SCC>* all_sccs, vector<SCC*>* nodes_sccs)
+void calculate_sccs(Graph* g, Graph* gt, vector<SCC>* all_sccs, vector<SCC>* nodes_sccs)
 {
     int largest_scc_size = 0;
     int g_size = (*g).size();
@@ -305,11 +264,7 @@ void calculate_sccs(Graph* g, Graph* gt, vector<SCC>* all_sccs, vector<SCC*>* no
     vector<bool> ignored_nodes(g_size);
 
     // Vector that maps the nodes to theirs SCCs
-    /*
     (*nodes_sccs).resize(g_size);
-    for (int i = 1; i < g_size; i++)
-        (*nodes_sccs)[i] = NULL;
-    */
 
     cout << "Starting first dfs..." << endl;
     vector<int> finish_times;
@@ -334,9 +289,9 @@ void calculate_sccs(Graph* g, Graph* gt, vector<SCC>* all_sccs, vector<SCC*>* no
 
         SCC new_scc;
         new_scc.id = root;
-        new_scc.nodes = &visited_nodes;
+        new_scc.nodes = visited_nodes;
         new_scc.type = 0;
-        // (*nodes_sccs)[root] = &new_scc;
+        (*nodes_sccs)[root] = new_scc;
 
         (*all_sccs).push_back(new_scc);
 
@@ -346,18 +301,10 @@ void calculate_sccs(Graph* g, Graph* gt, vector<SCC>* all_sccs, vector<SCC*>* no
         {
             int already_visited = visited_nodes[k];
             ignored_nodes[already_visited] = true;
-            // (*nodes_sccs)[already_visited] = &new_scc;
+            (*nodes_sccs)[already_visited] = new_scc;
 
-
-
-            // PAREI AQUI
-            // NÃO ESTÁ PRINTANDO MSG ABAIXO PARA 1 -> 2
-            // PRINT DOS SCCS NO MAIN ESTÁ BIZARRO
-
-
-
-            cout << "  Node " << already_visited << " is at SCC #" << root << endl; // as imprime pro root as vezes não o.O
-            // cout << (*nodes_sccs)[already_visited]->id << endl;
+            // cout << "  Node " << already_visited << " is at SCC #" << root << endl; // as imprime pro root as vezes não o.O
+            // cout << (*nodes_sccs)[already_visited].id << endl;
         }
 
         if (visited_nodes.size() > largest_scc_size)
@@ -366,41 +313,46 @@ void calculate_sccs(Graph* g, Graph* gt, vector<SCC>* all_sccs, vector<SCC*>* no
             cout << "Found a new bigger SCC! Id: #" << new_scc.id << ", ";
             cout << "Size: " << largest_scc_size << endl;
         }
-
-        cout << "************ Todos SCCs: " << endl;
-        print_all_sccs(all_sccs);
     }
-
-    cout << "Largest SCC Size: " << largest_scc_size << endl;
-
-    print_all_sccs(all_sccs);
 }
 
-void compress_graph(Graph* g, int sccs_size, vector<SCC*>* nodes_sccs, Graph* compressed_graph)
+// Just map all the sccs ids to numbers in [0, ..., sccs.size]
+void populate_map_ids(vector<SCC>* sccs, map<int,int>* map_ids)
 {
-    initialize_graph(compressed_graph, sccs_size);
+    for (int i = 0; i < (*sccs).size(); i++)
+    {
+        int scc_id = (*sccs)[i].id;
+        // 1-based
+        (*map_ids)[scc_id] = i + 1;
+        // cout << "maps " << scc_id << ": " << i + 1 << endl;
+    }
+}
+
+// ? Assume that every scc has at least one node
+void compress_graph(Graph* g, vector<SCC>* sccs, vector<SCC>* nodes_sccs, map<int,int>* map_ids, Graph* compressed_graph)
+{
+    // 1-based
+    initialize_graph(compressed_graph, (*sccs).size() + 1);
+
+    populate_map_ids(sccs, map_ids);
 
     for (int i = 1; i < (*g).size(); i++)
         for (Cell cell = (*g)[i]; cell != NULL; cell = cell->next)
         {
-            cout << i << ":" << cell->v << endl;
             // if different groups, insert edge from Source SCC -> Target SCC
-            int sourceSCCId = (*nodes_sccs)[i]->id;
-            int targetSCCid = (*nodes_sccs)[cell->v]->id;
+            int sourceSCCId = (*map_ids)[(*nodes_sccs)[i].id];
+            int targetSCCid = (*map_ids)[(*nodes_sccs)[cell->v].id];
 
-
-            cout << "Analysing SCC edge " << sourceSCCId << " -> " << targetSCCid << endl;
+            // cout << "Analysing SCC edge " << sourceSCCId << " -> " << targetSCCid << endl;
 
             if (sourceSCCId != targetSCCid && !exists_edge(compressed_graph, sourceSCCId, targetSCCid))
             {
-                cout << "  Inserting SCC edge " << sourceSCCId << " -> " << targetSCCid << endl;
+                // cout << "  Inserting SCC edge " << sourceSCCId << " -> " << targetSCCid << endl;
                 insert(compressed_graph, sourceSCCId, targetSCCid);
             }
 
-            cout << "  End analysing SCC edge " << sourceSCCId << " -> " << targetSCCid << endl;
+            // cout << "  End analysing SCC edge " << sourceSCCId << " -> " << targetSCCid << endl;
         }
-
-    cout << "termina?" << endl;
 }
 
 int main(int argc, char** argv)
@@ -409,10 +361,12 @@ int main(int argc, char** argv)
     string line;
     ifstream inputFile;
 
+    cout << "Start reading..." << endl;
+
     // TOREMOVE
     if (argc == 1)
     {
-        inputFile.open("my-tests.txt"); // web-Stanford.txt my-tests.txt
+        inputFile.open("input-tp2-specification.txt"); // web-Stanford.txt  my-tests.txt
     }                                   // input-tp2-specification.txt
     else if (argc > 1)
     {
@@ -476,21 +430,24 @@ int main(int argc, char** argv)
         insert(&g, sources[k], targets[k]);
     }
 
-    cout << "Reading ok." << endl;
-    // print_graph(g);
-
     Graph gt;
     calculate_transpose(&g, &gt);
 
+    cout << "Start discovering SCCs..." << endl;
+
     vector<SCC> sccs;
-    vector<SCC*> nodes_sccs;
+    vector<SCC> nodes_sccs;
     calculate_sccs(&g, &gt, &sccs, &nodes_sccs);
 
-    Graph compressed_graph;
-    // compress_graph(&g, sccs.size(), &nodes_sccs, &compressed_graph);
+    cout << "Start compressing of original graph..." << endl;
 
-    // print_graph(&compressed_graph);
+    Graph compressed_graph;
+    map <int, int> map_scc_ids;//   (sccs.size());
+    compress_graph(&g, &sccs, &nodes_sccs, &map_scc_ids, &compressed_graph);
+
     // print_all_sccs(&sccs);
-    print_graph(&g);
-    // print_statistics(&compressed_graph);
+    // print_graph(&compressed_graph);
+    // print_graph(&g);
+    print_statistics(&g);
+    print_statistics(&compressed_graph);
 }

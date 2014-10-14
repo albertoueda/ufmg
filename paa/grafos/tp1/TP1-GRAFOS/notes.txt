@@ -33,3 +33,164 @@
 12) C++ std::bad_alloc error
 
 13) Utilizar ponteiros ao invés de copiar dados
+
+14) return boa prática, mas lembrar de executar tudo que deveria antes de retornar
+
+15) utilizar endereços de variaveis de escopo local não parece ser uma boa ideia. O conteúdo dos endereços mudam.
+    method(a) {
+        vector<int> a;
+        x.a = &a;
+    }
+    x.a = ?
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Assume that every scc has at least one node
+void compress_graph(Graph* g, vector<SCC>* sccs, vector<SCC>* nodes_sccs, Graph* compressed_graph)
+{
+    // 1-based
+    initialize_graph(compressed_graph, (*sccs).size() + 1);
+
+    for (int scc_source = 1; scc_source < (*sccs).size(); scc_source++)
+    {
+        for (int i = 0; i < (*sccs)[scc_source].nodes.size(); i++)
+        {
+            node_target = (*sccs)[scc_source].nodes[i];
+
+            // if different groups, insert edge from Source SCC -> Target SCC
+            int sourceSCCId = (*nodes_sccs)[i].id;
+            int targetSCCid = (*nodes_sccs)[cell->v].id;
+
+            cout << "Analysing SCC edge " << sourceSCCId << " -> " << targetSCCid << endl;
+
+            if (sourceSCCId != targetSCCid && !exists_edge(compressed_graph, sourceSCCId, targetSCCid))
+            {
+                cout << "  Inserting SCC edge " << sourceSCCId << " -> " << targetSCCid << endl;
+                insert(compressed_graph, sourceSCCId, targetSCCid);
+                print_graph(compressed_graph);
+            }
+
+            cout << "  End analysing SCC edge " << sourceSCCId << " -> " << targetSCCid << endl;
+        }
+    }
+
+    cout << "termina?" << endl;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+void compress_graph(Graph* g, int new_size, vector<SCC>* nodes_sccs, Graph* compressed_graph)
+{
+    initialize_graph(compressed_graph, new_size);
+
+    for (int i = 1; i < (*g).size(); i++)
+        for (Cell cell = (*g)[i]; cell != NULL; cell = cell->next)
+        {
+            // if different groups, insert edge from Source SCC -> Target SCC
+            int sourceSCCId = (*nodes_sccs)[i].id;
+            int targetSCCid = (*nodes_sccs)[cell->v].id;
+
+            cout << "Analysing SCC edge " << sourceSCCId << " -> " << targetSCCid << endl;
+
+            if (sourceSCCId != targetSCCid && !exists_edge(compressed_graph, sourceSCCId, targetSCCid))
+            {
+                cout << "  Inserting SCC edge " << sourceSCCId << " -> " << targetSCCid << endl;
+                insert(compressed_graph, sourceSCCId, targetSCCid);
+                print_graph(compressed_graph);
+            }
+
+            cout << "  End analysing SCC edge " << sourceSCCId << " -> " << targetSCCid << endl;
+        }
+
+    cout << "termina?" << endl;
+}
+
+
+
+
+
+
+
+
+vector<Cell> merge(vector<Cell> left, vector<Cell> right)
+{
+    int i = 0, iLeft = 0, iRight = 0;
+    int size = left.size() + right.size();
+    vector<Cell> sorted(size);
+
+    while (i < size)
+    {
+        if (iLeft == left.size() || iRight == right.size())
+        {
+            break;
+        }
+
+        if (left[iLeft]->v > right[iRight]->v)
+        {
+            sorted[i++] = left[iLeft++];
+        }
+        else
+        {
+            sorted[i++] = right[iRight++];
+        }
+    }
+
+    // At maximum one of the conditions below will be true
+    while (iRight < right.size())
+    {
+        sorted[i++] = right[iRight++];
+    }
+
+    while (iLeft < left.size())
+    {
+        sorted[i++] = left[iLeft++];
+    }
+
+    return sorted;
+}
+
+vector<Cell> mergesort(vector<Cell> cells, int p, int q)
+{
+    if (p < q)
+    {
+        int r = (p + q) / 2;
+        vector<Cell> left = mergesort(cells, p, r);
+        vector<Cell> right = mergesort(cells, r + 1, q);
+
+        return merge(left, right);
+    }
+
+    // p == q. Just creates a vector of one element
+    vector<Cell> single_vector(1);
+    single_vector[0] = cells[p];
+
+    return single_vector;
+}
+
