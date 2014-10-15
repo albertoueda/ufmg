@@ -42,8 +42,53 @@
         x.a = &a;
     }
     x.a = ?
-    
 
+16) esquecer de mudar variaveis apos refatoração (g X gt)
+
+
+
+
+
+
+
+
+    cout << "visited nodes IN TENDRILS: ";
+    for (int k = 0; k < in_tendrils_sccs.size(); k++)
+    {
+        cout << map_scc_reverse[in_tendrils_sccs[k]] << " ";
+    }
+    cout << endl;
+
+    cout << "visited nodes OUT TENDRILS: ";
+    for (int k = 0; k < out_tendrils_sccs.size(); k++)
+    {
+        cout << map_scc_reverse[out_tendrils_sccs[k]] << " ";
+    }
+    cout << endl;
+
+    /*
+    cout << "visited nodes IN : ";
+    for (int k = 0; k < in_sccs.size(); k++)
+    {
+        cout << map_scc_reverse[in_sccs[k]] << " ";
+    }
+    cout << endl;
+
+    cout << "visited nodes OUT: ";
+    for (int k = 0; k < out_sccs.size(); k++)
+    {
+        cout << map_scc_reverse[out_sccs[k]] << " ";
+    }
+    cout << endl;
+
+
+    cout << "visited nodes ALL CONNECTED: ";
+    for (int k = 0; k < all_connected_sccs.size(); k++)
+    {
+        cout << map_scc_reverse[all_connected_sccs[k]] << " ";
+    }
+    cout << endl;
+    */
 
 
 
