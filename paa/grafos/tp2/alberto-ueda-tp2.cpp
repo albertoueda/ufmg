@@ -148,7 +148,7 @@ void print_graph(Graph* g)
 void print_statistics(Graph* g)
 {
     // 1-based
-    cout << "\nTotal of Nodes: " << (*g).size() - 1 << endl;
+    cout << "\n\nTotal of Nodes: " << (*g).size() - 1 << endl;
 
     int total_edges = 0;
 
@@ -164,8 +164,6 @@ void print_all_sccs(vector<SCC>* sccs)
     cout << "Total of SCCs: " << (*sccs).size() << endl << endl;
 
     for (int k = 0; k < (*sccs).size(); k++) {
-        cout << "SCC Adr: " << &((*sccs)[k]) << endl;
-
         vector<int> all_nodes = (*sccs)[k].nodes;
 
         cout << "SCC #" << (*sccs)[k].id << ": Type = " << (*sccs)[k].type << ", ";
@@ -196,7 +194,8 @@ void inverse(vector<int>* original, vector<int>* inverted)
     }
 }
 
-void visit(Graph* g, int source, vector<bool>* visited, vector<int>* finish_times, int* time, vector<bool>* ignored_nodes)
+void visit(Graph* g, int source, vector<bool>* visited, vector<int>* finish_times, int* time,
+           vector<bool>* ignored_nodes)
 {
     // cout << "  trying to visit from source = " << source << endl;
     // if the node was already visited or if it must be ignored, do nothing
@@ -325,7 +324,6 @@ int calculate_sccs(Graph* g, Graph* gt, vector<SCC>* all_sccs, vector<SCC>* node
             ignored_nodes[already_visited] = true;
             (*nodes_sccs)[already_visited] = new_scc;
 
-            // cout << "  Node " << already_visited << " is at SCC #" << root << endl; // as imprime pro root as vezes não o.O
             // cout << (*nodes_sccs)[already_visited].id << endl;
         }
 
@@ -364,7 +362,8 @@ void populate_map_ids(vector<SCC>* sccs, map<int,int>* map_ids)
 }
 
 // ? Assume that every scc has at least one node
-void compress_graph(Graph* g, vector<SCC>* sccs, vector<SCC>* nodes_sccs, map<int,int>* map_ids, Graph* compressed_graph)
+void compress_graph(Graph* g, vector<SCC>* sccs, vector<SCC>* nodes_sccs,
+                    map<int,int>* map_ids, Graph* compressed_graph)
 {
     // 1-based
     initialize_graph(compressed_graph, (*sccs).size() + 1);
@@ -382,8 +381,8 @@ void compress_graph(Graph* g, vector<SCC>* sccs, vector<SCC>* nodes_sccs, map<in
 
             if (sourceSCCId != targetSCCid && !exists_edge(compressed_graph, sourceSCCId, targetSCCid))
             {
-                cout << sourceSCCId << "(" << (*nodes_sccs)[i].id << ") -> ";
-                cout << targetSCCid << "(" << (*nodes_sccs)[cell->v].id << ")" << endl;
+                // cout << sourceSCCId << "(" << (*nodes_sccs)[i].id << ") -> ";
+                // cout << targetSCCid << "(" << (*nodes_sccs)[cell->v].id << ")" << endl;
 
                 insert(compressed_graph, sourceSCCId, targetSCCid);
             }
@@ -400,28 +399,45 @@ void inverse_map(map<int, int>* original, map<int, int>* reversed)
     }
 }
 
-void find_sccs_out(Graph* compressed_graph, int largest_scc_id, vector<int>* visited_nodes)
+void find_sccs_out(Graph* compressed_graph, int largest_scc_id, vector<SCC>* sccs,
+                   map<int, int>* map_sccs, map<int, int>* map_scc_reverse, vector<int>* visited_nodes)
 {
     vector<bool> ignored_nodes((*compressed_graph).size());
     single_dfs(compressed_graph, largest_scc_id, &ignored_nodes, visited_nodes, true);
+
+    for (int i = 0; i < (*visited_nodes).size(); i++) {
+        int index_out_scc = (*map_sccs)[(*map_scc_reverse)[(*visited_nodes)[i]]];
+        (*sccs)[index_out_scc].type = 3;
+    }
 }
 
-void find_sccs_in(Graph* compressed_graph_t, int largest_scc_id, vector<int>* visited_nodes)
+void find_sccs_in(Graph* compressed_graph_t, int largest_scc_id, vector<SCC>* sccs,
+                  map<int, int>* map_sccs, map<int, int>* map_scc_reverse,
+                  vector<int>* visited_nodes)
 {
     vector<bool> ignored_nodes((*compressed_graph_t).size());
     single_dfs(compressed_graph_t, largest_scc_id, &ignored_nodes, visited_nodes, true);
+
+    for (int i = 0; i < (*visited_nodes).size(); i++) {
+        int index_in_scc = (*map_sccs)[(*map_scc_reverse)[(*visited_nodes)[i]]];
+        (*sccs)[index_in_scc].type = 2;
+    }
 }
 
-void find_sccs_in_tendrils(Graph* compressed_graph, int largest_scc_id, vector<int>* in_sccs, vector<int>* out_sccs, vector<int>* visited_nodes)
+void find_sccs_in_tendrils(Graph* compressed_graph, int largest_scc_id, vector<int>* in_sccs,
+                           vector<SCC>* sccs, map<int, int>* map_sccs, map<int, int>* map_scc_reverse,
+                           vector<int>* visited_nodes)
 {
     vector<bool> ignored_nodes((*compressed_graph).size());
     ignored_nodes[largest_scc_id] = true;
 
-    // Ignore also all the OUT nodes
+
+    /* // Ignore also all the OUT nodes
     for (int k = 0; k < (*out_sccs).size(); k++)
     {
         ignored_nodes[(*out_sccs)[k]] = true;
     }
+    */
 
     for (int k = 0; k < (*in_sccs).size(); k++)
     {
@@ -430,32 +446,128 @@ void find_sccs_in_tendrils(Graph* compressed_graph, int largest_scc_id, vector<i
             ignored_nodes[(*visited_nodes)[k]] = true;
         }
     }
+
+    for (int i = 0; i < (*visited_nodes).size(); i++) {
+        int index_scc = (*map_sccs)[(*map_scc_reverse)[(*visited_nodes)[i]]];
+
+        int scc_type = (*sccs)[index_scc].type;
+
+        // If is also an out tendril, it is a tube
+        if (scc_type == 5)
+            (*sccs)[index_scc].type = 6;
+        else if (scc_type == 7)
+            (*sccs)[index_scc].type = 4;
+    }
 }
 
-void find_sccs_out_tendrils(Graph* compressed_graph_t, int largest_scc_id, vector<int>* out_sccs, vector<int>* in_sccs, vector<int>* visited_nodes)
+void find_sccs_out_tendrils(Graph* compressed_graph_t, int largest_scc_id, vector<int>* out_sccs,
+                            vector<SCC>* sccs, map<int, int>* map_sccs, map<int, int>* map_scc_reverse,
+                            vector<int>* visited_nodes)
 {
     vector<bool> ignored_nodes((*compressed_graph_t).size());
     ignored_nodes[largest_scc_id] = true;
 
-    // Ignore also all the IN nodes
-    for (int k = 0; k < (*in_sccs).size(); k++)
-    {
-        ignored_nodes[(*in_sccs)[k]] = true;
-    }
+
 
     for (int k = 0; k < (*out_sccs).size(); k++)
     {
         single_dfs(compressed_graph_t, (*out_sccs)[k], &ignored_nodes, visited_nodes, true);
-
-        // cout << "visited by out tendril (root " << (*out_sccs)[k] << "): ";
         for (int i = 0; i < (*visited_nodes).size(); i++) {
-            // cout << (*visited_nodes)[i] << " ";
-
             ignored_nodes[(*visited_nodes)[i]] = true;
         }
-        // cout << endl;
+    }
+
+    for (int i = 0; i < (*visited_nodes).size(); i++) {
+        int index_scc = (*map_sccs)[(*map_scc_reverse)[(*visited_nodes)[i]]];
+
+        int scc_type = (*sccs)[index_scc].type;
+
+        // If is also an in tendril, it is a tube
+        if (scc_type == 4)
+            (*sccs)[index_scc].type = 6;
+        else if (scc_type == 7)
+            (*sccs)[index_scc].type = 5;
     }
 }
+
+void undirect_graph(Graph* g, Graph* gt)
+{
+    // Inserts at g all the edges of gt
+    for (int i = 1; i < (*gt).size(); i++)
+        for (Cell cell = (*gt)[i]; cell != NULL; cell = cell->next)
+            insert(g, i, cell->v);
+}
+
+void find_all_sccs_connected(Graph* compressed_graph, int largest_scc_id, vector<int>* all_connected_sccs)
+{
+    vector<bool> ignored_nodes((*compressed_graph).size());
+    single_dfs(compressed_graph, largest_scc_id, &ignored_nodes, all_connected_sccs);
+}
+
+void create_scc_map(vector<SCC>* sccs, map<int, int>* map_sccs)
+{
+    for (int i = 0; i < (*sccs).size(); i++)
+    {
+        (*map_sccs)[(*sccs)[i].id] = i;
+    }
+}
+
+void print_nodes(SCC* scc)
+{
+    for (int i = 0; i < (*scc).nodes.size(); i++)
+    {
+        cout << (*scc).nodes[i] << " ";
+    }
+
+    cout << endl;
+}
+
+void print_files(map<int, int>* map_scc_reverse, vector<SCC>* sccs, int largest_scc_id,
+                 vector<int>* in_sccs, vector<int>* out_sccs, vector<int>* in_tendrils_sccs,
+                 vector<int>* out_tendrils_sccs, vector<int>* all_connected_sccs)
+{
+    // Creates an auxiliar map id->index to improve performance in search sccs
+    map<int, int> scc_map;
+    create_scc_map(sccs, &scc_map);
+
+    cout << "scc.txt" << endl;
+    int index_largest_scc = scc_map[(*map_scc_reverse)[largest_scc_id]];
+    print_nodes(&((*sccs)[index_largest_scc]));
+
+    cout << "in.txt" << endl;
+    for (int i = 0; i < (*in_sccs).size(); i++)
+    {
+        int index_in_scc = scc_map[(*map_scc_reverse)[(*in_sccs)[i]]];
+        (*sccs)[index_in_scc].type = 2;
+        print_nodes(&((*sccs)[index_in_scc]));
+    }
+
+    cout << "out.txt" << endl;
+    for (int i = 0; i < (*out_sccs).size(); i++)
+    {
+        int index_out_scc = scc_map[(*map_scc_reverse)[(*out_sccs)[i]]];
+        (*sccs)[index_out_scc].type = 3;
+        print_nodes(&((*sccs)[index_out_scc]));
+    }
+
+    cout << "tendrils_a.txt" << endl;
+    for (int i = 0; i < (*in_tendrils_sccs).size(); i++)
+    {
+        int index_tendril_in_scc = scc_map[(*map_scc_reverse)[(*in_tendrils_sccs)[i]]];
+
+        // Less precedence
+        if ((*sccs)[index_tendril_in_scc].type != 7)
+            continue;
+
+        (*sccs)[index_tendril_in_scc].type = 4;
+        print_nodes(&((*sccs)[index_tendril_in_scc]));
+    }
+
+    cout << "tendrils_b.txt" << endl;
+    cout << "tendrils_c.txt" << endl;
+    cout << "disconnected.txt" << endl;
+}
+
 
 int main(int argc, char** argv)
 {
@@ -545,29 +657,52 @@ int main(int argc, char** argv)
     map <int, int> map_scc_ids;
     compress_graph(&g, &sccs, &nodes_sccs, &map_scc_ids, &compressed_graph);
 
+    // Largest SCC id in the compressed version
+    int compressed_largest_scc = map_scc_ids[largest_scc_id];
+
     // Given a id in the compressed graph, maps it to original SCC id
     map <int, int> map_scc_reverse;
     inverse_map(&map_scc_ids, &map_scc_reverse);
 
+    // Creates an auxiliar map id->index to improve performance in searching sccs
+    map<int, int> scc_map;
+    create_scc_map(&sccs, &scc_map);
+
     // Calculates OUT SCCs
     vector<int> out_sccs;
-    find_sccs_out(&compressed_graph, map_scc_ids[largest_scc_id], &out_sccs);
+    find_sccs_out(&compressed_graph, compressed_largest_scc, &sccs, &scc_map, &map_scc_reverse, &out_sccs);
 
     // Calculates IN SCCs
     Graph compressed_graph_t;
     calculate_transpose(&compressed_graph, &compressed_graph_t);
     vector<int> in_sccs;
-    find_sccs_in(&compressed_graph_t, map_scc_ids[largest_scc_id], &in_sccs);
+    find_sccs_in(&compressed_graph_t, compressed_largest_scc, &sccs, &scc_map, &map_scc_reverse, &in_sccs);
+
+    // Now the direction of compressed graph is not needed anymore
+    // Transform the compressed direct graph in an undirected graph, in order to find the tubes
+    undirect_graph(&compressed_graph, &compressed_graph_t);
 
     // Calculates IN Tendrils
     vector<int> in_tendrils_sccs;
-    find_sccs_in_tendrils(&compressed_graph, map_scc_ids[largest_scc_id], &in_sccs, &out_sccs, &in_tendrils_sccs);
+    find_sccs_in_tendrils(&compressed_graph, compressed_largest_scc, &in_sccs,
+                          &sccs, &scc_map, &map_scc_reverse, &in_tendrils_sccs);
 
     // Calculates OUT Tendrils
     vector<int> out_tendrils_sccs;
-    find_sccs_out_tendrils(&compressed_graph_t, map_scc_ids[largest_scc_id], &out_sccs, &in_sccs, &out_tendrils_sccs);
+    find_sccs_out_tendrils(&compressed_graph_t, compressed_largest_scc, &out_sccs,
+                           &sccs, &scc_map, &map_scc_reverse, &out_tendrils_sccs);
 
+    // Print the results in files
+    // print_files(&sccs);
 
+    /*
+
+    cout << "visited nodes IN TENDRILS: ";
+    for (int k = 0; k < in_tendrils_sccs.size(); k++)
+    {
+        cout << map_scc_reverse[in_tendrils_sccs[k]] << " ";
+    }
+    cout << endl;
 
     cout << "visited nodes IN : ";
     for (int k = 0; k < in_sccs.size(); k++)
@@ -583,13 +718,6 @@ int main(int argc, char** argv)
     }
     cout << endl;
 
-    cout << "visited nodes IN TENDRILS: ";
-    for (int k = 0; k < in_tendrils_sccs.size(); k++)
-    {
-        cout << map_scc_reverse[in_tendrils_sccs[k]] << " ";
-    }
-    cout << endl;
-
     cout << "visited nodes OUT TENDRILS: ";
     for (int k = 0; k < out_tendrils_sccs.size(); k++)
     {
@@ -597,9 +725,15 @@ int main(int argc, char** argv)
     }
     cout << endl;
 
-    // &map_scc_reverse, &scc
+    cout << "visited nodes ALL CONNECTED: ";
+    for (int k = 0; k < all_connected_sccs.size(); k++)
+    {
+        cout << map_scc_reverse[all_connected_sccs[k]] << " ";
+    }
+    cout << endl;
+    */
 
-    // print_all_sccs(&sccs);
+    print_all_sccs(&sccs);
     // print_graph(&compressed_graph);
     // print_graph(&g);
     // print_statistics(&g);
