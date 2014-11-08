@@ -1,0 +1,10 @@
+# depslib dependency file v1.0
+1415453820 source:/home/alberto/ufmg/paa/grafos/tp3/alberto-ueda-tp3.cpp
+	<cstdlib>
+	<iostream>
+	<fstream>
+	<vector>
+	<sstream>
+	<cmath>
+	<map>
+

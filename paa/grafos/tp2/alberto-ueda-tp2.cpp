@@ -96,7 +96,6 @@ void insert(Graph* g, Cell node_info)
 
 bool exists_edge(Cell linked_list, int target)
 {
-    // FIXME if linked list is badly allocated, this loop possibly never ends
     for (Cell cell = linked_list; cell != NULL; cell = cell->next)
     {
         if (cell->v == target)
@@ -204,15 +203,11 @@ void inverse(vector<int>* original, vector<int>* inverted)
 void visit(Graph* g, int source, vector<bool>* visited, vector<int>* finish_times, int* time,
            vector<bool>* ignored_nodes)
 {
-    // cout << "  trying to visit from source = " << source << endl;
-    // if the node was already visited or if it must be ignored, do nothing
     if ((*visited)[source] || (*ignored_nodes)[source])
     {
         return;
     }
 
-    // cout << "  new node! I will do dfs from = " << source << endl;
-    // flag the node as visited
     (*visited)[source] = true;
 
     // if node has no children, increments time and return
@@ -226,10 +221,6 @@ void visit(Graph* g, int source, vector<bool>* visited, vector<int>* finish_time
     for (Cell cell = (*g)[source]; cell != NULL; cell = cell->next)
     {
         visit(g, cell->v, visited, finish_times, time, ignored_nodes);
-        // cout << "    trying to visit from source = " << source << " and target = " << cell->v << endl;
-        // if ((*visited)[cell->v] == false && !ignored_nodes[cell->v])
-        // {
-        // }
     }
 
     (*finish_times)[source] = (*time)++;
@@ -249,7 +240,6 @@ void dfs(Graph* g, vector<bool>* ignored_nodes, vector<int>* finish_times)
             continue;
         }
 
-        // cout << "main dfs for i = " << i << endl;
         visit(g, i, &visited, finish_times, &time, ignored_nodes);
     }
 
@@ -270,11 +260,10 @@ void single_dfs(Graph* g, int root, vector<bool>* ignored_nodes, vector<int>* vi
         if (ignore_root && i == root)
             continue;
 
-        if (all_visited[i] && !(*ignored_nodes)[i]) // ignored_nodes need | dont think so
+        if (all_visited[i] && !(*ignored_nodes)[i])
             (*visited_nodes).push_back(i);
     }
 }
-
 
 // Calls visit
 void single_dfs(Graph* g, int root, vector<bool>* ignored_nodes, vector<int>* visited_nodes)
@@ -323,15 +312,11 @@ int calculate_sccs(Graph* g, Graph* gt, vector<SCC>* all_sccs, vector<SCC>* node
 
         (*all_sccs).push_back(new_scc);
 
-        // cout << "New SCC: #" << root << endl;
-
         for (int k = 0; k < visited_nodes.size(); k++)
         {
             int already_visited = visited_nodes[k];
             ignored_nodes[already_visited] = true;
             (*nodes_sccs)[already_visited] = new_scc;
-
-            // cout << (*nodes_sccs)[already_visited].id << endl;
         }
 
         if (visited_nodes.size() > largest_scc_size)
@@ -362,13 +347,12 @@ void populate_map_ids(vector<SCC>* sccs, map<int,int>* map_ids)
     for (int i = 0; i < (*sccs).size(); i++)
     {
         int scc_id = (*sccs)[i].id;
+
         // 1-based
         (*map_ids)[scc_id] = i + 1;
-        // cout << "maps " << scc_id << ": " << i + 1 << endl;
     }
 }
 
-// ? Assume that every scc has at least one node
 void compress_graph(Graph* g, vector<SCC>* sccs, vector<SCC>* nodes_sccs,
                     map<int,int>* map_ids, Graph* compressed_graph)
 {
@@ -384,17 +368,10 @@ void compress_graph(Graph* g, vector<SCC>* sccs, vector<SCC>* nodes_sccs,
             int sourceSCCId = (*map_ids)[(*nodes_sccs)[i].id];
             int targetSCCid = (*map_ids)[(*nodes_sccs)[cell->v].id];
 
-            // cout << "Analysing SCC edge " << sourceSCCId << " -> " << targetSCCid << endl;
-
             if (sourceSCCId != targetSCCid && !exists_edge(compressed_graph, sourceSCCId, targetSCCid))
             {
-                // cout << sourceSCCId << "(" << (*nodes_sccs)[i].id << ") -> ";
-                // cout << targetSCCid << "(" << (*nodes_sccs)[cell->v].id << ")" << endl;
-
                 insert(compressed_graph, sourceSCCId, targetSCCid);
             }
-
-            // cout << "  End analysing SCC edge " << sourceSCCId << " -> " << targetSCCid << endl;
         }
 }
 
@@ -521,62 +498,113 @@ void create_scc_map(vector<SCC>* sccs, map<int, int>* map_sccs)
     }
 }
 
-void print_nodes(SCC* scc)
+vector<int> merge(vector<int> left, vector<int> right)
 {
-    for (int i = 0; i < (*scc).nodes.size(); i++)
+    int i = 0, iLeft = 0, iRight = 0;
+    int size = left.size() + right.size();
+    vector<int> sorted(size);
+
+    while (i < size)
     {
-        cout << (*scc).nodes[i] << " ";
+        if (iLeft == left.size() || iRight == right.size())
+        {
+            break;
+        }
+
+        if (left[iLeft] < right[iRight])
+        {
+            sorted[i++] = left[iLeft++];
+        }
+        else
+        {
+            sorted[i++] = right[iRight++];
+        }
     }
 
-    cout << endl;
+    // At maximum one of the conditions below will be true
+    while (iRight < right.size())
+    {
+        sorted[i++] = right[iRight++];
+    }
+
+    while (iLeft < left.size())
+    {
+        sorted[i++] = left[iLeft++];
+    }
+
+    return sorted;
 }
 
-void print_files(map<int, int>* map_scc_reverse, vector<SCC>* sccs, int largest_scc_id,
-                 vector<int>* in_sccs, vector<int>* out_sccs, vector<int>* in_tendrils_sccs,
-                 vector<int>* out_tendrils_sccs, vector<int>* all_connected_sccs)
+vector<int> mergesort(vector<int> original, int p, int q)
 {
-    // Creates an auxiliar map id->index to improve performance in search sccs
-    map<int, int> scc_map;
-    create_scc_map(sccs, &scc_map);
-
-    cout << "scc.txt" << endl;
-    int index_largest_scc = scc_map[(*map_scc_reverse)[largest_scc_id]];
-    print_nodes(&((*sccs)[index_largest_scc]));
-
-    cout << "in.txt" << endl;
-    for (int i = 0; i < (*in_sccs).size(); i++)
+    if (p < q)
     {
-        int index_in_scc = scc_map[(*map_scc_reverse)[(*in_sccs)[i]]];
-        (*sccs)[index_in_scc].type = 2;
-        print_nodes(&((*sccs)[index_in_scc]));
+        int r = (p + q) / 2;
+        vector<int> left = mergesort(original, p, r);
+        vector<int> right = mergesort(original, r + 1, q);
+
+        return merge(left, right);
     }
 
-    cout << "out.txt" << endl;
-    for (int i = 0; i < (*out_sccs).size(); i++)
-    {
-        int index_out_scc = scc_map[(*map_scc_reverse)[(*out_sccs)[i]]];
-        (*sccs)[index_out_scc].type = 3;
-        print_nodes(&((*sccs)[index_out_scc]));
-    }
+    // p == q. Just creates a vector of one element
+    vector<int> single_vector(1);
+    single_vector[0] = original[p];
 
-    cout << "tendrils_a.txt" << endl;
-    for (int i = 0; i < (*in_tendrils_sccs).size(); i++)
-    {
-        int index_tendril_in_scc = scc_map[(*map_scc_reverse)[(*in_tendrils_sccs)[i]]];
-
-        // Less precedence
-        if ((*sccs)[index_tendril_in_scc].type != 7)
-            continue;
-
-        (*sccs)[index_tendril_in_scc].type = 4;
-        print_nodes(&((*sccs)[index_tendril_in_scc]));
-    }
-
-    cout << "tendrils_b.txt" << endl;
-    cout << "tendrils_c.txt" << endl;
-    cout << "disconnected.txt" << endl;
+    return single_vector;
 }
 
+void group_nodes_by_type(vector<SCC>* sccs, vector<vector<int> >* all_nodes_by_type)
+{
+    for (int i = 0; i < (*sccs).size(); i++)
+    {
+        vector<int>* nodes = &(*all_nodes_by_type)[(*sccs)[i].type];
+        (*nodes).insert((*nodes).end(), (*sccs)[i].nodes.begin(), (*sccs)[i].nodes.end());
+    }
+
+    // Sort the nodes
+    for (int i = 1; i < (*all_nodes_by_type).size(); i++)
+    {
+        (*all_nodes_by_type)[i] = mergesort((*all_nodes_by_type)[i], 0, (*all_nodes_by_type)[i].size() - 1);
+    }
+}
+
+void print_nodes(const char* filename, vector<int>* nodes)
+{
+    ofstream file(filename);
+    if (file.is_open())
+    {
+        for (int i = 0; i < (*nodes).size(); i++)
+        {
+            file << (*nodes)[i] << endl;
+        }
+    }
+    file.close();
+}
+
+void print_files(vector<vector<int> >* all_nodes)
+{
+    cout << "Writing scc.txt..." << endl;
+    print_nodes("scc.txt", &((*all_nodes)[1]));
+
+    cout << "Writing in.txt..." << endl;
+    print_nodes("in.txt", &((*all_nodes)[2]));
+
+    cout << "Writing out.txt..." << endl;
+    print_nodes("out.txt", &((*all_nodes)[3]));
+
+    cout << "Writing tendrils_a.txt..." << endl;
+    print_nodes("tendrils_a.txt", &((*all_nodes)[4]));
+
+    cout << "Writing tendrils_b.txt..." << endl;
+    print_nodes("tendrils_b.txt", &((*all_nodes)[5]));
+
+    cout << "Writing tendrils_c.txt..." << endl;
+    print_nodes("tendrils_c.txt", &((*all_nodes)[6]));
+
+    cout << "Writing disconnected.txt..." << endl;
+    print_nodes("disconnected.txt", &((*all_nodes)[7]));
+
+}
 
 int main(int argc, char** argv)
 {
@@ -586,11 +614,10 @@ int main(int argc, char** argv)
 
     cout << "Start reading..." << endl;
 
-    // TOREMOVE
     if (argc == 1)
     {
-        inputFile.open("paulo-input.txt"); // web-Stanford.txt  my-tests.txt
-    }                                   // input-tp2-specification.txt paulo-input.txt
+        inputFile.open("input-tp2-specification.txt");
+    }
     else if (argc > 1)
     {
         inputFile.open(argv[1]);
@@ -701,12 +728,23 @@ int main(int argc, char** argv)
     find_sccs_out_tendrils(&compressed_graph, compressed_largest_scc, &out_sccs, &in_sccs,
                            &sccs, &scc_map, &map_scc_reverse, &out_tendrils_sccs);
 
-    // Print the results in files
-    // print_files(&sccs);
+    // Output the results in files
+    // 7 types, 1-based
+    vector<vector<int> > all_nodes_by_type(8);
+    for (int k = 0; k < all_nodes_by_type.size(); k++)
+        all_nodes_by_type[k].reserve(INITIAL_CAPACITY/100);
 
+    group_nodes_by_type(&sccs, &all_nodes_by_type);
+    print_files(&all_nodes_by_type);
+
+    /*
     print_all_sccs(&sccs);
-    // print_graph(&compressed_graph);
-    // print_graph(&g);
-    // print_statistics(&g);
-    // print_statistics(&compressed_graph);
+    print_graph(&compressed_graph);
+    print_graph(&g);
+    print_statistics(&g);
+    print_statistics(&compressed_graph);
+    */
+
+    cout << "Program finished." << endl;
+
 }
