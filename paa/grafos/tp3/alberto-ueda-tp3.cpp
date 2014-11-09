@@ -152,6 +152,32 @@ char find_next_identified_bit(string message, int begin_index)
     return JOKER;
 }
 
+bool find_possible_command(string message, int begin_index)
+{
+    bool has_1 = false;
+    bool has_0 = false;
+    int k = 0;
+
+    for (int i = begin_index; i < message.size() && k < 4; ++i, ++k)
+    {
+        if (message[i] == ONE)
+        {
+            has_1 = true;
+        }
+        else if (message[i] == ZERO)
+        {
+            has_0 = true;
+        }
+    }
+
+    if (k != 4)
+    {
+        return false;
+    }
+
+    return (!has_1 || !has_0);
+}
+
 string greedy(const string message)
 {
     // check if message has a control command, disconsidering errors
@@ -165,7 +191,8 @@ string greedy(const string message)
     }
 
     if (message.find("---") != npos || message.find("0--") != npos
-        || message.find("-0-") != npos || message.find("--0") != npos) {
+        || message.find("-0-") != npos || message.find("--0") != npos
+        || message.find("00-") != npos || message.find("-00") != npos) {
         return BOTH;
     }
 
@@ -176,6 +203,14 @@ string greedy(const string message)
     // If 1st char is a joker
     if (new_message[0] == JOKER)
     {
+        /*
+        if (find_possible_command(new_message, 1))
+        {
+            cout << "   Found here(1): " << new_message << endl;
+            return BOTH;
+        }
+        */
+
         char first_identified = find_next_identified_bit(new_message, 0);
 
         switch (first_identified)
@@ -204,7 +239,6 @@ string greedy(const string message)
     // 2nd to N chars
     for (int i = 1; i < new_message.size(); ++i)
     {
-
         if (new_message[i] == ONE)
         {
             ++counter_1;
@@ -217,6 +251,12 @@ string greedy(const string message)
         }
         else if (new_message[i] == JOKER)
         {
+            if (find_possible_command(new_message, i + 1))
+            {
+                // cout << "   Found possible command here(" << i << "): " << new_message << endl;
+                return BOTH;
+            }
+
             // decision by previous bits only
             if (counter_1 > 3 || counter_0 > 1)
                 return BOTH;
@@ -248,9 +288,18 @@ string greedy(const string message)
                     break;
 
                 case JOKER:
-                    new_message[i] = ZERO;
-                    ++counter_0;
-                    counter_1 = 0;
+                    if (previous_identified == ONE)
+                    {
+                        new_message[i] = ONE;
+                        ++counter_1;
+                        counter_0 = 0;
+                    }
+                    else
+                    {
+                        new_message[i] = ZERO;
+                        ++counter_0;
+                        counter_1 = 0;
+                    }
             }
         }
 
