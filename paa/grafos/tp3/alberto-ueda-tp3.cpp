@@ -16,11 +16,17 @@ Student ID: 2014765817
 #include <cmath>
 #include <map>
 
+#define JOKER '-'
+#define ONE '1'
+#define ZERO '0'
+
 #define TRUE "true"
 #define FALSE "false"
 #define BOTH "both"
+
 #define COMMAND_1 "11111"
 #define COMMAND_0 "000"
+
 #define SPECIAL_JOKER_1 "1111-00"
 #define SPECIAL_JOKER_2 "00-1111"
 
@@ -52,7 +58,7 @@ void generate_all_possibilities(string new_message, vector<string>* all_possibil
     int joker_index = new_message.find('-');
 
     if (joker_index  == string::npos) {
-        // cout << "New possibility: " << new_message << endl;
+        // cout << new_message << endl;
         (*all_possibilities).push_back(new_message);
     }
     else
@@ -106,8 +112,39 @@ string brute_force(string message)
     return FALSE;
 }
 
-string greedy(string message)
+char find_next_identified_bit(string message, int begin_index)
 {
+    for (int i = begin_index, k = 0; i < message.size() && k < 4; ++i, ++k)
+    {
+
+
+
+        // parei aqui 4 ou 5
+
+
+
+
+
+
+        if (message[i] != JOKER)
+        {
+            return message[i];
+        }
+    }
+
+    return JOKER;
+}
+
+string greedy(const string message)
+{
+    string new_message = message;
+
+    for (int i = 0; i < 1; ++i)
+    {
+        char next_identified = find_next_identified_bit(new_message, i+1);
+        cout << message << " (next) --> " << next_identified << endl;
+    }
+
     return FALSE;
 }
 
@@ -130,7 +167,7 @@ int main(int argc, char** argv)
 
     if (argc == 1)
     {
-        inputFile.open("input.txt");
+        inputFile.open("input.txt"); // experiment_paulo  input  all_7_input
     }
     else if (argc > 1)
     {
@@ -148,14 +185,29 @@ int main(int argc, char** argv)
     getline(inputFile, first_line);
     int number_of_instances = atoi(first_line.c_str());
 
+    /*
+    vector<string> answers_bf;
+    vector<string> answers_ga;
+    answers_bf.reserve(100);
+    answers_ga.reserve(100);
+    */
+
     // Read Instances
     for (int i = 0; i < number_of_instances; ++i)
     {
         string instance;
         getline(inputFile, instance);
 
-        cout << greedy(instance) << endl;
+        string answer_bf = brute_force(instance);
+        string answer_ga = greedy(instance);
+
+        if (answer_bf != answer_ga)
+        {
+            // cout << i << "! [ " << instance << " ] : " << answer_bf << " X " << answer_ga << endl;
+        }
+
         // cout << brute_force(instance) << endl;
+        // cout << greedy(instance) << endl;
     }
 
     inputFile.close();
