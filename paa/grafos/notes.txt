@@ -45,6 +45,12 @@
 
 16) esquecer de mudar variaveis apos refatoração (g X gt)
 
+--- tp3
+
+17) usar aspas simples ao invés de aspas normais para strings com tamanho > 1
+
+
+
 
 
 
