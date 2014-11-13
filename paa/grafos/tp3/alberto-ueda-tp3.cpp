@@ -27,14 +27,13 @@ Student ID: 2014765817
 #define COMMAND_1 "11111"
 #define COMMAND_0 "000"
 
-#define SPECIAL_JOKER_1 "1111-00"
-#define SPECIAL_JOKER_2 "00-1111"
+#define MAX_MSG_SIZE 100
 
 #define npos string::npos
 
 using namespace std;
 
-bool find_command(string message)
+bool find_command_as_bool(string message)
 {
     if (message.find(COMMAND_0) != npos || message.find(COMMAND_1) != npos)
     {
@@ -44,21 +43,22 @@ bool find_command(string message)
     return false;
 }
 
-bool find_special_joker(string message)
+string find_command(string message)
 {
-    if (message.find(SPECIAL_JOKER_1) != npos || message.find(SPECIAL_JOKER_2) != npos)
+    if (find_command_as_bool(message))
     {
-        return true;
+        return TRUE;
     }
 
-    return false;
+    return FALSE;
 }
 
 void generate_all_possible_inputs(string new_message, vector<string>* all_possibilities)
 {
     int joker_index = new_message.find('-');
 
-    if (joker_index  == npos) {
+    if (joker_index  == npos)
+    {
         cout << new_message << endl;
         (*all_possibilities).push_back(new_message);
     }
@@ -79,64 +79,80 @@ void generate_all_possible_inputs(string new_message, vector<string>* all_possib
 
 }
 
-void generate_all_possibilities(string new_message, vector<string>* all_possibilities)
+string check_all_possibilities(string new_message)
 {
     int joker_index = new_message.find('-');
 
-    if (joker_index  == npos) {
-        // cout << new_message << endl;
-        (*all_possibilities).push_back(new_message);
+    if (joker_index == npos)
+    {
+        return find_command(new_message);
     }
     else
     {
         string new_message_with_1 = new_message;
 
         new_message[joker_index] = '0';
-        generate_all_possibilities(new_message, all_possibilities);
+        string answer_with_0 = check_all_possibilities(new_message);
+
+
+        // 4th Prunning
+        if (answer_with_0 == BOTH)
+        {
+            return BOTH;
+        }
 
         new_message_with_1[joker_index] = '1';
-        generate_all_possibilities(new_message_with_1, all_possibilities);
+        string answer_with_1 = check_all_possibilities(new_message_with_1);
+
+
+        // 5th Prunning
+        if (answer_with_1 == BOTH)
+        {
+            return BOTH;
+        }
+
+/*
+        cout << "comparing: \n" << new_message << " " << answer_with_0 << endl
+            << new_message_with_1 << " "  << answer_with_1 << endl << endl;
+
+        if (answer_with_0 == BOTH) cout << new_message << " " << answer_with_0 << endl;
+        if (answer_with_1 == BOTH) cout << new_message_with_1 << " " << answer_with_1 << endl;
+*/
+
+        if (answer_with_0 == answer_with_1)
+        {
+            return answer_with_0;
+        }
+        else
+        {
+            return BOTH;
+        }
     }
 
 }
 
 string brute_force(string message)
 {
+    // 1st Prunning
     // check if message has a control command, disconsidering errors
-    if (find_command(message) || find_special_joker(message))
+    if (find_command_as_bool(message))
     {
         return TRUE;
     }
 
-    if (message.find('-') == npos) {
+    // 2nd Prunning
+    if (message.find('-') == npos)
+    {
         return FALSE;
     }
 
-    for (int i = 0; i < message.size(); ++i)
+    // 3rd Prunning
+    if (message.size() > 2 && message.find(ONE) == npos && message.find(ZERO) == npos)
     {
-        // cout << "    i = " << i << endl;
-        if (message.find('-') == npos) {
-            continue;
-        }
-
-        string submessage = message.substr(i, 5);
-
-        vector<string> all_possible_messages;
-        all_possible_messages.reserve(pow(2, 5));
-        generate_all_possibilities(submessage, &all_possible_messages);
-
-        for (int k = 0; k < all_possible_messages.size(); ++k)
-        {
-            if (find_command(all_possible_messages[k]))
-            {
-                // cout << endl << "both to: " << all_possible_messages[k] << endl;
-                return BOTH;
-            }
-        }
-
+        return BOTH;
     }
 
-    return FALSE;
+    return check_all_possibilities(message);
 }
 
 char find_next_identified_bit(string message, int begin_index)
@@ -178,66 +194,104 @@ bool find_possible_command(string message, int begin_index)
     return (!has_1 || !has_0);
 }
 
+void choose_bit(string* message, int i, int* counter_1, int* counter_0)
+{
+    char next_identified = find_next_identified_bit(*message, i+1);
+    char previous_identified;
+    bool no_previous = false;
+
+    if (i == 0)
+    {
+        no_previous = true;
+    }
+    else
+    {
+        previous_identified = (*message)[i-1];
+    }
+
+    switch (next_identified)
+    {
+        case ONE:
+            if (no_previous || previous_identified == ONE)
+            {
+                (*message)[i] = ONE;
+                ++(*counter_1);
+                (*counter_0) = 0;
+            }
+            break;
+
+        case ZERO:
+            if (no_previous || previous_identified == ZERO)
+            {
+                (*message)[i] = ZERO;
+                ++(*counter_0);
+                (*counter_1) = 0;
+            }
+            break;
+
+        case JOKER:
+            if (no_previous || previous_identified == ZERO)
+            {
+                (*message)[i] = ZERO;
+                ++(*counter_0);
+                (*counter_1) = 0;
+            }
+            else
+            {
+                (*message)[i] = ONE;
+                ++(*counter_1);
+                (*counter_0) = 0;
+            }
+    }
+}
+
+string find_command(int i, int counter_1, int counter_0, int last_joker_index)
+{
+    string answer = FALSE;
+    // cout << i << " " << counter_1 << " " << counter_0 << " " << last_joker_index << endl;
+
+    // Command with ONES
+    if (counter_1 > 4)
+    {
+        if (last_joker_index < i-4)
+        {
+            return TRUE;
+        }
+        else
+        {
+            answer = BOTH;
+        }
+    }
+
+    // Command with ZEROS
+    if (counter_0 > 2)
+    {
+        if (last_joker_index < i-2)
+        {
+            return TRUE;
+        }
+        else
+        {
+            answer = BOTH;
+        }
+    }
+
+    return answer;
+}
+
 string greedy(const string message)
 {
-    // check if message has a control command, disconsidering errors
-    if (find_command(message) || find_special_joker(message))
-    {
-        return TRUE;
-    }
+    // cout << endl
 
-    if (message.find('-') == npos) {
-        return FALSE;
-    }
-
-    if (message.find("---") != npos || message.find("0--") != npos
-        || message.find("-0-") != npos || message.find("--0") != npos
-        || message.find("00-") != npos || message.find("-00") != npos) {
-        return BOTH;
-    }
-
-    string new_message = message;
     int counter_0 = 0;
     int counter_1 = 0;
+    int last_joker_index = -1;
 
-    // If 1st char is a joker
-    if (new_message[0] == JOKER)
-    {
-        /*
-        if (find_possible_command(new_message, 1))
-        {
-            cout << "   Found here(1): " << new_message << endl;
-            return BOTH;
-        }
-        */
+    string final_answer = FALSE;
+    string local_answer = FALSE;
+    string new_message = message;
 
-        char first_identified = find_next_identified_bit(new_message, 0);
-
-        switch (first_identified)
-        {
-            case ONE:
-                new_message[0] = ONE;
-                ++counter_1;
-                break;
-            case ZERO:
-            case JOKER:
-                ++counter_0;
-                new_message[0] = ZERO;
-        }
-    }
-    else if (new_message[0] == ONE)
-    {
-        ++counter_1;
-        counter_0 = 0;
-    }
-    else if (new_message[0] == ZERO)
-    {
-        ++counter_0;
-        counter_1 = 0;
-    }
-
-    // 2nd to N chars
-    for (int i = 1; i < new_message.size(); ++i)
+    for (int i = 0; i < new_message.size(); ++i)
     {
         if (new_message[i] == ONE)
         {
@@ -251,70 +305,25 @@ string greedy(const string message)
         }
         else if (new_message[i] == JOKER)
         {
-            if (find_possible_command(new_message, i + 1))
-            {
-                // cout << "   Found possible command here(" << i << "): " << new_message << endl;
-                return BOTH;
-            }
-
-            // decision by previous bits only
-            if (counter_1 > 3 || counter_0 > 1)
-                return BOTH;
-
-            // new_message[i] is a joker
-            char next_identified = find_next_identified_bit(new_message, i+1);
-            // cout << message << " (next) --> " << next_identified << endl;
-
-            char previous_identified = new_message[i-1];
-
-            switch (next_identified)
-            {
-                case ONE:
-                    if (previous_identified == ONE)
-                    {
-                        new_message[i] = ONE;
-                        ++counter_1;
-                        counter_0 = 0;
-                    }
-                    break;
-
-                case ZERO:
-                    if (previous_identified == ZERO)
-                    {
-                        new_message[i] = ZERO;
-                        ++counter_0;
-                        counter_1 = 0;
-                    }
-                    break;
-
-                case JOKER:
-                    if (previous_identified == ONE)
-                    {
-                        new_message[i] = ONE;
-                        ++counter_1;
-                        counter_0 = 0;
-                    }
-                    else
-                    {
-                        new_message[i] = ZERO;
-                        ++counter_0;
-                        counter_1 = 0;
-                    }
-            }
+            last_joker_index = i;
+            choose_bit(&new_message, i, &counter_1, &counter_0);
         }
 
-        string submessage = new_message.substr(0, i+1);
-        // cout << endl << "submessage: " << submessage << endl;
+        local_answer = find_command(i, counter_1, counter_0, last_joker_index);
 
-        if (find_command(submessage))
+        if (local_answer == TRUE)
         {
-            return BOTH;
+            return TRUE;
+        }
+        else if (local_answer == BOTH)
+        {
+            final_answer = BOTH;
         }
     }
 
-    // cout << endl << "greedy result message: " << new_message << endl;
+    // cout << "greedy final message: " << new_message << " " << answer << endl;
 
-    return FALSE;
+    return final_answer;
 }
 
 void print_nodes(const char* filename, vector<int>* nodes)
@@ -337,7 +346,7 @@ int main(int argc, char** argv)
 
     if (argc == 1)
     {
-        filename = "all_input_n_7.txt"; // experiment_paulo  input  all_7_input
+        filename = "all_input_n_7.txt"; // experiment_paulo_input  input  all_input_n_7  strings-tp-description
     }
     else if (argc > 1)
     {
@@ -363,6 +372,7 @@ int main(int argc, char** argv)
     answers_bf.reserve(100);
     answers_ga.reserve(100);
     */
+    int diff = 0;
 
     // Read Instances
     for (int i = 0; i < number_of_instances; ++i)
@@ -376,17 +386,20 @@ int main(int argc, char** argv)
         if (answer_bf != answer_ga)
         {
             cout << i << "! [ " << instance << " ] : " << answer_bf << " X " << answer_ga << endl;
+            ++diff;
         }
 
-        // cout << brute_force(instance) << endl;
+        // cout << "brute force [ " << instance << " ] : " << brute_force(instance) << endl;
         // cout << greedy(instance) << endl;
     }
 
     inputFile.close();
 
+    cout << "Accuracy: " << (100 - (diff*100/number_of_instances)) << "%" << endl;
+
     /*
     // Generates test cases
     vector<string> all_possible_messages;
-    generate_all_possible_inputs("---", &all_possible_messages);
+    generate_all_possible_inputs("----------", &all_possible_messages);
     */
 }

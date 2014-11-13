@@ -1,0 +1,69 @@
+00100 false
+00101 false
+00110 false
+00111 false
+0010- false
+0011- false
+001-- false
+01001 false
+01010 false
+01011 false
+0101- false
+01100 false
+01101 false
+01110 false
+01111 false
+0110- false
+0111- false
+011-- false
+10010 false
+10011 false
+1001- false
+10100 false
+10101 false
+10110 false
+10111 false
+1010- false
+1011- false
+101-- false
+11001 false
+11010 false
+11011 false
+1101- false
+11100 false
+11101 false
+11110 false
+1110- false
+
+
+
+00000 true
+00001 true
+00010 true
+00011 true
+0000- true
+0001- true
+000-- true
+01000 true
+10000 true
+10001 true
+1000- true
+11000 true
+11111 true
+
+
+0100- both
+010-- both
+00--- both
+01--- both
+100-- both
+1100- both
+1111- both
+110-- both
+111-- both
+10--- both
+11--- both
+0---- both
+1---- both
+
+

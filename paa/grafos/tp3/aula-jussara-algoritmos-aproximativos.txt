@@ -1,0 +1,128 @@
+============================================
+PAA - Prof. Jussara
+4th Class -  Approximation Algorithms
+Prunning, Branch-and-Bound, Heuristics
+============================================
+
+1) Examples of Prunning
+=========================
+
+    Hamiltonian Path
+
+    How to prune?
+
+    ideas: 
+    6 connect just for 4, from 1
+    lower degree
+    1 before 2
+
+2) Branch-and-Bound
+=====================
+    From a solution -> Test if it's better
+    TSP
+
+
+3) Heuristics and Approximation Algorithms
+============================================
+    Time matters -> Heuristic
+    Quality of Answer matters -> Approximation Algorithm (P)
+
+    S = Solution of approximation algorithm A
+    S* = Optimal Solution
+
+    Every instance of P: 
+        Approximation ratio Ra(I) = S(I) / S*(I) <= k
+        S*  = lower bound
+        S(i) = upper bound
+        (for minimization problems)
+        
+    k can be function of n
+    
+    
+Vertex Cover 
+==============
+    Adiciona aresta arbitrária
+    Põe 2 vértices
+    Retira todas as outras incidentes nos 2 vértices
+
+    2-approximation
+    Why? 
+        i) For a pair of edges of solution, there is no commom node
+        ii) Minimum A edges
+        iii) Solution Space = 2 * A     // (A chosen by algorithm)
+
+TSP
+==============
+    Traveling Salesman Problem
+    undirected graph
+    dij = dji
+    Positive weights
+    Triangle Inequality -> a + b = c -> plus c every edge of graph
+    
+    MST <= Spanning Tree <= S*(tsp)
+    Prim
+
+    S <= 2-AGM < 2 x S*  <=>  S/S* <= 2
+    
+  
+    Eulerian Graph
+    ----------------    
+        Christophides
+        Very similar
+        odd degree -> even        
+        
+        matching. Who? lowest degree
+        Perfect Matching with minimum weight
+        
+        S <= MST + M.min 
+        S* > MST
+
+        M.min? 
+        M1 + M2 <= S*.tsp
+        M.min <= min (M1, M2) <= S*.tsp / 2
+        
+        S <= MST + M.min 
+        S < S* + S*/2
+        S/S* < 3/2
+
+
+
+-> Next: Subset Sum
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+        

@@ -19,6 +19,7 @@
 		<Compiler>
 			<Add option="-Wall" />
 		</Compiler>
+		<Unit filename="alberto-ueda-tp3.cpp" />
 		<Extensions>
 			<code_completion />
 			<debugger />
