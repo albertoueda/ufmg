@@ -33,6 +33,10 @@ Student ID: 2014765817
 
 using namespace std;
 
+// Global variables
+string message;
+vector<vector<vector<int> > > dp_table;
+
 bool find_command_as_bool(string message)
 {
     if (message.find(COMMAND_0) != npos || message.find(COMMAND_1) != npos)
@@ -200,49 +204,68 @@ void choose_bit(string* message, int i, int* counter_1, int* counter_0)
     char previous_identified;
     bool no_previous = false;
 
-    if (i == 0)
+    int chosen_bit = 0;
+
+    if ((*counter_1) > 3)
     {
-        no_previous = true;
+        chosen_bit = 1;
+    }
+    else if ((*counter_0) > 1)
+    {
+        chosen_bit = 0;
     }
     else
     {
-        previous_identified = (*message)[i-1];
+        if (i == 0)
+        {
+            no_previous = true;
+        }
+        else
+        {
+            previous_identified = (*message)[i-1];
+        }
+
+        switch (next_identified)
+        {
+            case ONE:
+                if (no_previous || previous_identified == ONE)
+                {
+                    chosen_bit = 1;
+                }
+                break;
+
+            case ZERO:
+                if (no_previous || previous_identified == ZERO)
+                {
+                    chosen_bit = 0;
+                }
+                break;
+
+            case JOKER:
+                if (no_previous || previous_identified == ZERO)
+                {
+                    chosen_bit = 0;
+                }
+                else
+                {
+                    chosen_bit = 1;
+                }
+        }
     }
 
-    switch (next_identified)
+    if (chosen_bit == 1)
     {
-        case ONE:
-            if (no_previous || previous_identified == ONE)
-            {
-                (*message)[i] = ONE;
-                ++(*counter_1);
-                (*counter_0) = 0;
-            }
-            break;
-
-        case ZERO:
-            if (no_previous || previous_identified == ZERO)
-            {
-                (*message)[i] = ZERO;
-                ++(*counter_0);
-                (*counter_1) = 0;
-            }
-            break;
-
-        case JOKER:
-            if (no_previous || previous_identified == ZERO)
-            {
-                (*message)[i] = ZERO;
-                ++(*counter_0);
-                (*counter_1) = 0;
-            }
-            else
-            {
-                (*message)[i] = ONE;
-                ++(*counter_1);
-                (*counter_0) = 0;
-            }
+        (*message)[i] = ONE;
+        ++(*counter_1);
+        (*counter_0) = 0;
     }
+    else
+    {
+        (*message)[i] = ZERO;
+        ++(*counter_0);
+        (*counter_1 ) = 0;
+    }
+
 }
 
 string find_command(int i, int counter_1, int counter_0, int last_joker_index)
@@ -279,6 +302,7 @@ string find_command(int i, int counter_1, int counter_0, int last_joker_index)
     return answer;
 }
 
+// Accuracy = 99%
 string greedy(const string message)
 {
     // cout << endl
@@ -326,6 +350,91 @@ string greedy(const string message)
     return final_answer;
 }
 
+void init_dp_table()
+{
+    dp_table.resize(MAX_MSG_SIZE + 1);
+
+    for (int i = 0; i < dp_table.size(); i++)
+    {
+        dp_table[i].resize(6);
+
+        for (int j = 0; j < 6; j++)
+        {
+            dp_table[i][j].resize(4);
+        }
+    }
+}
+
+void reset_dp_table()
+{
+    for (int i = 0; i < dp_table.size(); i++)
+    {
+        for (int j = 0; j < 6; j++)
+        {
+            for (int k = 0; k < 4; k++)
+            {
+                dp_table[i][j][k] = 0;
+            }
+        }
+    }
+}
+
+// 0 = unknow, 1 = false, 2 = both, 3 = true
+int memoized_opt(int i, int counter_1, int counter_0)
+{
+    if (dp_table[i][counter_1][counter_0] != 0)
+    {
+        return dp_table[i][counter_1][counter_0];
+    }
+
+    int answer = 0;
+
+    if (counter_1 == 5 || counter_0 == 3)
+    {
+        answer = 3;
+    }
+    else if (i == message.size())
+    {
+        answer = 1;
+    }
+    else if (message[i] == ONE)
+    {
+        answer = memoized_opt(i+1, counter_1+1, 0);
+    }
+    else if (message[i] == ZERO)
+    {
+        answer = memoized_opt(i+1, 0, counter_0+1);
+    }
+    else
+    {
+        int answer_with_0 = memoized_opt(i+1, 0, counter_0+1);
+        int answer_with_1 = memoized_opt(i+1, counter_1+1, 0);
+
+        if (answer_with_0 != answer_with_1)
+        {
+            answer = 2;
+        }
+        else
+        {
+            answer = answer_with_0;
+        }
+    }
+
+    dp_table[i][counter_1][counter_0] = answer;
+
+    return answer;
+}
+
+string dynamic_programming()
+{
+    int answer = memoized_opt(0, 0, 0);
+
+    if (answer == 2) return BOTH;
+    if (answer == 3) return TRUE;
+
+    return FALSE;
+}
+
 void print_nodes(const char* filename, vector<int>* nodes)
 {
     ofstream file(filename);
@@ -346,7 +455,7 @@ int main(int argc, char** argv)
 
     if (argc == 1)
     {
-        filename = "all_input_n_7.txt"; // experiment_paulo_input  input  all_input_n_7  strings-tp-description
+        filename = "input.txt"; // experiment_paulo_input  input  all_input_n_7  strings-tp-description
     }
     else if (argc > 1)
     {
@@ -366,6 +475,8 @@ int main(int argc, char** argv)
     getline(inputFile, first_line);
     int number_of_instances = atoi(first_line.c_str());
 
+    init_dp_table();
+
     /*
     vector<string> answers_bf;
     vector<string> answers_ga;
@@ -377,29 +488,35 @@ int main(int argc, char** argv)
     // Read Instances
     for (int i = 0; i < number_of_instances; ++i)
     {
-        string instance;
-        getline(inputFile, instance);
+        getline(inputFile, message);
+        string bf_message = message;
 
-        string answer_bf = brute_force(instance);
-        string answer_ga = greedy(instance);
+        // string answer_bf = brute_force(bf_message);
+        string answer_dp = dynamic_programming();
+        // string answer_ga = greedy(instance);
 
-        if (answer_bf != answer_ga)
+        /*
+        if (answer_bf != answer_dp)
         {
-            cout << i << "! [ " << instance << " ] : " << answer_bf << " X " << answer_ga << endl;
+            cout << i << "! [ " << message << " ] : " << answer_bf << " X " << answer_dp << endl;
             ++diff;
         }
+        */
 
+        // cout << "DP [ " << message << " ] : " << dynamic_programming() << endl;
         // cout << "brute force [ " << instance << " ] : " << brute_force(instance) << endl;
-        // cout << greedy(instance) << endl;
+        cout << dynamic_programming() << endl;
+
+        reset_dp_table();
     }
 
     inputFile.close();
 
+    /*
     cout << "Accuracy: " << (100 - (diff*100/number_of_instances)) << "%" << endl;
 
-    /*
     // Generates test cases
     vector<string> all_possible_messages;
-    generate_all_possible_inputs("----------", &all_possible_messages);
+    generate_all_possible_inputs("------------", &all_possible_messages);
     */
 }
