@@ -116,6 +116,25 @@ A seguir serão descritos os três algoritmos propostos para lidar com o problem
 
 \section{Algoritmo de Força Bruta}
 
+O algoritmo de força bruta proposto tem como principal objetivo testar todas as possibilidades de mensagem, dado um número finito de caracteres desconhecidos. Para diminuir a complexidade de tempo e memória para alguns casos específicos, foram acrescentadas ao algoritmo algumas podas (\textit{prunes}) que evitam a necessidade de cálculos para cenários em que é trivial descobrir a solução. Porém, no pior caso, o algoritmo ainda testará cada solução, uma a uma, para chegar a resposta correta.
+
+Para verificar cada possibilidade de mensagem foi implementado um algoritmo recursivo que, dado um caractere desconhecido, verifica todas as mensagens possíveis caso tal caractere seja `0' (substituindo tal caractere por `0') e também todas as mensagens possíveis caso este caractere seja `1' (instanciando uma nova mensagem, desta vez com o caractere igual a `1').
+
+As duas respostas são então comparadas e combinadas, de forma que a resposta correta para a mensagem até aquele caractere passe a ser conhecida. Por exemplo, se descobrimos que tanto substituindo por `0' quanto por `1' a resposta é $true$, podemos afirmar com segurança que a resposta final também é $true$. Na seção ``Algoritmo de Programação Dinâmica" há mais detalhes sobre esta combinação de repostas.
+
+Para melhorar o desempenho em alguns casos específicos, foram implementadas as seguintes podas:
+
+\begin{enumerate}[leftmargin=1.5cm]
+    \item Se a mensagem original já possui um comando de controle ($`000'$ ou $`11111'$), devolve-se a resposta $true$;  
+    \item Se a mensagem original não possui caracteres desconhecidos e não se enquadra no caso anterior, devolve-se $false$;
+    \item Se a mensagem original tem tamanho maior que 2, não possui `0' nem possui `1' e não se enquadra nos casos anteriores, devolve-se $both$. Esta poda melhora o desempenho para casos como 100 caracteres $`-'$;
+    \item Se para alguma das possibilidades (substituição por `0' ou por substituição por `1') a resposta é $both$, não é preciso realizar a outra substituição. A resposta combinada para aquele trecho de mensagem será $both$, pois existe pelo menos uma possibilidade da resposta ser $false$ e também uma de ser $true$.
+    \ \\
+\end{enumerate}
+
+Se nenhuma das podas se aplicar a mensagem, o algoritmo verifica todas as possibilidades de mensagens.
+
+
 \ \\ 
 \begin{lstlisting}[caption=Algoritmo de Força Bruta]
 string forca_bruta(string mensagem)
@@ -179,8 +198,8 @@ string guloso(string mensagem)
 \subsection{Complexidade de Tempo}
 \subsection{Análise Experimental}
 
-
 \section{Algoritmo com Programação Dinâmica}
+
 O algoritmo de PD adotado também utiliza a ideia de combinar respostas de subproblemas (algoritmo de força bruta). Mas desta vez são utilizados também dois contadores, um para 0s e outro para 1s. O sub-problema é encontrar a resposta para um determinado trecho da mensagem, dados os estados atuais de ambos os contadores. 
 
 Cada resposta é armazenada em uma matriz de três dimensões ([índice do último caracter do trecho] $X$ [estado atual do contador de 1s] $X$ [estado atual do contador de 0s]).
