@@ -227,15 +227,27 @@ $opt$ (i, 0, c0+1), caso contrário.\\
 
 \section{Dificuldades Encontradas}
 
+Algumas das principais dificuldades encontras neste trabalho prático foram: 
+\begin{itemize}[leftmargin=1.5cm]
+    \item Discernimento entre os três paradigmas ao analisar ideias para os algoritmos. Não foi raro descobrir que ideias para um algoritmo de determinado paradigma eram na realidade de outro paradigma. Por exemplo, percorrer trechos de uma mensagem e testar todas as possibilidades é uma estratégia que pode ser vista como gulosa em um primeiro momento, apesar de ser na realidade de força bruta.
+    \item Algoritmo de Programação Dinâmica: o resultado apresentando neste trabalho foi construído após muitas discussões e colaboração de colegas do departamento de computação. Muitas tentativas anteriores não tiveram sucesso ou foram descartadas ao decorrer do trabalho;
+    \item Hipótese incorreta das possibilidades de $true$. A princípio, acreditávamos que apenas `00-1111' e '1111-00' eram as mensagens que, apesar de conter incertezas, tinham como resposta correta $true$. Porém, mais tarde descobrimos outros casos, como por exemplo: `00-111-00' e `00-111-0-1111'. Essa foi uma das descobertas que desmotivou a busca de um algoritmo ótimo no caso do guloso.
+    \ \\
+\end{itemize}
+
+
+\section{Conclusão}
+% A brief conclusion of the work
+Este trabalho prático foi bastante útil para fixar o aprendizado do módulo de paradigmas de programação. Lidar com problemas práticos exigiu um bom (re)estudo do conteúdo teórico. Outro ponto a destacar foi constatação que um algoritmo de força-bruta não é necessariamente mais simples de implementar que um algoritmo guloso, por exemplo. A percepção de que muitas vezes um algoritmo que ``testa todos os casos" pode e deve ser melhorado significamente pode sutilmente ocultar o esforço e o valor de um algoritmo de força-bruta. O conceito de $poda$ também ficou muito mais claro com este trabalho prático.
+
+A descoberta de que o problema pode ser solucionado por um algoritmo de complexidade de tempo linear foi surpreendente. O algoritmo de programação dinâmica, apesar de utilizar mais espaço para sua execução, é muito mais veloz que o algoritmo guloso e naturalmente que o de força-bruta também. Graças à divisão do problema original em subproblemas que se repetem e que podem ter a resposta memoizada, o desepenho de tal algoritmo mostrou resultados bastante satisfatórios e por si só justifica o estudo e pesquisa empreendidos nesta área de conhecimento.
+
 \begin{figure}[H]
      \centering
      % \includegraphics[scale=0.5]{figures/network-types.png}
      \caption{}
      \label{bsp}
 \end{figure}
-
-\section{Conclusão}
-% A brief conclusion of the work
 
 
 % Referências
