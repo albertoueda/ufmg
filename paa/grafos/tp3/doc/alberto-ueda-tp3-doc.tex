@@ -134,7 +134,6 @@ Para melhorar o desempenho em alguns casos específicos, foram implementadas as 
 
 Se nenhuma das podas se aplicar a mensagem, o algoritmo verifica todas as possibilidades de mensagens.
 
-
 \ \\ 
 \begin{lstlisting}[caption=Algoritmo de Força Bruta]
 string forca_bruta(string mensagem)
@@ -151,7 +150,7 @@ string forca_bruta(string mensagem)
 
 string verifica_cada_mensagem_possivel(string mensagem);
 {
-    se existe caracter `-' na mensagem {
+    se existe caractere `-' na mensagem {
         verifica_cada_mensagem_possivel(mensagem_com_1);
         verifica_cada_mensagem_possivel(mensagem_com_0);
         combina as duas respostas e devolve uma unica;
@@ -161,7 +160,6 @@ string verifica_cada_mensagem_possivel(string mensagem);
         devolve resposta;
     }
 }
-
 \end{lstlisting}
 
 \subsection{Complexidade de Espaço}
@@ -170,16 +168,32 @@ string verifica_cada_mensagem_possivel(string mensagem);
 
 \section{Algoritmo Guloso}
 
+O algoritmo guloso decide qual \textit{bit} deve substituir o caractere desconhecido e não volta atrás em sua decisão. Tal escolha é baseada na vizinhança deste caractere. Os principais critérios que o algoritmo utiliza para a tomada de decisão são os seguintes:
+
+\begin{enumerate}[leftmargin=1.5cm]
+    \item Se os últimos 2 caracteres (à esquerda) são `0', substitui o `-' por `0';
+    \item Se os últimos 4 caracteres (à esquerda) são `1', substitui o `-' por `1';  
+    \item Se o primeiro caractere conhecido à esquerda e o primeiro conhecido à direita forem iguais, este será o caractere escolhido para substituição. Por exemplo: `0-0' $\rightarrow$ `000'. 
+    \item Se não há um caractere conhecido na janela à esquerda mas há à direita, ou se não há à direita mas há à esquerda, utiliza o símbolo do lado que existe. Por exemplo: `-10' $\rightarrow$ `110'; 
+    \item Se o caractere desconhecido não se encaixar em nenhum dos casos anteriores, faz a substituição por `0'.
+\end{enumerate}
+
+O algoritmo analisa cada caractere um a um, do início até o fim da mensagem, escolhendo os $bits$ para todos os desconhecidos. Em cada passo verifica-se se um comando de controle foi encontrado. Se foi encontrado e em tal comando não houve a necessidade de substituição, devolve $true$. Se foi encontrado mas houve substituição, guarda a informação de que a resposta é pelo menos $both$ e continua procurando por uma resposta $true$. Se não encontrar nem $both$ nem $true$ e a mensagem já foi analisada por completo, devolve $false$.
+
+Tal algoritmo apresentou 99\% de corretude para todas mensagens de tamanho 7, 10 e 15, conforme é mostrado nas seções seguintes.
+
+\newpage
+
 \begin{lstlisting}[caption=Algoritmo Guloso]
 string guloso(string mensagem)
 {
-    para cada caracter do indice i da mensagem {
-        se o caracter i = `-' {
+    para cada caractere do indice i da mensagem {
+        se o caractere i = `-' {
             observa vizinhanca a esquerda e a direita;
             decide qual bit deve ser colocado no lugar de `-';
             verifica comando e guarda a resposta;
         } senao {
-            verifica se existe um comando ate o caracter i;
+            verifica se existe um comando ate o caractere i;
             se existir o comando sem `-', devolve TRUE;
             se existir o comando com `-', guarda a resposta;
         }
@@ -202,15 +216,15 @@ string guloso(string mensagem)
 
 O algoritmo de PD adotado também utiliza a ideia de combinar respostas de subproblemas (algoritmo de força bruta). Mas desta vez são utilizados também dois contadores, um para 0s e outro para 1s. O sub-problema é encontrar a resposta para um determinado trecho da mensagem, dados os estados atuais de ambos os contadores. 
 
-Cada resposta é armazenada em uma matriz de três dimensões ([índice do último caracter do trecho] $X$ [estado atual do contador de 1s] $X$ [estado atual do contador de 0s]).
+Cada resposta é armazenada em uma matriz de três dimensões ([índice do último caractere do trecho] $X$ [estado atual do contador de 1s] $X$ [estado atual do contador de 0s]).
 
 Se for necessário resolver um sub-problema cuja resposta já esteja na matriz, basta consultar a resposta e utilizá-la. Caso a solução para este sub-problema ainda não tenha sido definida, o algoritmo realiza o cálculo de tal resposta com base nos resultados de outros sub-problemas. \ \\
 
 Sejam: 
-\begin{itemize}[leftmargin=1.5cm]
+\begin{itemize}[leftmargin=1.6cm]
     \item mensagem: a instância do problema;
     \item n: tamanho da mensagem;
-    \item i : índice do caracter que está sendo analisado. A sub-mensagem [0..i-1] já foi analisada;
+    \item i : índice do caractere que está sendo analisado. A sub-mensagem [0..i-1] já foi analisada;
     \item c1 : contador de 1's;
     \item c0 : contador de 0's;
     \item opt : a resposta para o subproblema de acordo com os parâmetros. Um dos valores do conjunto $\{true, false, both\}$.
@@ -232,12 +246,31 @@ $false$, se i = n; \\
 $opt$ (i, c1+1, 0) , se mensagem[i] = `1'; \\
 $opt$ (i, 0, c0+1) , se mensagem[i] = `0'; \\
 \\
-// recursão. Caso `-'\\
+// recursão. Caso `-' \\
+// compara as respostas das duas possibilidades \\
+// `-' = `0' e `-' = `1' \\
 $both$, se $opt$ (i, c1+1, 0) != $opt$ (i, 0, c0+1);\\
+\\
+// se as respostas forem as mesmas, escolhe uma delas \\
 $opt$ (i, 0, c0+1), caso contrário.\\
 \end{tabular}
 \right.
-\]
+\] \ \\
+
+Dessa forma, a combinação de respostas é feita da seguinte maneira: sejam $r_0$ a resposta correta considerando a substituição do caractere desconhecido por `0' e $r_1$ a resposta obtida com a substuição pelo caractere `1'.
+
+\begin{itemize}[leftmargin=1.6cm]
+    \item Se uma das respostas ($r_0$, $r_1$ ou ambas) for $both$, a resposta combinada é $both$, pois sabemos que existe tanto a possibilidade da mensagem conter um comando quanto a de não conter um comando;
+    \item Se ambas as respostas ($r_0$ e $r_1$) forem $true$, a resposta combinada é $true$, pois em todas as possibilidades de mensagem existe comando;
+    \item Se ambas as respostas ($r_0$ e $r_1$) forem $false$, a resposta combinada é $false$, pois em todas as possibilidades de mensagem não existe comando.
+    \ \\
+\end{itemize}
+
+
+
+
+
+
 
 \subsection{Complexidade de Espaço}
 \subsection{Complexidade de Tempo}
@@ -247,9 +280,9 @@ $opt$ (i, 0, c0+1), caso contrário.\\
 \section{Dificuldades Encontradas}
 
 Algumas das principais dificuldades encontras neste trabalho prático foram: 
-\begin{itemize}[leftmargin=1.5cm]
+\begin{itemize}[leftmargin=1.6cm]
     \item Discernimento entre os três paradigmas ao analisar ideias para os algoritmos. Não foi raro descobrir que ideias para um algoritmo de determinado paradigma eram na realidade de outro paradigma. Por exemplo, percorrer trechos de uma mensagem e testar todas as possibilidades é uma estratégia que pode ser vista como gulosa em um primeiro momento, apesar de ser na realidade de força bruta.
-    \item Algoritmo de Programação Dinâmica: o resultado apresentando neste trabalho foi construído após muitas discussões e colaboração de colegas do departamento de computação. Muitas tentativas anteriores não tiveram sucesso ou foram descartadas ao decorrer do trabalho;
+    \item Algoritmo de programação dinâmica: o resultado apresentando neste trabalho foi construído após muitas discussões e colaboração de colegas do departamento de computação. Muitas tentativas anteriores não tiveram sucesso ou foram descartadas ao decorrer do trabalho;
     \item Hipótese incorreta das possibilidades de $true$. A princípio, acreditávamos que apenas `00-1111' e '1111-00' eram as mensagens que, apesar de conter incertezas, tinham como resposta correta $true$. Porém, mais tarde descobrimos outros casos, como por exemplo: `00-111-00' e `00-111-0-1111'. Essa foi uma das descobertas que desmotivou a busca de um algoritmo ótimo no caso do guloso.
     \ \\
 \end{itemize}
@@ -261,13 +294,14 @@ Este trabalho prático foi bastante útil para fixar o aprendizado do módulo de
 
 A descoberta de que o problema pode ser solucionado por um algoritmo de complexidade de tempo linear foi surpreendente. O algoritmo de programação dinâmica, apesar de utilizar mais espaço para sua execução, é muito mais veloz que o algoritmo guloso e naturalmente que o de força-bruta também. Graças à divisão do problema original em subproblemas que se repetem e que podem ter a resposta memoizada, o desepenho de tal algoritmo mostrou resultados bastante satisfatórios e por si só justifica o estudo e pesquisa empreendidos nesta área de conhecimento.
 
+\begin{comment}
 \begin{figure}[H]
      \centering
      % \includegraphics[scale=0.5]{figures/network-types.png}
      \caption{}
      \label{bsp}
 \end{figure}
-
+\end{comment}
 
 % Referências
 \bibliographystyle{plain}%amsalpha
