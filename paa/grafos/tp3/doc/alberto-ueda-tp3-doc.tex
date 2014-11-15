@@ -18,6 +18,17 @@
 \usepackage{listings}
 \usepackage{tabularx}
 \usepackage{lipsum}
+\usepackage{listings}
+\usepackage{fancyvrb}   
+\usepackage{verbatim}
+\usepackage{listings}
+\usepackage[usenames,dvipsnames]{xcolor}
+\usepackage{caption}
+\usepackage{hyperref}
+\usepackage{epigraph}
+\usepackage[raggedright]{sidecap}
+\usepackage[nottoc,numbib]{tocbibind}
+\usepackage{enumitem}
 
 \hypersetup{
     colorlinks=true,       
@@ -28,6 +39,24 @@
 }
 
 \hyphenation {di-re-cio-na-men-to} 
+
+\captionsetup[figure]{width=10cm, font=small}
+\captionsetup[SCfigure]{width=10cm, font=small}
+\DeclareCaptionFont{white}{\color{white}}
+\DeclareCaptionFormat{listing}{%
+  \parbox{\textwidth}{\colorbox{gray}{\parbox{0.987\textwidth}{#1#2#3}}\vskip-4pt}}
+\captionsetup[lstlisting]{format=listing,labelfont=white,textfont=white}
+\lstset{frame=lrb,xleftmargin=1.15\fboxsep,xrightmargin=\fboxsep,language=[LaTeX]{TeX}}
+\renewcommand{\lstlistingname}{Pseudo-código}
+\lstloadlanguages{C++}
+\lstset{%
+  basicstyle=\ttfamily\color{black},
+  commentstyle = \ttfamily\color{PineGreen},
+  keywordstyle=\ttfamily\color{purple},
+  stringstyle=\color{orange},
+  numbers=left,
+  numberstyle=\color{gray}}
+
 
 %\renewcommand*{\familydefault}{\ttdefault}
 \lstset{columns=fullflexible,basicstyle=\ttfamily}
@@ -87,6 +116,34 @@ A seguir serão descritos os três algoritmos propostos para lidar com o problem
 
 \section{Algoritmo de Força Bruta}
 
+\ \\ 
+\begin{lstlisting}[caption=Algoritmo de Força Bruta]
+string forca_bruta(string mensagem)
+{
+    se a mensagem for prevista em uma poda {
+        determina a resposta com base na poda;
+        devolve a resposta;
+    } 
+    senao {
+        verifica_cada_mensagem_possivel(mensagem);
+        devolve a resposta final obtida;
+    }
+}
+
+string verifica_cada_mensagem_possivel(string mensagem);
+{
+    se existe caracter `-' na mensagem {
+        verifica_cada_mensagem_possivel(mensagem_com_1);
+        verifica_cada_mensagem_possivel(mensagem_com_0);
+        combina as duas respostas e devolve uma unica;
+    }
+    senao {
+        verifica se existe comando (mensagem);
+        devolve resposta;
+    }
+}
+
+\end{lstlisting}
 
 \subsection{Complexidade de Espaço}
 \subsection{Complexidade de Tempo}
@@ -94,12 +151,74 @@ A seguir serão descritos os três algoritmos propostos para lidar com o problem
 
 \section{Algoritmo Guloso}
 
+\begin{lstlisting}[caption=Algoritmo Guloso]
+string guloso(string mensagem)
+{
+    para cada caracter do indice i da mensagem {
+        se o caracter i = `-' {
+            observa vizinhanca a esquerda e a direita;
+            decide qual bit deve ser colocado no lugar de `-';
+            verifica comando e guarda a resposta;
+        } senao {
+            verifica se existe um comando ate o caracter i;
+            se existir o comando sem `-', devolve TRUE;
+            se existir o comando com `-', guarda a resposta;
+        }
+        ++i;
+    }
+    
+    se encontrou BOTH como resposta {
+        devolve BOTH;
+    } senao {
+        devolve FALSE;
+    }
+}
+\end{lstlisting}
+
 \subsection{Complexidade de Espaço}
 \subsection{Complexidade de Tempo}
 \subsection{Análise Experimental}
 
 
 \section{Algoritmo com Programação Dinâmica}
+O algoritmo de PD adotado também utiliza a ideia de combinar respostas de subproblemas (algoritmo de força bruta). Mas desta vez são utilizados também dois contadores, um para 0s e outro para 1s. O sub-problema é encontrar a resposta para um determinado trecho da mensagem, dados os estados atuais de ambos os contadores. 
+
+Cada resposta é armazenada em uma matriz de três dimensões ([índice do último caracter do trecho] $X$ [estado atual do contador de 1s] $X$ [estado atual do contador de 0s]).
+
+Se for necessário resolver um sub-problema cuja resposta já esteja na matriz, basta consultar a resposta e utilizá-la. Caso a solução para este sub-problema ainda não tenha sido definida, o algoritmo realiza o cálculo de tal resposta com base nos resultados de outros sub-problemas. \ \\
+
+Sejam: 
+\begin{itemize}[leftmargin=1.5cm]
+    \item mensagem: a instância do problema;
+    \item n: tamanho da mensagem;
+    \item i : índice do caracter que está sendo analisado. A sub-mensagem [0..i-1] já foi analisada;
+    \item c1 : contador de 1's;
+    \item c0 : contador de 0's;
+    \item opt : a resposta para o subproblema de acordo com os parâmetros. Um dos valores do conjunto $\{true, false, both\}$.
+    \ \\
+\end{itemize}
+
+A função de recorrência utilizada é a seguinte: 
+\ \\
+
+\[ 
+opt (i, c1, c0) = 
+\left \{
+\begin{tabular}{lll}
+// condições de parada \\
+$true$, se c1 = 5 ou se c0 = 3; \\
+$false$, se i = n; \\
+\\ 
+// recursão. Casos `1' ou `0'\\
+$opt$ (i, c1+1, 0) , se mensagem[i] = `1'; \\
+$opt$ (i, 0, c0+1) , se mensagem[i] = `0'; \\
+\\
+// recursão. Caso `-'\\
+$both$, se $opt$ (i, c1+1, 0) != $opt$ (i, 0, c0+1);\\
+$opt$ (i, 0, c0+1), caso contrário.\\
+\end{tabular}
+\right.
+\]
 
 \subsection{Complexidade de Espaço}
 \subsection{Complexidade de Tempo}
