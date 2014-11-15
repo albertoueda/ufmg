@@ -35,11 +35,12 @@ using namespace std;
 
 // Global variables
 string message;
+string bf_message;
 vector<vector<vector<int> > > dp_table;
 
-bool find_command_as_bool(string message)
+bool find_command_as_bool(string* message)
 {
-    if (message.find(COMMAND_0) != npos || message.find(COMMAND_1) != npos)
+    if (message->find(COMMAND_0) != npos || message->find(COMMAND_1) != npos)
     {
         return true;
     }
@@ -47,7 +48,7 @@ bool find_command_as_bool(string message)
     return false;
 }
 
-string find_command(string message)
+string find_command(string* message)
 {
     if (find_command_as_bool(message))
     {
@@ -80,12 +81,11 @@ void generate_all_possible_inputs(string new_message, vector<string>* all_possib
         new_message_with_x[joker_index] = '*';
         generate_all_possible_inputs(new_message_with_x, all_possibilities);
     }
-
 }
 
-string check_all_possibilities(string new_message)
+string check_all_possibilities(string* new_message)
 {
-    int joker_index = new_message.find('-');
+    int joker_index = new_message->find('-');
 
     if (joker_index == npos)
     {
@@ -93,11 +93,10 @@ string check_all_possibilities(string new_message)
     }
     else
     {
-        string new_message_with_1 = new_message;
+        string new_message_with_1 = *new_message;
 
-        new_message[joker_index] = '0';
+        (*new_message)[joker_index] = '0';
         string answer_with_0 = check_all_possibilities(new_message);
-
 
         // 4th Prunning
         if (answer_with_0 == BOTH)
@@ -106,22 +105,13 @@ string check_all_possibilities(string new_message)
         }
 
         new_message_with_1[joker_index] = '1';
-        string answer_with_1 = check_all_possibilities(new_message_with_1);
-
+        string answer_with_1 = check_all_possibilities(&new_message_with_1);
 
         // 5th Prunning
         if (answer_with_1 == BOTH)
         {
             return BOTH;
         }
-
-/*
-        cout << "comparing: \n" << new_message << " " << answer_with_0 << endl
-            << new_message_with_1 << " "  << answer_with_1 << endl << endl;
-
-        if (answer_with_0 == BOTH) cout << new_message << " " << answer_with_0 << endl;
-        if (answer_with_1 == BOTH) cout << new_message_with_1 << " " << answer_with_1 << endl;
-*/
 
         if (answer_with_0 == answer_with_1)
         {
@@ -132,14 +122,13 @@ string check_all_possibilities(string new_message)
             return BOTH;
         }
     }
-
 }
 
-string brute_force(string message)
+string brute_force()
 {
     // 1st Prunning
     // check if message has a control command, disconsidering errors
-    if (find_command_as_bool(message))
+    if (find_command_as_bool(&message))
     {
         return TRUE;
     }
@@ -156,7 +145,9 @@ string brute_force(string message)
         return BOTH;
     }
 
-    return check_all_possibilities(message);
+    bf_message = message;
+
+    return check_all_possibilities(&bf_message);
 }
 
 char find_next_identified_bit(string message, int begin_index)
@@ -170,32 +161,6 @@ char find_next_identified_bit(string message, int begin_index)
     }
 
     return JOKER;
-}
-
-bool find_possible_command(string message, int begin_index)
-{
-    bool has_1 = false;
-    bool has_0 = false;
-    int k = 0;
-
-    for (int i = begin_index; i < message.size() && k < 4; ++i, ++k)
-    {
-        if (message[i] == ONE)
-        {
-            has_1 = true;
-        }
-        else if (message[i] == ZERO)
-        {
-            has_0 = true;
-        }
-    }
-
-    if (k != 4)
-    {
-        return false;
-    }
-
-    return (!has_1 || !has_0);
 }
 
 void choose_bit(string* message, int i, int* counter_1, int* counter_0)
@@ -265,7 +230,6 @@ void choose_bit(string* message, int i, int* counter_1, int* counter_0)
         ++(*counter_0);
         (*counter_1 ) = 0;
     }
-
 }
 
 string find_command(int i, int counter_1, int counter_0, int last_joker_index)
@@ -303,10 +267,8 @@ string find_command(int i, int counter_1, int counter_0, int last_joker_index)
 }
 
 // Accuracy = 99%
-string greedy(const string message)
+string greedy()
 {
-    // cout << endl
-
     int counter_0 = 0;
     int counter_1 = 0;
     int last_joker_index = -1;
@@ -346,7 +308,6 @@ string greedy(const string message)
     }
 
     // cout << "greedy final message: " << new_message << " " << answer << endl;
-
     return final_answer;
 }
 
@@ -455,7 +416,7 @@ int main(int argc, char** argv)
 
     if (argc == 1)
     {
-        filename = "input.txt"; // experiment_paulo_input  input  all_input_n_7  strings-tp-description
+        filename = "all_input_n_15.txt"; // experiment_paulo_input  input  all_input_n_7  strings-tp-description
     }
     else if (argc > 1)
     {
@@ -477,44 +438,37 @@ int main(int argc, char** argv)
 
     init_dp_table();
 
-    /*
-    vector<string> answers_bf;
-    vector<string> answers_ga;
-    answers_bf.reserve(100);
-    answers_ga.reserve(100);
-    */
     int diff = 0;
+
 
     // Read Instances
     for (int i = 0; i < number_of_instances; ++i)
     {
         getline(inputFile, message);
-        string bf_message = message;
 
-        // string answer_bf = brute_force(bf_message);
-        string answer_dp = dynamic_programming();
-        // string answer_ga = greedy(instance);
+        // string answer_bf = brute_force();
+        string answer_ga = greedy();
+        // string answer_dp = dynamic_programming();
 
         /*
-        if (answer_bf != answer_dp)
+        if (answer_dp != answer_ga)
         {
-            cout << i << "! [ " << message << " ] : " << answer_bf << " X " << answer_dp << endl;
+            // cout << i << "! [ " << message << " ] : " << answer_dp << " X " << answer_ga << endl;
             ++diff;
         }
         */
 
         // cout << "DP [ " << message << " ] : " << dynamic_programming() << endl;
-        // cout << "brute force [ " << instance << " ] : " << brute_force(instance) << endl;
-        cout << dynamic_programming() << endl;
 
-        reset_dp_table();
+        // reset_dp_table();
     }
 
     inputFile.close();
 
-    /*
-    cout << "Accuracy: " << (100 - (diff*100/number_of_instances)) << "%" << endl;
+    cout << "Accuracy: " << (100 - (diff*100.0/number_of_instances)) << "%" << endl;
+    cout << "Errors: " << diff << " (total: " << number_of_instances << ")" << endl;
 
+    /*
     // Generates test cases
     vector<string> all_possible_messages;
     generate_all_possible_inputs("------------", &all_possible_messages);

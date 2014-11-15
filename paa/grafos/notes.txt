@@ -51,7 +51,8 @@
 
 
 
-
+sed -i -e 's/*/-/g' all_output_n_15.txt
+sed -i -e '1i14348907\' all_output_n_15.txt
 
 
 
