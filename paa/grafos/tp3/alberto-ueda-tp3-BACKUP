@@ -416,7 +416,7 @@ int main(int argc, char** argv)
 
     if (argc == 1)
     {
-        filename = "all_input_n_15.txt"; // experiment_paulo_input  input  all_input_n_7  strings-tp-description
+        filename = "input.txt"; // experiment_paulo_input  input  all_input_n_7  strings-tp-description
     }
     else if (argc > 1)
     {
@@ -465,7 +465,7 @@ int main(int argc, char** argv)
 
     inputFile.close();
 
-    cout << "Accuracy: " << (100 - (diff*100.0/number_of_instances)) << "%" << endl;
+    cout << "ga Accuracy: " << (100 - (diff*100.0/number_of_instances)) << "%" << endl;
     cout << "Errors: " << diff << " (total: " << number_of_instances << ")" << endl;
 
     /*

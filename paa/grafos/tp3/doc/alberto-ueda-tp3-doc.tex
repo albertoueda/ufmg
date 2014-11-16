@@ -29,6 +29,7 @@
 \usepackage[raggedright]{sidecap}
 \usepackage[nottoc,numbib]{tocbibind}
 \usepackage{enumitem}
+\usepackage{lmodern}
 
 \hypersetup{
     colorlinks=true,       
@@ -46,16 +47,22 @@
 \DeclareCaptionFormat{listing}{%
   \parbox{\textwidth}{\colorbox{gray}{\parbox{0.987\textwidth}{#1#2#3}}\vskip-4pt}}
 \captionsetup[lstlisting]{format=listing,labelfont=white,textfont=white}
-\lstset{frame=lrb,xleftmargin=1.15\fboxsep,xrightmargin=\fboxsep,language=[LaTeX]{TeX}}
+\lstset{frame=lrb,
+    xleftmargin=1.15\fboxsep,
+    xrightmargin=\fboxsep,
+    language=[LaTeX]{TeX}
+}
 \renewcommand{\lstlistingname}{Pseudo-código}
 \lstloadlanguages{C++}
-\lstset{%
+\lstset{
   basicstyle=\ttfamily\color{black},
   commentstyle = \ttfamily\color{PineGreen},
   keywordstyle=\ttfamily\color{purple},
   stringstyle=\color{orange},
   numbers=left,
-  numberstyle=\color{gray}}
+  numberstyle=\color{gray},
+  breaklines=true
+}
 
 
 %\renewcommand*{\familydefault}{\ttdefault}
@@ -133,6 +140,8 @@ Para melhorar o desempenho em alguns casos específicos, foram implementadas as 
 Se nenhuma das podas se aplicar a mensagem, o algoritmo verifica todas as possibilidades de mensagens.
 
 \ \\ 
+
+% basicstyle=\tiny
 \begin{lstlisting}[caption=Algoritmo de Força Bruta]
 string forca_bruta(string mensagem)
 {

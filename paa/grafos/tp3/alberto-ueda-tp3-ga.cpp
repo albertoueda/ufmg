@@ -1,0 +1,373 @@
+/** ------------------------------------------------
+Universidade Federal de Minas Gerais
+Projeto e Analise de Algoritmos - 2014/2
+3rd module - Paradigms
+
+TP3 - An Spy History - Greedy Algorithm
+Student: Alberto Hideki Ueda
+Student ID: 2014765817
+------------------------------------------------- **/
+
+#include <cstdlib>
+#include <iostream>
+#include <fstream>
+#include <vector>
+#include <sstream>
+#include <cmath>
+#include <map>
+
+#define JOKER '-'
+#define ONE '1'
+#define ZERO '0'
+
+#define TRUE "true"
+#define FALSE "false"
+#define BOTH "both"
+
+#define COMMAND_1 "11111"
+#define COMMAND_0 "000"
+
+#define MAX_MSG_SIZE 100
+
+#define npos string::npos
+
+using namespace std;
+
+// Global variables
+string message;
+string bf_message;
+vector<vector<vector<int> > > dp_table;
+
+bool find_command_as_bool(string* message)
+{
+    if (message->find(COMMAND_0) != npos || message->find(COMMAND_1) != npos)
+    {
+        return true;
+    }
+
+    return false;
+}
+
+string find_command(string* message)
+{
+    if (find_command_as_bool(message))
+    {
+        return TRUE;
+    }
+
+    return FALSE;
+}
+
+char find_next_identified_bit(string message, int begin_index)
+{
+    for (int i = begin_index, k = 0; i < message.size() && k < 4; ++i, ++k)
+    {
+        if (message[i] != JOKER)
+        {
+            return message[i];
+        }
+    }
+
+    return JOKER;
+}
+
+void choose_bit(string* message, int i, int* counter_1, int* counter_0)
+{
+    char next_identified = find_next_identified_bit(*message, i+1);
+    char previous_identified;
+    bool no_previous = false;
+
+    int chosen_bit = 0;
+
+    if ((*counter_1) > 3)
+    {
+        chosen_bit = 1;
+    }
+    else if ((*counter_0) > 1)
+    {
+        chosen_bit = 0;
+    }
+    else
+    {
+        if (i == 0)
+        {
+            no_previous = true;
+        }
+        else
+        {
+            previous_identified = (*message)[i-1];
+        }
+
+        switch (next_identified)
+        {
+            case ONE:
+                if (no_previous || previous_identified == ONE)
+                {
+                    chosen_bit = 1;
+                }
+                break;
+
+            case ZERO:
+                if (no_previous || previous_identified == ZERO)
+                {
+                    chosen_bit = 0;
+                }
+                break;
+
+            case JOKER:
+                if (no_previous || previous_identified == ZERO)
+                {
+                    chosen_bit = 0;
+                }
+                else
+                {
+                    chosen_bit = 1;
+                }
+        }
+    }
+
+    if (chosen_bit == 1)
+    {
+        (*message)[i] = ONE;
+        ++(*counter_1);
+        (*counter_0) = 0;
+    }
+    else
+    {
+        (*message)[i] = ZERO;
+        ++(*counter_0);
+        (*counter_1 ) = 0;
+    }
+}
+
+string find_command(int i, int counter_1, int counter_0, int last_joker_index)
+{
+    string answer = FALSE;
+    // cout << i << " " << counter_1 << " " << counter_0 << " " << last_joker_index << endl;
+
+    // Command with ONES
+    if (counter_1 > 4)
+    {
+        if (last_joker_index < i-4)
+        {
+            return TRUE;
+        }
+        else
+        {
+            answer = BOTH;
+        }
+    }
+
+    // Command with ZEROS
+    if (counter_0 > 2)
+    {
+        if (last_joker_index < i-2)
+        {
+            return TRUE;
+        }
+        else
+        {
+            answer = BOTH;
+        }
+    }
+
+    return answer;
+}
+
+// Accuracy = 99%
+string greedy()
+{
+    int counter_0 = 0;
+    int counter_1 = 0;
+    int last_joker_index = -1;
+
+    string final_answer = FALSE;
+    string local_answer = FALSE;
+    string new_message = message;
+
+    for (int i = 0; i < new_message.size(); ++i)
+    {
+        if (new_message[i] == ONE)
+        {
+            ++counter_1;
+            counter_0 = 0;
+        }
+        else if (new_message[i] == ZERO)
+        {
+            ++counter_0;
+            counter_1 = 0;
+        }
+        else if (new_message[i] == JOKER)
+        {
+            last_joker_index = i;
+            choose_bit(&new_message, i, &counter_1, &counter_0);
+        }
+
+        local_answer = find_command(i, counter_1, counter_0, last_joker_index);
+
+        if (local_answer == TRUE)
+        {
+            return TRUE;
+        }
+        else if (local_answer == BOTH)
+        {
+            final_answer = BOTH;
+        }
+    }
+
+    // cout << "greedy final message: " << new_message << " " << answer << endl;
+    return final_answer;
+}
+
+void init_dp_table()
+{
+    dp_table.resize(MAX_MSG_SIZE + 1);
+
+    for (int i = 0; i < dp_table.size(); i++)
+    {
+        dp_table[i].resize(6);
+
+        for (int j = 0; j < 6; j++)
+        {
+            dp_table[i][j].resize(4);
+        }
+    }
+}
+
+void reset_dp_table()
+{
+    for (int i = 0; i < dp_table.size(); i++)
+    {
+        for (int j = 0; j < 6; j++)
+        {
+            for (int k = 0; k < 4; k++)
+            {
+                dp_table[i][j][k] = 0;
+            }
+        }
+    }
+}
+
+// 0 = unknow, 1 = false, 2 = both, 3 = true
+int memoized_opt(int i, int counter_1, int counter_0)
+{
+    if (dp_table[i][counter_1][counter_0] != 0)
+    {
+        return dp_table[i][counter_1][counter_0];
+    }
+
+    int answer = 0;
+
+    if (counter_1 == 5 || counter_0 == 3)
+    {
+        answer = 3;
+    }
+    else if (i == message.size())
+    {
+        answer = 1;
+    }
+    else if (message[i] == ONE)
+    {
+        answer = memoized_opt(i+1, counter_1+1, 0);
+    }
+    else if (message[i] == ZERO)
+    {
+        answer = memoized_opt(i+1, 0, counter_0+1);
+    }
+    else
+    {
+        int answer_with_0 = memoized_opt(i+1, 0, counter_0+1);
+        int answer_with_1 = memoized_opt(i+1, counter_1+1, 0);
+
+        if (answer_with_0 != answer_with_1)
+        {
+            answer = 2;
+        }
+        else
+        {
+            answer = answer_with_0;
+        }
+    }
+
+    dp_table[i][counter_1][counter_0] = answer;
+
+    return answer;
+}
+
+string dynamic_programming()
+{
+    int answer = memoized_opt(0, 0, 0);
+
+    if (answer == 2) return BOTH;
+    if (answer == 3) return TRUE;
+
+    return FALSE;
+}
+
+int main(int argc, char** argv)
+{
+    ifstream input_file;
+    string filename;
+
+    if (argc == 1)
+    {
+        filename = "input.txt";
+    }
+    else if (argc > 1)
+    {
+        filename = argv[1];
+    }
+
+    input_file.open(filename.c_str());
+
+    if (!input_file.is_open())
+    {
+        cout << "File [" <<  filename << "] not found." << endl;
+        return 1;
+    }
+
+    // Read Number of Instances
+    string first_line;
+    getline(input_file, first_line);
+    int number_of_instances = atoi(first_line.c_str());
+
+    // Open Output File
+    ofstream output_file("output.txt");
+
+    if (!output_file.is_open())
+    {
+        cout << "Problem has occured on creating file [output.txt]." << endl;
+        return 1;
+    }
+
+    init_dp_table();
+
+    int diff = 0;
+
+    // Read Instances
+    for (int i = 0; i < number_of_instances; ++i)
+    {
+        getline(input_file, message);
+
+        string answer_dp = dynamic_programming();
+        string answer_ga = greedy();
+
+        output_file << greedy() << endl;
+
+        if (answer_dp != answer_ga)
+        {
+            // cout << i << "! [ " << message << " ] : " << answer_dp << " X " << answer_ga << endl;
+            ++diff;
+        }
+        /*
+        */
+
+        reset_dp_table();
+    }
+
+    input_file.close();
+    output_file.close();
+
+    cout << "Accuracy: " << (100 - (diff*100.0/number_of_instances)) << "%" << endl;
+    cout << "Errors: " << diff << " (total: " << number_of_instances << ")" << endl;
+}

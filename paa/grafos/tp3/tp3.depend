@@ -8,7 +8,25 @@
 	<cmath>
 	<map>
 
-1415475738 source:/home/alberto/ufmg/paa/grafos/tp3/alberto-ueda-tp3-ga.cpp
+1416162331 source:/home/alberto/ufmg/paa/grafos/tp3/alberto-ueda-tp3-ga.cpp
+	<cstdlib>
+	<iostream>
+	<fstream>
+	<vector>
+	<sstream>
+	<cmath>
+	<map>
+
+1416162326 source:/home/alberto/ufmg/paa/grafos/tp3/alberto-ueda-tp3-dp.cpp
+	<cstdlib>
+	<iostream>
+	<fstream>
+	<vector>
+	<sstream>
+	<cmath>
+	<map>
+
+1416168621 source:/home/alberto/ufmg/paa/grafos/tp3/alberto-ueda-tp3-bf.cpp
 	<cstdlib>
 	<iostream>
 	<fstream>
