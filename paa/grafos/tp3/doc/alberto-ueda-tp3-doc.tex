@@ -163,6 +163,9 @@ string verifica_cada_mensagem_possivel(string mensagem);
 \end{lstlisting}
 
 \subsection{Complexidade de Espaço}
+
+Considerando que no pior caso todas as mensagens possíveis são geradas e testadas, a complexidade de espaço é $O(2^n)$, onde $n$ é o número de caracteres desconhecidos (`-'). Este caso ocorre quando nenhuma das podas é realizada e é necessário analisar a mensagem até o final para se chegar a resposta.
+
 \subsection{Complexidade de Tempo}
 \subsection{Análise Experimental}
 
@@ -209,6 +212,9 @@ string guloso(string mensagem)
 \end{lstlisting}
 
 \subsection{Complexidade de Espaço}
+
+Em relação ao uso de memória, temos complexidade $O(n)$, sendo $n$ o tamanho da mensagem original. Podemos visualizar o algoritmo como uma varredura simples na mensagem original, em que a cada passo são analisados trechos de mesmo tamanho, do início ao fim da mensagem. Após uma decisão tomada (um $bit$ escolhido), não há uma reavaliação desta decisão. Desta forma, não há a necessidade de utilizar mais memória para o caractere antes desconhecido.
+
 \subsection{Complexidade de Tempo}
 \subsection{Análise Experimental}
 
@@ -267,16 +273,15 @@ Dessa forma, a combinação de respostas é feita da seguinte maneira: sejam $r_
 \end{itemize}
 
 
-
-
-
-
-
 \subsection{Complexidade de Espaço}
+
+Apesar de ser recursivo, o ordem de complexidade de espaço é limitada pelo tamanho da matriz de resultados. Todos os valores possíveis para resposta estão nesta matriz e uma vez que uma resposta é calculada, não há recálculos ou uso de memória adicional. Portanto, a complexidade de espaço é $O(n)$, pois o tamanho da matriz é $(n \times 3 \times 5)$ que é $O(n)$.
+
+
 \subsection{Complexidade de Tempo}
 \subsection{Análise Experimental}
 
-
+\begin{comment}
 \section{Dificuldades Encontradas}
 
 Algumas das principais dificuldades encontras neste trabalho prático foram: 
@@ -286,7 +291,7 @@ Algumas das principais dificuldades encontras neste trabalho prático foram:
     \item Hipótese incorreta das possibilidades de $true$. A princípio, acreditávamos que apenas `00-1111' e '1111-00' eram as mensagens que, apesar de conter incertezas, tinham como resposta correta $true$. Porém, mais tarde descobrimos outros casos, como por exemplo: `00-111-00' e `00-111-0-1111'. Essa foi uma das descobertas que desmotivou a busca de um algoritmo ótimo no caso do guloso.
     \ \\
 \end{itemize}
-
+\end{comment}
 
 \section{Conclusão}
 % A brief conclusion of the work
