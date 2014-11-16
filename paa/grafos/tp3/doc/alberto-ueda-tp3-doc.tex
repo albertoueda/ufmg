@@ -108,9 +108,7 @@ A modelagem do problema é simples. Dada uma sequência de caracteres do conjunt
 
 Há o caso particular em que mesmo que uma mensagem possua um ou mais caracteres `-', todas as formas de substituição possíveis contém subsequências de controle. Por exemplo, na mensagem ``1111-00'' todas as possíveis mensagens originais (``1111100'' e ``1111000'') contém um comando de controle. Neste e nos demais casos em que este cenário se aplica, naturalmente a resposta do algoritmo deve ser $true$.
 
-Se há pelo menos uma possibilidade da mensagem não conter tais subsequências \textbf{E} pelo uma possibilidade dela conter, a resposta deve ser $both$.
-
-Caso não haja nenhuma possibilidade da cadeia de caracteres conter um comando de controle, a resposta deve ser $false$. \ \\
+Se há pelo menos uma possibilidade da mensagem não conter tais subsequências \textbf{E} pelo uma possibilidade dela conter, a resposta deve ser $both$. Caso não haja nenhuma possibilidade da cadeia de caracteres conter um comando de controle, a resposta deve ser $false$.
 
 A seguir serão descritos os três algoritmos propostos para lidar com o problema, cada um seguindo um paradigma de programação diferente.
 
@@ -167,6 +165,9 @@ string verifica_cada_mensagem_possivel(string mensagem);
 Considerando que no pior caso todas as mensagens possíveis são geradas e testadas, a complexidade de espaço é $O(2^n)$, onde $n$ é o número de caracteres desconhecidos (`-'). Este caso ocorre quando nenhuma das podas é realizada e é necessário analisar a mensagem até o final para se chegar a resposta.
 
 \subsection{Complexidade de Tempo}
+
+No pior caso, todas as possibilidades de mensagem são testadas. Neste cenário, há $2^n$ verificações de mensagens, com $n$ o número de `-'s. Dada uma mensagem sem caracteres desconhecidos, o custo de tempo de uma verificação (busca por comando) é linear em relação ao tamanho da mensagem. Portanto, a complexidade de tempo é $O(2^n \times n)$.
+
 \subsection{Análise Experimental}
 
 \section{Algoritmo Guloso}
@@ -216,6 +217,9 @@ string guloso(string mensagem)
 Em relação ao uso de memória, temos complexidade $O(n)$, sendo $n$ o tamanho da mensagem original. Podemos visualizar o algoritmo como uma varredura simples na mensagem original, em que a cada passo são analisados trechos de mesmo tamanho, do início ao fim da mensagem. Após uma decisão tomada (um $bit$ escolhido), não há uma reavaliação desta decisão. Desta forma, não há a necessidade de utilizar mais memória para o caractere antes desconhecido.
 
 \subsection{Complexidade de Tempo}
+
+Dando continuidade à análise do algoritmo como uma varredura, a cada passo há um número fixo $v_{cons}$ de verificações que serão realizadas. O custo de tempo de cada verificação é linear em relação ao tamanho da mensagem que está sendo verificada. Este tamanho é $O(n)$, sendo $n$ o tamanho da mensagem original. Logo, a complexidade de tempo do algoritmo guloso é $O(n \times v_{cons} \times n) = O(n^2)$.
+
 \subsection{Análise Experimental}
 
 \section{Algoritmo com Programação Dinâmica}
@@ -275,10 +279,14 @@ Dessa forma, a combinação de respostas é feita da seguinte maneira: sejam $r_
 
 \subsection{Complexidade de Espaço}
 
-Apesar de ser recursivo, o ordem de complexidade de espaço é limitada pelo tamanho da matriz de resultados. Todos os valores possíveis para resposta estão nesta matriz e uma vez que uma resposta é calculada, não há recálculos ou uso de memória adicional. Portanto, a complexidade de espaço é $O(n)$, pois o tamanho da matriz é $(n \times 3 \times 5)$ que é $O(n)$.
-
+Apesar de ser recursivo, o ordem de complexidade de espaço é limitada pelo tamanho da matriz de resultados. Todos os valores possíveis para resposta estão nesta matriz e uma vez que uma resposta é calculada, não há recálculos ou uso de memória adicional. Portanto, para o caso geral, a complexidade de espaço é $O(n)$, $n$ = tamanho máximo da palavra, pois o tamanho da matriz é $(n \times 3 \times 5)$ que é $O(n)$. No caso deste trabalho, $n$ é fornecido e é igual a 100. Assim, a complexidade de espaço torna-se constante, $O(1)$.
 
 \subsection{Complexidade de Tempo}
+
+Ao contrário dos algoritmos de força bruta e guloso, neste algoritmo de programação dinâmica não são realizadas verificações em relação ao \textbf{texto das mensagens} e suas vizinhanças, mas apenas de \textbf{parâmetros} que definem os diversos cenários possíveis. Tais parâmetros são mapaeados em uma matriz e as respostas são calculadas e armazenadas conforme a demanda (abordagem \textit{top-down}).
+
+Toda solução de um subproblema ou é calculada em um tempo constante (condições de parada) ou são combinações de outras respostas da própria matriz. Uma vez que uma resposta é definida, não há recálculo, portanto cada elemento da matriz é calculado apenas uma vez. Cada combinação de respostas é realizada em um tempo $c_{cons}$ constante. Além disso, apesar de ser uma matriz de três dimensões, duas delas são constantes e portanto o número de respostas é linear em relação ao tamanho máximo $n$ da palavra. Desta forma, o custo máximo de tempo para os cálculos é $c_{cons} \times n$. Logo, o algoritmo possui complexidade de tempo $O(c_{cons} \times n) = O(n)$.
+
 \subsection{Análise Experimental}
 
 \begin{comment}
@@ -295,7 +303,10 @@ Algumas das principais dificuldades encontras neste trabalho prático foram:
 
 \section{Conclusão}
 % A brief conclusion of the work
+
+\begin{comment}
 Este trabalho prático foi bastante útil para fixar o aprendizado do módulo de paradigmas de programação. Lidar com problemas práticos exigiu um bom (re)estudo do conteúdo teórico. Outro ponto a destacar foi constatação que um algoritmo de força-bruta não é necessariamente mais simples de implementar que um algoritmo guloso, por exemplo. A percepção de que muitas vezes um algoritmo que ``testa todos os casos" pode e deve ser melhorado significamente pode sutilmente ocultar o esforço e o valor de um algoritmo de força-bruta. O conceito de $poda$ também ficou muito mais claro com este trabalho prático.
+\end{comment}
 
 A descoberta de que o problema pode ser solucionado por um algoritmo de complexidade de tempo linear foi surpreendente. O algoritmo de programação dinâmica, apesar de utilizar mais espaço para sua execução, é muito mais veloz que o algoritmo guloso e naturalmente que o de força-bruta também. Graças à divisão do problema original em subproblemas que se repetem e que podem ter a resposta memoizada, o desepenho de tal algoritmo mostrou resultados bastante satisfatórios e por si só justifica o estudo e pesquisa empreendidos nesta área de conhecimento.
 
