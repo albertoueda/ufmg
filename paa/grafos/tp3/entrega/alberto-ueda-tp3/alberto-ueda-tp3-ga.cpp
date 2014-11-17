@@ -340,7 +340,7 @@ int main(int argc, char** argv)
         return 1;
     }
 
-    init_dp_table();
+    // init_dp_table();
 
     int diff = 0;
 
@@ -349,25 +349,25 @@ int main(int argc, char** argv)
     {
         getline(input_file, message);
 
-        string answer_dp = dynamic_programming();
-        string answer_ga = greedy();
+        // string answer_dp = dynamic_programming();
+        // string answer_ga = greedy();
 
         output_file << greedy() << endl;
 
+        /*
         if (answer_dp != answer_ga)
         {
             // cout << i << "! [ " << message << " ] : " << answer_dp << " X " << answer_ga << endl;
             ++diff;
         }
-        /*
         */
 
-        reset_dp_table();
+        // reset_dp_table();
     }
 
     input_file.close();
     output_file.close();
 
-    cout << "Accuracy: " << (100 - (diff*100.0/number_of_instances)) << "%" << endl;
-    cout << "Errors: " << diff << " (total: " << number_of_instances << ")" << endl;
+    // cout << "Accuracy: " << (100 - (diff*100.0/number_of_instances)) << "%" << endl;
+    // cout << "Errors: " << diff << " (total: " << number_of_instances << ")" << endl;
 }

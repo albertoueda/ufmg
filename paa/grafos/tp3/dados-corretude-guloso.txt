@@ -1,23 +1,23 @@
 3
-Accuracy: 100.000 %
+Accuracy: 100,000 %
 Errors: 0 (total: 27 )
 4
-Accuracy: 97.531 %
+Accuracy: 97,531 %
 Errors: 2 (total: 81 )
 5
-Accuracy: 99.177 %
+Accuracy: 99,177 %
 Errors: 2 (total: 243 )
 6
-Accuracy: 98.080 %
+Accuracy: 98,080 %
 Errors: 14 (total: 729 )
 7
-Accuracy: 98.811 %
+Accuracy: 98,811 %
 Errors: 26 (total: 2187 )
 10
-Accuracy: 98.957 %
+Accuracy: 98,957 %
 Errors: 616 (total: 59049 )
 15
-Accuracy: 99.345 %
+Accuracy: 99,345 %
 Errors: 94045 (total: 14348907 )
 
 

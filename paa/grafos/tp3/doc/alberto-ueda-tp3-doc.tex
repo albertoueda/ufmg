@@ -181,12 +181,10 @@ No pior caso, todas as possibilidades de mensagem são testadas. Neste cenário,
      \centering
      \includegraphics[scale=0.48]{figures/chart-bf.png}
      \includegraphics[scale=0.48]{figures/chart-bf-all.png}
-     \caption{}
+     \caption{Experimentos com algoritmo de força bruta.}
 \end{figure}
 
-
-
-
+À esquerda, o tempo utilizado (ms) para processar mensagens com um número $n$ crescente de caracteres desconhecidos. À direita, o tempo utilizado (microseg) para processar 250 mensagens arbirtrárias de tamanho 7. É possível ver o quão rápido cresce o tempo utilizado de acordo com o número de mensagens possíveis. No gráfico à direita, é possível notar as podas diminuindo consideravelmente o processamento das mensagens, principalmente no na região mais à esquerda e também ao final do gráfico.
 
 
 
@@ -205,7 +203,14 @@ O algoritmo guloso decide qual \textit{bit} deve substituir o caractere desconhe
 
 O algoritmo analisa cada caractere um a um, do início até o fim da mensagem, escolhendo os $bits$ para todos os desconhecidos. Em cada passo verifica-se se um comando de controle foi encontrado. Se foi encontrado e em tal comando não houve a necessidade de substituição, devolve $true$. Se foi encontrado mas houve substituição, guarda a informação de que a resposta é pelo menos $both$ e continua procurando por uma resposta $true$. Se não encontrar nem $both$ nem $true$ e a mensagem já foi analisada por completo, devolve $false$. \\
 
-% Tal algoritmo apresentou 99\% de corretude para todas mensagens de tamanho 7, 10 e 15, conforme é mostrado nas seções seguintes.
+Tal algoritmo apresentou cerca de 99\% de corretude para todas mensagens de tamanho 5, 7, 10 e 15, conforme é mostrado na seguinte tabela.
+
+\begin{figure}[H]
+     \centering
+     \includegraphics[scale=0.5]{figures/resultados-guloso.png}
+\end{figure}
+
+O algoritmo implementado acerta em todas mensagens em que a resposta correta é $false$. Porém erra para algumas mensagens em que a resposta correta é $both$ ou $true$, pois alguns casos não são previstos pelas regras apresentadas. Os experimentos mostraram que mesmo para todas as mensagens possíveis de tamanho 15, o algoritmo atinge aproximadamente 99\% de corretude. Seguem alguns exemplos de mensagens em que o algoritmo erra: `$---10-1-1-$', `$---10-1---$' (responde $false$ quando a resposta correta é $both$) e `$---1111-00$', `--$100-1111$' (responde $both$ quando a resposta correta é $true$). \\
 
 \begin{lstlisting}[caption=Algoritmo Guloso]
 string guloso(string mensagem)
@@ -245,11 +250,10 @@ Dando continuidade à análise do algoritmo como uma varredura, a cada passo há
      \centering
      \includegraphics[scale=0.48]{figures/chart-ga.png}
      \includegraphics[scale=0.48]{figures/chart-ga-all.png}
-     \caption{}
+     \caption{Experimentos com algoritmo guloso. }
 \end{figure}
 
-
-
+À esquerda, o tempo utilizado (ms) para processar mensagens com um número $n$ crescente de caracteres desconhecidos. À direita, o tempo utilizado (microseg) para processar 250 mensagens arbirtrárias de tamanho 7. É possível notar a linearidade da solução em relação ao tamanho da entrada.
 
 
 \section{Algoritmo com Programação Dinâmica}
@@ -323,13 +327,10 @@ Toda solução de um subproblema ou é calculada em um tempo constante (condiç�
      \centering
      \includegraphics[scale=0.48]{figures/chart-dp.png}
      \includegraphics[scale=0.48]{figures/chart-dp-all.png}
-     \caption{}
+     \caption{Experimentos com algoritmo de programação dinâmica.}
 \end{figure}
 
-
-
-
-
+À esquerda, o tempo utilizado (ms) para processar mensagens com um número $n$ crescente de caracteres desconhecidos. À direita, o tempo utilizado (microseg) para processar 250 mensagens arbirtrárias de tamanho 7. Assim como o algoritmo guloso, o tempo utilizado cresce linearmente em relação ao tamanho da entrada.
 
 
 \begin{comment}
@@ -356,14 +357,16 @@ A descoberta de que o problema pode ser solucionado por um algoritmo de complexi
 
 \begin{figure}[H]
      \centering
-     \includegraphics[scale=0.7]{figures/chart-all-all.png}
-     \caption{}
+     \includegraphics[scale=0.9]{figures/chart-all-all.png}
+     \caption{Resultados consolidados dos três algoritmos: tempo de processamento (microseg) de mensagens arbitrárias de tamanho 7. }
 \end{figure}
+
+\ \\
 
 \begin{figure}[H]
      \centering
-     \includegraphics[scale=0.7]{figures/chart-all-three.png}
-     \caption{}
+     \includegraphics[scale=0.9]{figures/chart-all-three.png}
+     \caption{Resultados consolidados dos três algoritmos: tempo de processamento (ms) de mensagens em ordem crescente de caracteres desconhecidos.}
 \end{figure}
 \begin{comment}
 \end{comment}

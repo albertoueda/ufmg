@@ -19,10 +19,14 @@
 		<Compiler>
 			<Add option="-Wall" />
 		</Compiler>
-		<Unit filename="alberto-ueda-tp3.cpp" />
+		<Unit filename="alberto-ueda-tp3-TODOS.cpp" />
+		<Unit filename="alberto-ueda-tp3-bf.cpp" />
+		<Unit filename="alberto-ueda-tp3-dp.cpp" />
+		<Unit filename="alberto-ueda-tp3-ga.cpp" />
 		<Extensions>
 			<code_completion />
 			<debugger />
+			<envvars />
 		</Extensions>
 	</Project>
 </CodeBlocks_project_file>
