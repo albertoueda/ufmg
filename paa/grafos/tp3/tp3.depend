@@ -35,3 +35,12 @@
 	<cmath>
 	<map>
 
+1416179628 source:/home/alberto/ufmg/paa/grafos/tp3/alberto-ueda-tp3-TODOS.cpp
+	<cstdlib>
+	<iostream>
+	<fstream>
+	<vector>
+	<sstream>
+	<cmath>
+	<ctime>
+

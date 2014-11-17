@@ -1,5 +1,6 @@
 \documentclass[a4paper,12pt,titlepage]{article}
 %\usepackage[T1]{fontenc}
+\usepackage[top=1in, bottom=1in, left=1in, right=1in]{geometry}
 
 \usepackage{titlesec}
 \usepackage{titling}
@@ -134,12 +135,9 @@ Para melhorar o desempenho em alguns casos específicos, foram implementadas as 
     \item Se a mensagem original não possui caracteres desconhecidos e não se enquadra no caso anterior, devolve-se $false$;
     \item Se a mensagem original tem tamanho maior que 2, não possui `0' nem possui `1' e não se enquadra nos casos anteriores, devolve-se $both$. Esta poda melhora o desempenho para casos como 100 caracteres $`-'$;
     \item Se para alguma das possibilidades (substituição por `0' ou por substituição por `1') a resposta é $both$, não é preciso realizar a outra substituição. A resposta combinada para aquele trecho de mensagem será $both$, pois existe pelo menos uma possibilidade da resposta ser $false$ e também uma de ser $true$.
-    \ \\
 \end{enumerate}
 
-Se nenhuma das podas se aplicar a mensagem, o algoritmo verifica todas as possibilidades de mensagens.
-
-\ \\ 
+Se nenhuma das podas se aplicar a mensagem, o algoritmo verifica todas as possibilidades de mensagens. \\
 
 % basicstyle=\tiny
 \begin{lstlisting}[caption=Algoritmo de Força Bruta]
@@ -179,6 +177,20 @@ No pior caso, todas as possibilidades de mensagem são testadas. Neste cenário,
 
 \subsection{Análise Experimental}
 
+\begin{figure}[H]
+     \centering
+     \includegraphics[scale=0.48]{figures/chart-bf.png}
+     \includegraphics[scale=0.48]{figures/chart-bf-all.png}
+     \caption{}
+\end{figure}
+
+
+
+
+
+
+
+
 \section{Algoritmo Guloso}
 
 O algoritmo guloso decide qual \textit{bit} deve substituir o caractere desconhecido e não volta atrás em sua decisão. Tal escolha é baseada na vizinhança deste caractere. Os principais critérios que o algoritmo utiliza para a tomada de decisão são os seguintes:
@@ -191,11 +203,9 @@ O algoritmo guloso decide qual \textit{bit} deve substituir o caractere desconhe
     \item Se o caractere desconhecido não se encaixar em nenhum dos casos anteriores, faz a substituição por `0'.
 \end{enumerate}
 
-O algoritmo analisa cada caractere um a um, do início até o fim da mensagem, escolhendo os $bits$ para todos os desconhecidos. Em cada passo verifica-se se um comando de controle foi encontrado. Se foi encontrado e em tal comando não houve a necessidade de substituição, devolve $true$. Se foi encontrado mas houve substituição, guarda a informação de que a resposta é pelo menos $both$ e continua procurando por uma resposta $true$. Se não encontrar nem $both$ nem $true$ e a mensagem já foi analisada por completo, devolve $false$.
+O algoritmo analisa cada caractere um a um, do início até o fim da mensagem, escolhendo os $bits$ para todos os desconhecidos. Em cada passo verifica-se se um comando de controle foi encontrado. Se foi encontrado e em tal comando não houve a necessidade de substituição, devolve $true$. Se foi encontrado mas houve substituição, guarda a informação de que a resposta é pelo menos $both$ e continua procurando por uma resposta $true$. Se não encontrar nem $both$ nem $true$ e a mensagem já foi analisada por completo, devolve $false$. \\
 
-Tal algoritmo apresentou 99\% de corretude para todas mensagens de tamanho 7, 10 e 15, conforme é mostrado nas seções seguintes.
-
-\newpage
+% Tal algoritmo apresentou 99\% de corretude para todas mensagens de tamanho 7, 10 e 15, conforme é mostrado nas seções seguintes.
 
 \begin{lstlisting}[caption=Algoritmo Guloso]
 string guloso(string mensagem)
@@ -230,6 +240,17 @@ Em relação ao uso de memória, temos complexidade $O(n)$, sendo $n$ o tamanho 
 Dando continuidade à análise do algoritmo como uma varredura, a cada passo há um número fixo $v_{cons}$ de verificações que serão realizadas. O custo de tempo de cada verificação é linear em relação ao tamanho da mensagem que está sendo verificada. Este tamanho é $O(n)$, sendo $n$ o tamanho da mensagem original. Logo, a complexidade de tempo do algoritmo guloso é $O(n \times v_{cons} \times n) = O(n^2)$.
 
 \subsection{Análise Experimental}
+
+\begin{figure}[H]
+     \centering
+     \includegraphics[scale=0.48]{figures/chart-ga.png}
+     \includegraphics[scale=0.48]{figures/chart-ga-all.png}
+     \caption{}
+\end{figure}
+
+
+
+
 
 \section{Algoritmo com Programação Dinâmica}
 
@@ -298,6 +319,19 @@ Toda solução de um subproblema ou é calculada em um tempo constante (condiç�
 
 \subsection{Análise Experimental}
 
+\begin{figure}[H]
+     \centering
+     \includegraphics[scale=0.48]{figures/chart-dp.png}
+     \includegraphics[scale=0.48]{figures/chart-dp-all.png}
+     \caption{}
+\end{figure}
+
+
+
+
+
+
+
 \begin{comment}
 \section{Dificuldades Encontradas}
 
@@ -319,20 +353,20 @@ Este trabalho prático foi bastante útil para fixar o aprendizado do módulo de
 
 A descoberta de que o problema pode ser solucionado por um algoritmo de complexidade de tempo linear foi surpreendente. O algoritmo de programação dinâmica, apesar de utilizar mais espaço para sua execução, é muito mais veloz que o algoritmo guloso e naturalmente que o de força-bruta também. Graças à divisão do problema original em subproblemas que se repetem e que podem ter a resposta memoizada, o desepenho de tal algoritmo mostrou resultados bastante satisfatórios e por si só justifica o estudo e pesquisa empreendidos nesta área de conhecimento.
 
-\begin{comment}
+
 \begin{figure}[H]
      \centering
-     % \includegraphics[scale=0.5]{figures/network-types.png}
+     \includegraphics[scale=0.7]{figures/chart-all-all.png}
      \caption{}
-     \label{bsp}
 \end{figure}
+
+\begin{figure}[H]
+     \centering
+     \includegraphics[scale=0.7]{figures/chart-all-three.png}
+     \caption{}
+\end{figure}
+\begin{comment}
 \end{comment}
 
-% Referências
-\bibliographystyle{plain}%amsalpha
-\bibliography{bibliografia}
-\newpage
-
 \end{document}
-
 

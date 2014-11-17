@@ -1,0 +1,37 @@
+3
+Accuracy: 100.000 %
+Errors: 0 (total: 27 )
+4
+Accuracy: 97.531 %
+Errors: 2 (total: 81 )
+5
+Accuracy: 99.177 %
+Errors: 2 (total: 243 )
+6
+Accuracy: 98.080 %
+Errors: 14 (total: 729 )
+7
+Accuracy: 98.811 %
+Errors: 26 (total: 2187 )
+10
+Accuracy: 98.957 %
+Errors: 616 (total: 59049 )
+15
+Accuracy: 99.345 %
+Errors: 94045 (total: 14348907 )
+
+
+
+certo x errado
+57802! [ ---10-1-11 ] : both X false
+57803! [ ---10-1-1- ] : both X false
+57805! [ ---10-1--1 ] : both X false
+57806! [ ---10-1--- ] : both X false
+57960! [ ---1111-00 ] : true X both
+53586! [ --01111-00 ] : true X both
+54877! [ --100-1111 ] : true X both
+55783! [ --1111-001 ] : true X both
+55784! [ --1111-00- ] : true X both
+57064! [ ---00-1111 ] : true X both
+57960! [ ---1111-00 ] : true X both
+
