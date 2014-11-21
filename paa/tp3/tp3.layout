@@ -1,24 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <CodeBlocks_layout_file>
 	<ActiveTarget name="Debug" />
-	<File name="alberto-ueda-tp3-TODOS.cpp" open="1" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="alberto-ueda-tp3-TODOS.cpp" open="1" top="1" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="9436" topLine="451" />
-		</Cursor>
-	</File>
-	<File name="alberto-ueda-tp3-dp.cpp" open="1" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="0" topLine="153" />
-		</Cursor>
-	</File>
-	<File name="alberto-ueda-tp3-bf.cpp" open="1" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="3376" topLine="118" />
-		</Cursor>
-	</File>
-	<File name="alberto-ueda-tp3-ga.cpp" open="1" top="1" tabpos="5" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="6906" topLine="338" />
+			<Cursor1 position="6780" topLine="321" />
 		</Cursor>
 	</File>
 </CodeBlocks_layout_file>
