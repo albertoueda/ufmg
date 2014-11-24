@@ -1,0 +1,17 @@
+nsEscCharsetProber.o: nsEscCharsetProber.cpp /usr/include/stdc-predef.h \
+ nsEscCharsetProber.h ../config.h nsCharSetProber.h nsPRTypes.h \
+ nsCodingStateMachine.h nsPkgInt.h
+
+/usr/include/stdc-predef.h:
+
+nsEscCharsetProber.h:
+
+../config.h:
+
+nsCharSetProber.h:
+
+nsPRTypes.h:
+
+nsCodingStateMachine.h:
+
+nsPkgInt.h:

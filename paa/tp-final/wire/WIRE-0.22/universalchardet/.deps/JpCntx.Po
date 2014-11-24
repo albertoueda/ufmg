@@ -1,0 +1,10 @@
+JpCntx.o: JpCntx.cpp /usr/include/stdc-predef.h JpCntx.h ../config.h \
+ nsPRTypes.h
+
+/usr/include/stdc-predef.h:
+
+JpCntx.h:
+
+../config.h:
+
+nsPRTypes.h:

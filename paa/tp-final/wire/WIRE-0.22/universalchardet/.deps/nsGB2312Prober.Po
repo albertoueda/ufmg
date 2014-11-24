@@ -1,0 +1,19 @@
+nsGB2312Prober.o: nsGB2312Prober.cpp /usr/include/stdc-predef.h \
+ nsGB2312Prober.h ../config.h nsCharSetProber.h nsPRTypes.h \
+ nsCodingStateMachine.h nsPkgInt.h CharDistribution.h
+
+/usr/include/stdc-predef.h:
+
+nsGB2312Prober.h:
+
+../config.h:
+
+nsCharSetProber.h:
+
+nsPRTypes.h:
+
+nsCodingStateMachine.h:
+
+nsPkgInt.h:
+
+CharDistribution.h:

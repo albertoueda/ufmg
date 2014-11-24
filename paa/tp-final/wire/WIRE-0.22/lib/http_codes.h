@@ -1,0 +1,140 @@
+
+#ifndef _HTTP_CODES_INCLUDED_
+#define _HTTP_CODES_INCLUDED_
+
+#include <config.h>
+
+#define HTTP_TIME_FORMAT        "%a, %d %b %Y %H:%M:%S %Z"
+#define HTTP_PORT 80
+
+// HTTP error codes
+
+#define HTTP_ERROR_UNKNOWN		99 // ?
+#define HTTP_ERROR_DNS			98 // DNS lookup failed
+#define HTTP_ERROR_CONNECT		97 // Connect failed
+#define HTTP_ERROR_DISCONNECTED	96 // Disconnected during request
+#define HTTP_ERROR_TIMEOUT		95 // Timeout in network i/o
+#define HTTP_ERROR_PROTOCOL		94 // Unexpected response
+#define HTTP_ERROR_SLOW			93 // Too slow
+#define HTTP_ERROR_SKIPPED		92 // Skipped because of other pages failing
+#define HTTP_ERROR_REQUESTING   91 // Failed to write request
+#define HTTP_ERROR_BLOCKED_IP   90 // IP is considered blocked
+
+// HTTP internal status codes
+// Valid while making a request
+
+#define HTTP_STATUS_UNDEFINED	0
+#define HTTP_STATUS_RESOLVED    1
+#define HTTP_STATUS_CONNECTED	2
+#define HTTP_STATUS_REQUESTED   3
+
+// HTTP normal codes
+
+#define HTTP_OK				200
+#define HTTP_NO_CONTENT		204
+#define HTTP_PARTIAL		206
+#define HTTP_MULTIPLE_CHOICES	300
+#define HTTP_MOVED			301
+#define HTTP_FOUND			302
+#define HTTP_SEE_OTHER		303
+#define HTTP_NOT_MODIFIED	304
+#define HTTP_TEMPORARY_REDIRECT	307
+#define HTTP_BAD_REQUEST	400
+#define HTTP_UNAUTHORIZED   401
+#define HTTP_PAYMENT_REQUIRED	402
+#define HTTP_FORBIDDEN		403
+#define HTTP_NOT_FOUND		404
+#define HTTP_METHOD_NOT_ALLOWED		405
+#define HTTP_NOT_ACCEPTABLE 406
+#define HTTP_REQUEST_TIMEOUT	408
+#define HTTP_URI_TOO_LONG	414
+#define HTTP_UNSUPPORTED_MEDIA_TYPE	415
+#define HTTP_RANGE_ERROR	416
+#define HTTP_INTERNAL_ERROR	500
+#define HTTP_NOT_IMPLEMENTED	501
+#define HTTP_BAD_GATEWAY	502
+#define HTTP_UNAVAILABLE		503
+#define HTTP_GATEWAY_TIMEOUT	504
+#define HTTP_INSUFFICIENT_STORAGE	507
+
+#define HTTP_STR(x) (\
+	(x==HTTP_STATUS_UNDEFINED)	? "HTTP_UNDEF" :\
+	(x==HTTP_ERROR_UNKNOWN)		? "HTTP_ERROR_UNKNOWN" :\
+	(x==HTTP_ERROR_DNS)			? "HTTP_ERROR_DNS" :\
+	(x==HTTP_ERROR_CONNECT)		? "HTTP_ERROR_CONNECT" :\
+	(x==HTTP_ERROR_DISCONNECTED)? "HTTP_ERROR_DISCONNECTED" :\
+	(x==HTTP_ERROR_TIMEOUT)		? "HTTP_ERROR_TIMEOUT" :\
+	(x==HTTP_ERROR_PROTOCOL)	? "HTTP_ERROR_PROTOCOL" :\
+	(x==HTTP_ERROR_SLOW)		? "HTTP_ERROR_SLOW" :\
+	(x==HTTP_ERROR_SKIPPED)		? "HTTP_ERROR_SKIPPED" :\
+	(x==HTTP_ERROR_REQUESTING)	? "HTTP_ERROR_REQUESTING" :\
+	(x==HTTP_ERROR_BLOCKED_IP)	? "HTTP_ERROR_BLOCKED_IP" :\
+	(x==HTTP_OK)				? "HTTP_OK" :\
+	(x==HTTP_NO_CONTENT)		? "HTTP_NO_CONTENT" :\
+	(x==HTTP_PARTIAL)			? "HTTP_PARTIAL" :\
+	(x==HTTP_MULTIPLE_CHOICES)	? "HTTP_MULTIPLE_CHOICES" :\
+	(x==HTTP_MOVED)				? "HTTP_MOVED" :\
+	(x==HTTP_FOUND)				? "HTTP_FOUND" :\
+	(x==HTTP_METHOD_NOT_ALLOWED)				? "HTTP_METHOD_NOT_ALLOWED" :\
+	(x==HTTP_SEE_OTHER)			? "HTTP_SEE_OTHER" :\
+	(x==HTTP_NOT_MODIFIED)		? "HTTP_NOT_MODIFIED" :\
+	(x==HTTP_TEMPORARY_REDIRECT)		? "HTTP_TEMPORARY_REDIRECT" :\
+	(x==HTTP_BAD_REQUEST)		? "HTTP_BAD_REQUEST" :\
+	(x==HTTP_UNAUTHORIZED)		? "HTTP_UNAUTHORIZED" :\
+	(x==HTTP_PAYMENT_REQUIRED)	? "HTTP_PAYMENT_REQUIRED" :\
+	(x==HTTP_FORBIDDEN)			? "HTTP_FORBIDDEN" :\
+	(x==HTTP_NOT_FOUND)			? "HTTP_NOT_FOUND" :\
+	(x==HTTP_NOT_ACCEPTABLE)	? "HTTP_NOT_ACCEPTABLE" :\
+	(x==HTTP_REQUEST_TIMEOUT)	? "HTTP_REQUEST_TIMEOUT" :\
+	(x==HTTP_URI_TOO_LONG)		? "HTTP_URI_TOO_LONG" :\
+	(x==HTTP_UNSUPPORTED_MEDIA_TYPE)		? "HTTP_UNSUPPORTED_MEDIA_TYPE" :\
+	(x==HTTP_RANGE_ERROR)		? "HTTP_RANGE_ERROR" :\
+	(x==HTTP_INTERNAL_ERROR)	? "HTTP_INTERNAL_ERROR" :\
+	(x==HTTP_NOT_IMPLEMENTED)	? "HTTP_NOT_IMPLEMENTED" :\
+	(x==HTTP_BAD_GATEWAY)		? "HTTP_BAD_GATEWAY" :\
+	(x==HTTP_UNAVAILABLE)		? "HTTP_UNAVAILABLE" :\
+	(x==HTTP_GATEWAY_TIMEOUT)	? "HTTP_GATEWAY_TIMEOUT" :\
+	(x==HTTP_INSUFFICIENT_STORAGE)	? "HTTP_INSUFFICIENT_STORAGE" :\
+   	"invalid" )
+
+
+// HTTP macros
+
+#define HTTP_IS_UNDEF(n)		(n==0)
+#define HTTP_IS_ERROR(n)   		(n>0 && n<100)
+#define HTTP_IS_OK(n)			(n>=200 && n<300)
+#define HTTP_IS_REDIRECT(n)		(n>=300 && n<400)
+#define HTTP_IS_CLIENT_ERROR(n) (n>=400 && n<500)
+#define HTTP_IS_SERVER_ERROR(n) (n>=500 && n<600)
+
+#define HTTP_IS_STR(x) (\
+	HTTP_IS_UNDEF(x)		? "HTTP_IS_UNDEF" :\
+	HTTP_IS_ERROR(x)		? "HTTP_IS_ERROR" :\
+	HTTP_IS_OK(x)			? "HTTP_IS_OK" :\
+	HTTP_IS_REDIRECT(x)		? "HTTP_IS_REDIRECT" :\
+	HTTP_IS_CLIENT_ERROR(x)	? "HTTP_IS_CLIENT_ERROR" :\
+	HTTP_IS_SERVER_ERROR(x)	? "HTTP_IS_SERVER_ERROR" : "(invalid)" )
+
+#define HTTP_REPORT_STR(x) (\
+		(x==HTTP_ERROR_UNKNOWN) 	? "?" :\
+		(x==HTTP_ERROR_DNS)			? "N" :\
+		(x==HTTP_ERROR_CONNECT)		? "C" :\
+		(x==HTTP_ERROR_DISCONNECTED)? "D" :\
+		(x==HTTP_ERROR_TIMEOUT)		? "T" :\
+		(x==HTTP_ERROR_PROTOCOL)	? "P" :\
+		(x==HTTP_ERROR_SLOW)		? "S" :\
+		(x==HTTP_ERROR_SKIPPED)     ? ">" :\
+		HTTP_IS_OK(x)				? "." :\
+		(x==HTTP_NOT_MODIFIED)		? "/" :\
+		HTTP_IS_REDIRECT(x) 		? "^" :\
+		HTTP_IS_CLIENT_ERROR(x) 	? "_" :\
+		HTTP_IS_SERVER_ERROR(x) 	? "x" :\
+	   	"(invalid)" )
+
+#define HTTP_REPORT_STR_LEGEND ("\
+FAIL :  N namesrv C connect  > skipped  D disconn\n\
+        T timeout P protocol S speed    x svrerror\n\
+OK   :  . ok      / unmodif  ^ redirect _ notfound\
+		")
+
+#endif

@@ -1,0 +1,142 @@
+#!/bin/bash
+
+###########################################################################
+# Configuration
+###########################################################################
+
+# Percent of disk space necessary
+MAX_DISK_USAGE=90
+
+###########################################################################
+# Routines
+###########################################################################
+
+checkspace () {
+	USAGE_PERCENT=`df -P $BASEDIR | tail -n 1 | awk '{print $5}' | sed 's/%//'`
+	if [ $USAGE_PERCENT -gt $MAX_DISK_USAGE ] ; then
+		echo "Disk usage is $USAGE_PERCENT%"
+		echo "Stopping."
+		exit 1;
+	fi
+}
+
+getcrawlparams() {
+	if [ -z "$WIRE_CONF" ]; then
+		echo "WIRE_CONF not defined"
+		exit 1
+	fi
+
+	if [ ! -f "$WIRE_CONF" ]; then
+		echo "$WIRE_CONF not found"
+		exit 1
+	fi
+
+	BASEDIR=`grep '<base>' $WIRE_CONF | sed 's/<\/\?base>//g' | awk '{print $1}'`
+	if [ -z "$BASEDIR" ]; then
+		echo "Couldn't find base dir in $WIRE_CONF"
+		exit 1
+	fi
+	if [ ! -d "$BASEDIR" ]; then
+		echo "Base dir $BASEDIR specified in $WIRE_CONF is not a dir"
+		exit 1
+	fi
+	NBATCHES=`grep '<count>' $WIRE_CONF | sed 's/<\/\?count>//g' | awk '{print $1}'`
+	if [ -z "$NBATCHES" ]; then
+		echo "Couldn't find number of batches in $WIRE_CONF"
+		exit 1
+	fi
+	if [ "$NBATCHES" -lt 1 ]; then
+		echo "Count of batches $NBATCHES is invalid in $WIRE_CONF"
+		exit 1
+	fi
+}
+
+runcommand() {
+	title=$1
+	program=wire-bot-$title
+
+	echo "[`date +"%Y/%m/%d %H:%M"`] Running $title"
+
+	logfile=$BASEDIR/log/`date +"%Y_%m_%d-%H:%M"`_$title.log
+
+	# Remove the comment on next line to send output to screen
+#	logfile=/dev/tty
+
+	$program >& $logfile
+
+	if [ $? -ne 0 ]; then
+		echo "[`date +"%Y/%m/%d %H:%M"`] Error while running $title"
+		echo
+		tail $logfile
+		echo
+		exit 1
+	else
+		echo "[`date +"%Y/%m/%d %H:%M"`] Ok $title"
+	fi
+}
+
+usage() {
+	echo "Usage: $0 <number of rounds>"
+	exit 1
+}
+
+###########################################################################
+# Main code
+###########################################################################
+
+getcrawlparams
+echo "WIRE_CONF                   : $WIRE_CONF"
+echo "Basa directory              : $BASEDIR"
+echo "Number of batches per round : $NBATCHES"
+
+checkspace
+
+NUMBER_OF_ROUNDS=$*
+
+if [ -z "$NUMBER_OF_ROUNDS" ]; then
+	usage
+else
+	if [ "$NUMBER_OF_ROUNDS" -le 0 ]; then
+		echo "The number of rounds must be greater than zero"
+		usage
+	fi
+fi
+
+if [ ! -d "$BASEDIR/log" ]; then
+	echo "Created   : $BASEDIR/log"
+	mkdir "$BASEDIR/log" || ( echo "Couldn't mkdir $BASEDIR/log"; exit 1 )
+else
+	echo "Logs      : $BASEDIR/log"
+fi
+
+# Show user limits
+echo "Limits:"
+ulimit -a
+
+# Start main loop
+
+count=1
+echo
+while [ $count -le $NUMBER_OF_ROUNDS ]
+do
+	echo "====== Round $count of $NUMBER_OF_ROUNDS ============"
+
+	runcommand manager
+	checkspace
+
+	for ((i=1; i<=NBATCHES; i++))
+	do
+		runcommand harvester
+		checkspace
+	done
+
+	runcommand gatherer
+	checkspace
+
+	runcommand seeder
+	checkspace
+
+	count=`expr $count + 1`
+
+	echo
+done

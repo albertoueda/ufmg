@@ -1,0 +1,1081 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.2//EN" "http://www.oasis-open.org/docbook/xml/4.2/docbookx.dtd">
+<book id="wire">
+  <bookinfo>
+    <title>WIRE Documentation</title>
+    <author>
+      <firstname>Carlos</firstname>
+      <othername>C.</othername>
+      <surname>Castillo</surname>
+      <affiliation>
+        <orgname>Center for Web Research</orgname>
+        <address>
+          <email>ccastill@dcc.uchile.cl</email>
+        </address>
+      </affiliation>
+    </author>
+    <abstract>
+      <para>
+			This document describes the WIRE application, including instruction
+			on how to run WIRE, and the API for programming extensions to WIRE.
+		</para>
+    </abstract>
+  </bookinfo>
+  <chapter id="overview">
+    <title>Overview</title>
+    <para>The WIRE project is an effort started by the <ulink url="http://www.cwr.cl/">Center for Web Research</ulink> for creating an application for information retrieval, designed to be used on the Web.</para>
+    <para>Currently, it includes:</para>
+    <itemizedlist>
+      <listitem>
+        <para>A simple format for storing a collection of web documents.</para>
+      </listitem>
+      <listitem>
+        <para>A web crawler.</para>
+      </listitem>
+      <listitem>
+        <para>Tools for extracting statistics from the collection.</para>
+      </listitem>
+      <listitem>
+        <para>Tools for generating reports about the collection.</para>
+      </listitem>
+    </itemizedlist>
+    <para>The main characteristics of the WIRE software are:</para>
+    <itemizedlist>
+      <listitem>
+        <para>Scalability: designed to work with large volumes of documents, tested with several million documents.</para>
+      </listitem>
+      <listitem>
+        <para>Performance: written in C/C++ for high performance.</para>
+      </listitem>
+      <listitem>
+        <para>Configurable: all the parameters for crawling and indexing can be configured via an XML file.</para>
+      </listitem>
+      <listitem>
+        <para>Analysis: includes several tools for analyzing, extracting statistics, and generating reports on sub-sets of the web, e.g.: the web of a country or a large intranet.</para>
+      </listitem>
+      <listitem>
+        <para>Open-source: code is freely available.</para>
+      </listitem>
+    </itemizedlist>
+  </chapter>
+  <chapter id="installation">
+    <title>Installation</title>
+    <section id="installation-download">
+      <title>Downloading</title>
+      <para>The home page of WIRE is <ulink url="http://www.cwr.cl/projects/WIRE">http://www.cwr.cl/projects/WIRE/</ulink></para>
+      <para>The last version can be downloaded from <ulink url="http://www.cwr.cl/projects/WIRE/releases/">http://www.cwr.cl/projects/WIRE/releases/</ulink></para>
+	  <para>If you use WIRE, it is advisable to  <ulink url="http://groups.yahoo.com/group/wire-crawler/join">join the wire-crawler@groups.yahoo.com mailing list</ulink> to receive announcements of new releases.</para>
+    </section>
+    <section id="installation-requirements">
+      <title>Requirements</title>
+      <para>The following packages are required to install WIRE:</para>
+      <itemizedlist>
+        <listitem>
+          <para><ulink url="http://www.chiark.greenend.org.uk/%7Eian/adns/">adns</ulink> - Asynchronous DNS resolver (note that as of May 2006 the resolver still does not handle DNS chains, a non-standar behavior implemented by some Websites like microsoft.com and others from akamai; a <ulink url="http://hugo.vulcano.cl/development/adns-cc">patched version of adns</ulink> is available).</para>
+        </listitem>
+        <listitem>
+          <para><ulink url="http://www.libxml.org/">xml2</ulink> - XML library, including xml and XPath parsers, VERSION 2.6 or newer</para>
+        </listitem>
+        <listitem>
+          <para><ulink url="http://swish-e.org/">swish-e</ulink> - The search engine uses swish-e.</para>
+        </listitem>
+      </itemizedlist>
+      <para>The following packages are suggested for best results:</para>
+      <itemizedlist>
+        <listitem>
+		  <para>Also, LaTeX (with fullpage.sty, included in tetex-extras in some distros) and <ulink url="http://www.gnuplot.info/">gnuplot</ulink> are required to generate the reports.</para>
+          <para><ulink url="http://cr.yp.to/djbdns.html">djbdns</ulink> - Useful for setting a local DNS cache</para>
+          <para>docbook-xsl - Required for generating locally the documentation</para>
+        </listitem>
+      </itemizedlist>
+      <important>
+        <para>Before running the application, you must set the environment variable <envar>WIRE_CONF</envar>.</para>
+      </important>
+      <para>To get optimal results, i.e., to be able to use the crawler with a high degree of parallelization, see <link linkend="installation-tunning">kernel tunning</link>.</para>
+    </section>
+    <section id="installation-overview">
+      <title>Installing</title>
+      <para>To install, unpack the distribution, cd to the created directory, and execute:</para>
+      <screen>
+        <prompt>%</prompt> <userinput><command>./configure</command> </userinput>
+        <prompt>%</prompt> <userinput><command>make</command> </userinput>
+        <prompt>%</prompt> <userinput><command>make install</command> </userinput>
+      </screen>
+    </section>
+    <section id="installation-cvs">
+      <title>If you have access to the CVS</title>
+      <para>If you checkout the distribution from the CVS, you need to do the following in the WIRE directory:</para>
+      <screen>
+        <prompt>%</prompt><userinput>aclocal</userinput>
+        <prompt>%</prompt><userinput>autoheader</userinput>
+        <prompt>%</prompt><userinput>automake -a</userinput>
+        <prompt>%</prompt><userinput>autoconf</userinput>
+      </screen>
+      <para>Before executing <command>./configure</command>; this is to be able to use the distribution with different versions of autoconf.</para>
+    </section>
+    <section id="installation-tunning">
+      <title>Kernel tunning</title>
+      <para>The kernel has to be tuned for optimal performance. This can be easily done using the /proc filesystem in Linux (tested in Kernel 2.4).</para>
+      <para>Log in as root and issue the following commands:</para>
+      <screen>
+        <prompt>%</prompt> <userinput><command>echo</command> 32768 &gt; /proc/sys/fs/file-max</userinput>
+        <prompt>%</prompt> <userinput><command>echo</command> 131072 &gt; /proc/sys/fs/inode-max</userinput>
+      </screen>
+      <para>This sets the maximum number of open files and inodes.</para>
+	  <para>Sometimes you must also set these limits as per-user, in Linux, edit the <filename>/etc/security/limits.conf</filename> file, adding these lines:</para>
+	  <screen>
+		*	soft	nofile	32000
+		*	hard	nofile	32000
+	  </screen>
+	<para>You must make sure that the <filename>/etc/pam.d/login</filename> file includes the limits file:</para>
+	  <screen>
+		session	required	pam_limits.so
+	  </screen>
+      <para>Note that changing user limits requires the user to logout/login to apply changes.</para>
+			<para>For compile-time directives regarding limits, see the section on <link linkend="repository-storage-lfs">large file support</link>.</para>
+    </section>
+  </chapter>
+  <chapter id="configuration">
+    <title>Configuration</title>
+    <section id="configuration-overview">
+      <title>Overview</title>
+      <para>
+			The configuration file is an XML file. The environment variable
+			<envar>WIRE_CONF</envar> must point to this configuration file. We provide a sample,
+            commented configuration file that includes several of the defaults we use. However,
+            there are some parameters you must set before starting the collection.
+		</para>
+    </section>
+    <section id="configuration-example">
+      <title>Sample configuration</title>
+      <para>
+			The exact structure varies between versions. See the file
+			<ulink url="sample.conf">sample.conf</ulink>
+			for an up-to-date example. On this documentation,
+			<replaceable>config/x/y</replaceable> refers to a variable in the configuration file.
+		</para>
+    </section>
+  </chapter>
+  <chapter id="repository">
+    <title>Data Format and API for the Repository</title>
+    <section id="repository-overview">
+      <title>Overview</title>
+      <para>The data format of the collection or repository is designed to scale to several million documents. It is composed of several directories. Each directory is pointed to by a configuration variable.</para>
+    </section>
+    <section id="repository-storage">
+      <title>Text and HTML storage (text/)</title>
+      <para>The storage subsystem is a large file and some data structures designed to store
+		variable-length records containing the downloaded pages and to detect duplicates.</para>
+      <para>It is implemented using a free-space list with first-fit allocation,
+		and a hash table for duplicate detections. It never stores an exact
+		duplicate of something you have stored before.</para>
+      <para>There is an internal limit of <varname>MAX_DOC_LEN</varname> bytes of storage for each document stored, this is set in the source in the file <code>lib/const.h</code></para>
+      <warning>
+        <para>The system must provide large file support, to be able to create files over 4GB long, if the collection is large, enabling large-file support is explained in the next section. Most modern filesystems support these types of files.</para>
+      </warning>
+      <section id="repository-storage-lfs">
+        <title>Large file support</title>
+        <para>All of your source files that needs to be linked with this library must use <filename>config.h</filename>, and those
+		who need <varname>O_LARGEFILE</varname> must
+		include <filename>features.h</filename>.</para>
+        <para>Otherwise, the compiler will complain because <type>off_t</type> is usually <type>long</type>, but it should be <type>long long</type> with
+		large file support; the error reported by the linker is usually
+		very cryptic (related to something missing in the STL, for instance).</para>
+        <para>
+		To check if everything was compiled OK, use:</para>
+        <screen>
+          <prompt>%</prompt> <userinput><command>nm</command> --demangle libwire.a | grep storage_read</userinput>
+        </screen>
+        <para>There should be at least one argument of type <type>long long</type>, this indicates that <type>off_t</type> is correct.</para>
+      </section>
+      <section id="repository-storage-api">
+        <title>API</title>
+        <section id="repository-storage-api-opening">
+          <title>Opening</title>
+          <para>To open a storage, use:</para>
+          <programlisting>storage_t *storage = storage_open( char *dirname );</programlisting>
+          <para><varname>dirname</varname> must be a valid directory, writable by the effective uid. The program will create the required files if necessary. To close, use:</para>
+          <programlisting>storage_close( storage_t *storage );</programlisting>
+          <para>This should be called in the cleanup handler of your application.</para>
+        </section>
+        <section id="repository-storage-api-storing">
+          <title>Storing documents</title>
+          <para>To save a document in the storage, you need content and a docid for that document:</para>
+          <programlisting>
+char *buf = ".....";  /* Document contents */
+docid_t docid = xxxx; /* Usually obtained via urlidx */
+off_t len = (off_t)strlen( buf );
+</programlisting>
+          <para>Now you can store the document, checking for the results of the function.</para>
+          <programlisting>
+doc_hash_t doc_hash;
+docid_t duplicate_of;
+
+storage_status_t rc;
+rc = storage_write( storage, docid, buf, len, &amp;(doc_hash), &amp;(duplicate_of) );
+if( rc == STORAGE_UNCHANGED ) {
+
+/* Document unchanged, already stored with the same content and docid */
+
+} else if( rc == STORAGE_DUPLICATE ) {
+
+/* Document is duplicate, not stored
+variable duplicate_of contains the docid of the older
+document with the same content */
+
+} else if( rc == STORAGE_OK ) {
+
+/* Document stored */
+
+}
+</programlisting>
+          <para>The return values of storage_write are the following:</para>
+          <para><varname>STORAGE_UNCHANGED</varname>: The document already exists with the same docid and content, so it has not changed.</para>
+          <para><varname>STORAGE_DUPLICATE</varname>: There is another document (its docid will be returned in duplicate_of) with the same content.</para>
+          <para><varname>STORAGE_OK</varname>: The document was stored. Maybe it already existed with the same docid, but the content has changed, or it is a new document.</para>
+          <para>In all cases, the variable doc_hash will contain a hash function of the document content.</para>
+        </section>
+        <section id="repository-storage-api-reading">
+          <title>Reading documents</title>
+          <para>To read a stored document, you need first the docid of the document:</para>
+          <programlisting>
+docid_t docid = xxxx;
+</programlisting>
+          <para>Now, you must allocate memory and retrieve the document.</para>
+          <programlisting>
+char *buf = (char *)malloc(sizeof(char)*MAX_DOC_LEN);
+off_t len;
+storage_status_t rc;
+
+rc = storage_read( storage, docid, buf, &amp;(len) );
+if( rc == STORAGE_NOT_FOUND ) {
+/* Document inexistent */
+} else if( rc == STORAGE_OK ) {
+/* Document OK */
+}
+</programlisting>
+          <para>The return values of storage_read are the following:</para>
+          <para><varname>STORAGE_NOT_FOUND</varname>: The requested docid is not stored.</para>
+          <para><varname>STORAGE_DUPLICATE</varname>: The requested docid was retrieved to buf.The content length is in length</para>
+          <para>To check if a document exists without loading it to memory, use:</para>
+          <programlisting>
+docid_t docid = xxxx;
+bool rc = storage_exists( storage, docid );
+</programlisting>
+        </section>
+        <section id="repository-storage-api-deleting">
+          <title>Deleting a document</title>
+          <para>To remove a document from the storage, use:</para>
+          <programlisting>
+docid_t docid = xxxx;
+storage_delete( storage, docid );
+</programlisting>
+          <para>Notice that the storage subsystem does not save a list of all the duplicates of a document, so if you delete the main document, the duplicates pointer of the others will point to an inexistent document.</para>
+        </section>
+      </section>
+    </section>
+    <section id="repository-metaidx">
+      <title>Metadata index (metaidx/)</title>
+      <para>A metadata index is a composed of two files of fixed-size records, one for the metadata about documents, and one for the metadata about sites.</para>
+      <para>Both data types: <type>doc_t</type> and <type>site_t</type> are defined in <filename>metaidx.h</filename></para>
+      <para>The first record in each of these files is special. The second record is for the document with docid=1, the third record for docid=2, etc. This is useful because docid=0 is forbidden, and information about document k is located at offset sizeof(doc_t) * k.</para>
+      <para>The URL of a document, and the hostname of a site, are not stored in the metadata index, because they are variable-sized records. They are stored in the url index.</para>
+      <section id="repository-metaidx-api">
+        <title>API</title>
+        <section id="repository-metaidx-api-opening">
+          <title>Opening and closing</title>
+          <para>A metadata index is opened with the command:</para>
+          <programlisting>metaidx_open( char *directory_name, bool readonly );</programlisting>
+          <para>The directory_name must already exist as a directory, and must be writable by the effective uid. The library checks for the files, and creates them if necessary. If readonly is true, you cannot write data to the metaidx.</para>
+          <para>To close the metadata index, use</para>
+          <programlisting>metaidx_close( metaidx );</programlisting>
+          <para>Notice that this function should be called from the cleanup handler of your application.</para>
+        </section>
+        <section id="repository-metaidx-api-retrieving">
+          <title>Retrieving information</title>
+          <para>To retrieve from the metadata file, the programmer must supply the required memory for the object, allocating a <type>doc_t</type> variable and must set the field <varname>doc.docid</varname>.</para>
+          <programlisting>
+doc_t doc;
+doc.docid = 42;
+metaidx_doc_retrieve( metaidx, &amp;(doc) );
+</programlisting>
+          <para>A status code will be returned; usually all errors generated by this library are fatal.</para>
+        </section>
+        <section id="repository-metaidx-api-storing">
+          <title>Storing information</title>
+          <para>To store in the metadata file, the programmer must set all the data.</para>
+          <programlisting>
+doc_t doc;
+doc.docid = 42;
+doc.xxxx = yyyy;
+metaidx_doc_store( metaidx, &amp;(doc) );
+</programlisting>
+          <para>And to store a site:</para>
+          <programlisting>
+site_t site;
+site.siteid = 38;
+site.xxxx = yyyy;
+metaidx_site_store( metaidx, &amp;(site) );
+</programlisting>
+        </section>
+        <section id="repository-metaidx-api-counting">
+          <title>Counting</title>
+          <para>To check how many documents are stored, use</para>
+          <programlisting>
+metaidx_t metaidx = metaidx_open( dirname );
+docid_t ndocs = metaidx-&gt;count_doc;
+siteid_t nsites = metaidx-&gt;count_site;
+</programlisting>
+        </section>
+      </section>
+    </section>
+    <section id="repository-urlidx">
+      <title>URL index (urlidx/)</title>
+      <para>This module provides access to an index of site-names (such as: www.yahoo.com), and paths (such as: customers/help/index.html ). The module is optimized to provide fast responses for these queries:</para>
+      <para>Site name to/from siteid: Converts a string, representing a sitename, into a siteid and viceversa.</para>
+      <para>Site-id + Path to/from docid: Converts a string, representing a path into a site identified by siteid, into a docid and viceversa.</para>
+      <para>The functions are implemented using on-disk hash tables, and in the case of site names, this hash table is loaded into memory for faster access.</para>
+      <section id="repository-urlidx-api">
+        <title>API</title>
+        <section id="repository-urlidx-api-opening">
+          <title>Opening and closing</title>
+          <para>To open a url index, provide the name of a directory to store the hash tables:</para>
+          <programlisting>urlidx_t *urlidx = urlidx_open( char *dirname, bool readonly );</programlisting>
+          <para>The directory must exist, and be writable by the current uid. The urlidx will create the required files.To close the url index, use</para>
+          <programlisting>urlidx_close( urlidx );</programlisting>
+          <para>This function should be in the cleanup handler of your application. Note that many operations are done in memory, so if you do not close the urlidx, some changes might be lost.</para>
+        </section>
+        <section id="repository-urlidx-api-queryingsite">
+          <title>Querying for site names</title>
+          <para>To get the siteid for a site name, use:</para>
+          <programlisting>
+siteid_t siteid;
+urlidx_status_t rc;
+rc = urlidx_resolve_site( urlidx, "www.yahoo.com", &amp;(siteid) );
+if( rc == URLIDX_EXISTENT ) {
+
+/* The siteid existed and was returned */
+
+} else if( rc == URLIDX_CREATED_SITE ) {
+
+/* A new siteid was allocated and returned */
+
+}
+</programlisting>
+          <para>If the site already exists, this will return the corresponding siteid, otherwise, a new siteid will be allocated and returned in the variable siteid.</para>
+          <para>To make the reverse query, i.e.: asking for the site name of a siteid, use:</para>
+          <programlisting>
+siteid_t siteid = xxxx;
+char sitename[MAX_STR_LEN];
+urlidx_site_by_siteid( urlidx, siteid, sitename );
+</programlisting>
+          <para>Notice that the protocol part of the url (http://) is not saved here. The protocol is considered as a metadata in this framework. Don't add the protocol to the sitename.</para>
+        </section>
+        <section id="repository-urlidx-api-queryingpath">
+          <title>Querying for paths</title>
+          <para>To query for a path or file inside a website, you need to get first the siteid of the site in which the file or directory is located.</para>
+          <important>
+            <para>To save space, path names never contain the leading slash. "/sports/tennis.html" is wrong, but "sports/tennis.html" is right.</para>
+          </important>
+          <para>Suppose you have the following url "http://www.yahoo.com/news/science.cgi". The first step is to query for the siteid:</para>
+          <programlisting>
+siteid_t siteid;
+urlidx_resolve_site( urlidx, "www.yahoo.com", &amp;(siteid) );
+</programlisting>
+          <para>Now, we can query for the path:</para>
+          <programlisting>
+urlidx_status_t rc;
+docid_t docid;
+rc = urlidx_resolve_path( urlidx, siteid, "news/science.cgi", &amp;(docid) );
+if( rc == URLIDX_EXISTENT ) {
+
+/* The document existed */
+
+} else {
+
+/* A new docid was allocated and returned */
+
+}
+</programlisting>
+          <para>If the path didn't exists, a new docid will be allocated. To make the reverse query (asking for the path of a docid), you don't need to know the siteid:</para>
+          <programlisting>
+char path[MAX_STR_LEN];
+docid_t docid = xxxx;
+urlidx_path_by_docid( urlidx, docid, path );
+</programlisting>
+        </section>
+      </section>
+    </section>
+    <section id="repository-linkidx">
+      <title>Link index (link/)</title>
+      <para>Links found but not added to the collection (e.g. to multimedia files, etc.) are saved as text files.</para>
+      <para>Adjacency lists for the graph</para>
+    </section>
+    <section id="repository-harvestidx">
+      <title>Harvest index (harvest/)</title>
+      <para>One directory per harvest round.</para>
+      <para>Fixed-size records for metadata</para>
+      <para>Lists of strings for site names and paths</para>
+    </section>
+  </chapter>
+  <chapter id="bot">
+    <title>Web crawler</title>
+    <para>The web crawler is composed of several programs.</para>
+    <para>Normal operation of the web crawler involves repeatedly running the cycle "seeder-manager-harvester-gatherer-seeder" ... many times.</para>
+    <section id="bot-reset">
+      <title>wire-bot-reset</title>
+      <para>Clears the repository, creates empty data structures and prepares everything for a new crawling. As some of the data structures require the disk space to be allocated from the beginning, this will take some time depending on your settings for <varname>maxdoc</varname> and <varname>maxsite</varname> in the configuration file.</para>
+    </section>
+    <section id="bot-seeder">
+      <title>wire-bot-seeder</title>
+      <para>Receives URLs from the gatherer (or from the initial URLs) and adds documents for them to the repository. This is used both to give the crawler the initial set of URLs and to parse the URLs that are extracted by the gatherer program from the downloaded pages.</para>
+    </section>
+    <section id="bot-manager">
+      <title>wire-bot-manager</title>
+      <para>Creates batches of documents for the harvester to download.</para>
+      <para>This programs sorts the documents from the collection by their "scores" and creates a batch of documents for the harvester. The scores are given by a combination of factors described in the configuration file.</para>
+      <section id="bot-manager-score">
+        <title>Score function</title>
+        <para>The score of each page is calculated as defined in the configuration file; this function currently includes pagerank, depth, dynamic/static pages.</para>
+        <para>The manager tries to determine for each document which is the probability of that document being outdated. If this probability is, say, 0.7, then its current score is defined to be 0.7 x score. Its future score will be 1 x score.</para>
+        <para>The set of pages that have the higher difference between future score and current score will be selected for the next harvester round.</para>
+      </section>
+    </section>
+    <section id="bot-harvester">
+      <title>wire-bot-harvester</title>
+      <para>This program downloads the documents from the Web. The program works in its own directory with its own data structures, and can be stopped at any time.</para>
+		<important>
+		<para>If for any reason the harvester fails, you must cancel the current batch using <command>wire-bot-manager --cancel</command>, and then re-generate the current batch using <command>wire-bot-manager</command>.</para>
+		</important>
+    </section>
+    <section id="bot-gatherer">
+      <title>wire-bot-gatherer</title>
+      <para>Parses downloaded documents and extract URLs. This takes the pages downloaded by the harvester from its directory, and merges those pages into the main collection.</para>
+    </section>
+    <section id="bot-run">
+      <title>wire-bot-run</title>
+      <para>Run several crawler cycles of the form "seeder-manager-harvester-gatherer"</para>
+    </section>
+    <section id="bot-howto">
+      <title>Step-by-step instructions for running the crawler</title>
+      <para>The following assumes that you have downloaded and installed the WIRE program files.</para>
+      <section id="bot-howto-1">
+        <title>1. Create the directory for the collection</title>
+        <para>Decide on which directory is the collection going to be, in this example, we will assume the <replaceable>/opt/wiredata</replaceable> directory is used, and then create that directory:</para>
+        <screen>
+          <prompt>%</prompt> <userinput><command>mkdir</command> /opt/wiredata</userinput>
+        </screen>
+      </section>
+      <section id="bot-howto-2">
+        <title>2. Copy the sample configuration file into the directory</title>
+        <para>The purpose of this is to be able to use different configuration files in different collections.</para>
+        <screen>
+          <prompt>%</prompt> <userinput><command>cp</command> /usr/local/share/WIRE/sample.conf /opt/wiredata/wire.conf</userinput>
+        </screen>
+      </section>
+      <section id="bot-howto-3">
+        <title>3. Set the environment variable <envar>WIRE_CONF</envar></title>
+        <para>Under tcsh:</para>
+        <screen>
+          <prompt>%</prompt> <userinput><command>setenv</command> WIRE_CONF /opt/wiredata/wire.conf</userinput>
+        </screen>
+        <para>Under bash/sh:</para>
+        <screen>
+          <prompt>%</prompt> <userinput>WIRE_CONF=/opt/wiredata/wire.conf; <command>export</command> WIRE_CONF</userinput>
+        </screen>
+      </section>
+      <section id="bot-howto-4">
+        <title>4. Edit the configuration file, mandatory parameters</title>
+        <para>Edit the file <filename>/opt/wiredata/wire.conf</filename>. This is an XML file containing the configuration.</para>
+        <para>Set the base directory of the collection:</para>
+        <para><varname>config/collection/base</varname>=<replaceable>/opt/wiredata</replaceable></para>
+        <para>And set the top level domain:</para>
+        <para><varname>config/seeder/accept/domain-suffixes</varname>=Set to the top level domain(s) you want to crawl</para>
+        <para>Now set the limits for maximum number of documents and sites:</para>
+        <para><varname>config/collection/maxdoc</varname>: Set higher than the estimated maximum number of documents in the collection</para>
+        <para><varname>config/collection/maxsite</varname>: Set higher than the estimated maximum number of sites in the collection</para>
+        <para>The later are usually set based on the number of domains, i.e.: for a domain with 50,000 domains, we usually set maxsite to 150,000 and maxdoc to 15,000,000.</para>
+        <para>The last mandatory parameter is the IP address of the DNS resolvers. See the file <filename>/etc/resolv.conf</filename> in your machine to set this configuration. Note that it is better to have several DNS resolvers, otherwise there will be many DNS lookup errors as a single DNS server will not be able to handle all the requests by WIRE. However, WIRE retries several times for each site name, so eventually even with a single DNS server many site names will be found.</para>
+        <para><varname>config/harvester/resolvconf</varname>: Add one "nameserver" line per each name server</para>
+        <para>The other values are set to rather conservative defaults; see the sample.conf file for more details.</para>
+      </section>
+      <section id="bot-howto-5">
+        <title>5. Create a blank collection</title>
+        <para>This command will cleanup an existing collection, and prepare the directories for a new collection.</para>
+        <screen>
+          <prompt>%</prompt> <userinput><command>wire-bot-reset</command></userinput>
+        </screen>
+        <para>It may take a while, depending on your settings for maxdoc and maxsite.</para>
+      </section>
+      <section id="bot-howto-6">
+        <title>6. Add starting URLS</title>
+        <para>You need a file with a set of starting URLs. This file contains absolute URLs, one URL per line; it is customary to leave this file inside the collection directory. Copy it, for example, to <filename>/opt/wiredata/start_urls.txt</filename>.</para>
+        <para>Example:</para>
+        <screen>
+http://www.site1.zzz/
+http://www.site2.zzz/
+http://www.site2.zzz/inner/urls/
+http://www.site3.zzz/
+</screen>
+        <para>Note that the 'http' must be included in the start url file. If you have IP addresses for some of the Web sites, include them like this:</para>
+	<screen>
+http://www.site1.zzz/ IP=145.123.12.9
+http://www.site2.zzz/ IP=68.19.145.4
+...
+</screen>
+	<para>To load it into the repository, use:</para>
+        <screen>
+          <prompt>%</prompt> <userinput><command>wire-bot-seeder</command> --start <replaceable>/opt/wiredata/start_urls.txt</replaceable></userinput>
+        </screen>
+      </section>
+      <section id="bot-howto-7">
+        <title>7. Run TWO test crawler cycles</title>
+        <para>Run a test crawler cycle to see how is everything going. The first crawler cycle is special as it will only download robots.txt files, and will resolve the IP addresses of the seed URLS. Use the following command line to run two test cycles.</para>
+        <screen>
+			<prompt>%</prompt> <userinput><command>wire-bot-manager</command></userinput>
+			<prompt>%</prompt> <userinput><command>wire-bot-harvester</command></userinput>
+			<prompt>%</prompt> <userinput><command>wire-bot-gatherer</command></userinput>
+			<prompt>%</prompt> <userinput><command>wire-bot-seeder</command></userinput>
+			<prompt>%</prompt> <userinput><command>wire-bot-manager</command></userinput>
+			<prompt>%</prompt> <userinput><command>wire-bot-harvester</command></userinput>
+			<prompt>%</prompt> <userinput><command>wire-bot-gatherer</command></userinput>
+			<prompt>%</prompt> <userinput><command>wire-bot-seeder</command></userinput>
+		</screen>
+		<para>If the four programs succeed in the two rounds, then it is most likely than the configuration is correct. Pay special attention to the output of the second <command>wire-bot-harvester</command>, to see if it is able to contact the given websites. If the harvester fails, you must run <command>wire-bot-manager --cancel</command> to cancel the current cycle before continuing.</para>
+      </section>
+      <section id="bot-howto-8">
+        <title>8. Run several crawler cycles</title>
+        <para>Use the included program wire-bot-run to run several cycles of the crawler; consider that in each cycle at most <varname>WIRE_CONF:config/manager/batch/size</varname> documents will be downloaded; so if the batch size is 100,000 documents, 50 cycles will download at most 5 million pages; normally it will be about half of that value because of page errors, saturated servers, etc.</para>
+        <screen>
+          <prompt>%</prompt> <userinput><command>nohup</command> wire-bot-run 50 &gt;&amp; /opt/wiredata/run.log &amp;</userinput>
+        </screen>
+        <para>If you have sysadmin privileges, you can run the crawler at maximum priority using "nice". The following line locates the process-id of wire-bot-run and changes it to the highest priority (you must run this command as root):</para>
+        <screen>
+          <prompt>%</prompt> <userinput><command>nice</command> -19 `ps -o "%p" --no-headers -C wire-bot-run`</userinput>
+        </screen>
+      </section>
+    </section>
+	<section id="run-stop">
+	<title>Stopping the crawler</title>
+	<para>To stop the crawler, you have to first verify in which stage the crawler is running. To do so, do <command>ps -efa | grep wire</command></para>
+	<para>If the current process is the <command>wire-bot-harvester</command> you can safely stop it using:</para>
+	<screen>
+<prompt>%</prompt> <userinput><command>killall wire-bot-run</command></userinput>
+<prompt>%</prompt> <userinput><command>killall wire-bot-harvester</command></userinput>
+<prompt>%</prompt> <userinput><command>wire-bot-manager --cancel</command></userinput>
+	</screen>
+	<para>The last command is absolutely necessary, otherwise, a partial harvest round will be left.</para>
+	<para>If the current process is not the harvester, you have to wait until it is, and then stop the crawler. It is not a good idea to interrupt neither the gatherer nor the seeder.</para>
+	<para>If the machine hangs, or power fails, before running <command>wire-bot-run</command> you have to run <command>wire-bot-manager --cancel</command>.</para>
+    </section>
+  </chapter>
+  <chapter id="info">
+    <title>Statistics and reports</title>
+    <para>These tools are designed to extract data from the repository to text files and to generate reports.</para>
+    <section id="info-shell">
+      <title>Interactive querying</title>
+      <para><command>wire-info-shell</command> is an interactive program for querying the collection. Type <command>help</command> at the prompt to view the list of commands, or <command>quit</command> to exit the session.</para>
+      <para>All the commands write their output to the standard output. This is the list of commands:</para>
+      <section id="info-shell-main">
+        <title>Main commands</title>
+        <para><command>help</command>: Prints a help message with all the commands.</para>
+        <para><command>quit</command>:	Exists the program</para>
+        <para><command>summary</command>: Shows summary information about the crawler</para>
+      </section>
+      <section id="info-shell-doc">
+        <title>Information about a document</title>
+        <para><command>doc</command><replaceable>docid</replaceable>: Prints all the metadata of the specified document-id. Prints the url of the specified document-id.</para>
+        <para><command>read</command><replaceable>docid</replaceable>: Prints the content of a document.</para>
+        <para><command>links</command><replaceable>docid</replaceable>: Prints all the links of a document.</para>
+      </section>
+      <section id="info-shell-site">
+        <title>Information about a site</title>
+        <para><command>site</command><replaceable>siteid</replaceable>: Prints all the metadata of the specified site-id.  Prints the hostname of the specified site-id.</para>
+        <para><command>site</command><replaceable>sitename</replaceable>: Searches for the site-id of the specified hostname.</para>
+      </section>
+      <section id="info-shell-harvester">
+        <title>Information about a harvester</title>
+        <para><command>harvester</command><replaceable>harvestid</replaceable>: Shows data about a harvester batch.</para>
+      </section>
+      <section id="info-shell-repository">
+        <title>Information about the collection</title>
+        <para><command>urlidx</command>: Check the status of url index</para>
+        <para><command>metaidx</command>: Check the status of the metadata index.  This is useful to get the number of known pages.</para>
+        <para><command>linkidx</command>: Check the status of the link index</para>
+        <para><command>storage</command>: Check the status of the storage</para>
+      </section>
+    </section>
+    <section id="info-extract">
+      <title>Extract raw data</title>
+      <para><command>wire-info-extract</command> is a tool for extracting readable copies of the contents of the repository, to make analysis with external programs. The data format for the output of <command>wire-info-extract</command> is comma-separated-values, i.e.: one record per line, and multiple fields separated by commas. The first record on each file contain the name of the fields.</para>
+	  <para>See:</para>
+	  <screen>
+        <prompt>%</prompt> <userinput><command>wire-info-extract</command> -h</userinput>
+	  </screen>
+	  <para>For a list of available options.</para>.
+	  <para>A very useful command is:</para>
+	  <screen>
+        <prompt>%</prompt> <userinput><command>wire-info-extract</command> --seeds</userinput>
+	  </screen>
+	<para>As it can be used to generate the list of starting URLs for the next crawl, including all pages with at least one page downloaded OK, and including their IP addresses. Note that you must run <command>wire-info-analysis --site-statistics</command> first, to count the number of downloaded pages per site.</para>
+    </section>
+    <section id="info-analysis">
+      <title>Analyzing data to generate statistics</title>
+      <para><command>wire-info-analysis</command> is a program for generating statistics, all the statistics will be generated into the <filename>analysis/</filename> directory.</para>
+      <para>For help on the different statistics available, use:</para>
+      <screen>
+        <prompt>%</prompt> <userinput><command>wire-info-analysis</command> -h</userinput>
+      </screen>
+      <para>All of the analysis phases are listed in order. This program works in several phases or steps. On each step, a command line switch must be entered. The full sequence must be entered in this order:</para>
+      <screen>
+        <prompt>%</prompt> <userinput><command>wire-info-analysis</command> --pagerank</userinput>
+        <prompt>%</prompt> <userinput><command>wire-info-analysis</command> --hits</userinput>
+        <prompt>%</prompt> <userinput><command>wire-info-analysis</command> --sitelink-analysis</userinput>
+        <prompt>%</prompt> <userinput><command>wire-info-analysis</command> --doc-statistics</userinput>
+        <prompt>%</prompt> <userinput><command>wire-info-analysis</command> --site-statistics</userinput>
+        <prompt>%</prompt> <userinput><command>wire-info-analysis</command> --extension-statistics</userinput>
+        <prompt>%</prompt> <userinput><command>wire-info-analysis</command> --harvest-statistics</userinput>
+        <prompt>%</prompt> <userinput><command>wire-info-analysis</command> --lang-statistics</userinput>
+      </screen>
+      <para>Note that the link analysis phases must me done first, as they generate data that is used by the other phases.</para>
+      <warning>
+        <para>Some of the statistics may take a long time, specially those related with link analysis. DO NOT USE --link-analysis unless you have enough memory for the task: it is better to run each link graph analysis in a separate process (see below).</para>
+      </warning>
+      <para>Link analysis involves an iterative computation until a target average error is reached. This process can be controlled using <varname>WIRE_CONF:config/manager/score/*/max-error</varname>.</para>
+      <para>Each analysis phase has a command line switch. The command line switches are explained below:</para>
+      <section id="info-analysis-link">
+        <title>Link analysis in the graph of pages</title>
+        <para><command>--link-analysis</command>: This is equivalent to <command>--pagerank --hits --wlrank</command>.DO NOT USE this form unless you have enough memory for the complete task, it is better to run the following tasks in separate process.</para>
+        <para><command>--pagerank</command>: Generates the Pagerank of the pages. The calculation requires about 25Mb of memory for each million documents. <varname>doc.pagerank</varname> is written to the metadata</para>
+        <para><command>--wlrank</command>: Generates the weighted link rank of pages. This is pagerank weighted by the tag and position of the link in the page. The calculation requires about 25Mb of memory for each million documents. <varname>doc.wlrank</varname> is written to the metadata</para>
+        <para><command>--hits</command>: Generates the static Hubs and Authorities score of pages. This uses Bharat's heuristic of discarding internal links, using only links between pages at different websites. The calculation requires about 50Mb of memory for each million documents. <varname>doc.hub</varname> and <varname>doc.authrank</varname> are written to the metadata</para>
+      </section>
+      <section id="info-analysis-sitelink">
+        <title>Link analysis in the graph of websites</title>
+        <para><command>--sitelink-analysis</command>: This is equivalent to --sitelink-generate --sitelink-component --sitelink-siterank</para>
+        <para><command>--sitelink-generate</command>: Generates a graph with links, in which all the links to and from pages on the same site are collapsed to a single link. This only generates the graph. Files with links are written to: <filename>sitelink/</filename></para>
+        <para><command>--sitelink-components</command>: Site components are generated using Broder's graphs components based on the biggest strongly-connected-component. The sites considered are only those with at least one page downloaded. Component and link-statistics of each site are written to metadata. Statistics are written to <filename>analysis/sitelink/</filename></para>
+        <para><command>--sitelink-siterank</command>: An equivalent of pagerank, considering the links between sites, is calculated for each website. <varname>site.siterank</varname> is written to the metadata</para>
+      </section>
+      <section id="info-analysis-stats">
+        <title>Generating statistics</title>
+        <para><command>--doc-statistics</command>: Generates summary statistics and data tables about all the metadata. It will filter the documents by status (all documents, gathered or downloaded documents, and new documents that have not been visited), and by static/dynamic URLs (all documents, static documents, and dynamic-ally generated pages). This generates all the combinations. For general statistics, it is recommended to use the directory doc_gathered_all, as it includes all the pages that have been downloaded, including static and dynamic pages. Files with data are written to <filename>analysis/doc_X_X</filename></para>
+        <para><command>--site-statistics</command>: Generates summary statistics and data tables about websites.	Statistics are written to <filename>analysis/site</filename></para>
+        <para><command>--extension-statistics</command>: Generates summary statistics about links to domains outside the selected ones, or links to images or multimedia files. Statistics are written to <filename>analysis/extension</filename></para>
+        <para><command>--harvest-statistics</command>: Generates statistics about harvest rounds. Statistics are written to <filename>analysis/harvest</filename></para>
+        <para><command>--lang-statistics</command>: Generates statistics about languages. Statistics are written to <filename>analysis/lang</filename></para>
+      </section>
+    </section>
+    <section id="info-report">
+      <title>Generating reports</title>
+      <para>The analysis package includes programs to generate graphs and data tables. This depends on the following packages:</para>
+      <itemizedlist>
+        <listitem>
+          <para>perl5</para>
+        </listitem>
+        <listitem>
+          <para>XML::LibXML perl module</para>
+        </listitem>
+        <listitem>
+          <para>latex (with longtables and fullpage support)</para>
+        </listitem>
+        <listitem>
+          <para>gnuplot</para>
+        </listitem>
+      </itemizedlist>
+      <para>You must  have those packages installed to generate the reports.</para>
+      <section id="info-report-conf">
+        <title>Configuring the reports</title>
+        <para>The exact content of the reports in terms of which data tables and graphs will be generated cannot be configured at this time.</para>
+        <para>However, it is possible to configure the range for some graphs, as well as the fitting parameters for them. See <varname>WIRE_CONF:config/analysis</varname> in sample.conf. Ranges are given in the configuration in the format <screen>[xmin xmax] [ymin ymax]</screen>. The default range is <screen>[] []</screen> which includes all points, but this default might be in insatisfactory for some graphs. The recommendation is to generate the reports, then view the result, then change the range parameters and re-generate the reports. Note that only the report generation is necessary if you change the range parameters, it is not necessary to repeat the analysis.</para>
+      </section>
+      <section id="info-report-procedure">
+        <title>Procedure for generating reports</title>
+        <para>The  wire-info-analysis program generates multiple .csv (comma-separated values) files in a directory.</para>
+        <para>The files are analyzed by a wire-report-* program:</para>
+        <orderedlist numeration="arabic">
+          <listitem>
+            <para>For each data table, a <filename>xxx_tab.tex</filename> file is generated containing a latex table.</para>
+          </listitem>
+          <listitem>
+            <para>For each graph, a <filename>xxx.gnuplot</filename> file is generated, containing a script which is later used by gnuplot to generate <filename>xxx.eps</filename> an encapsulated postscript file. Additionally, a <filename>xxx_fig.tex</filename> file is generated containing the commands for inserting the postscript file into the Latex output.</para>
+          </listitem>
+          <listitem>
+            <para>A <filename>report.tex</filename> file is generated. LaTeX is then called to generate a .PDF file which is moved to the root of the analysis directory.</para>
+          </listitem>
+        </orderedlist>
+        <para>All these files are generated in a subdirectory of <filename>analysis/</filename> under the collection, and they can be modified manually. For instance, the gnuplot scripts can be modified to plot a graph in a different range.</para>
+      </section>
+      <section id="info-report-doc">
+        <title>Report about documents</title>
+        <screen>
+          <prompt>%</prompt> <userinput><command>wire-info-analysis</command> --link-analysis</userinput>
+          <prompt>%</prompt> <userinput><command>wire-info-analysis</command> --doc-statistics</userinput>
+          <prompt>%</prompt> <userinput><command>wire-report-doc</command>
+          </userinput>
+        </screen>
+        <para>This report includes statistics about all the documents that were attempted to be downloaded by the crawler. This includes all documents whose status is <varname>STATUS_DOC_GATHERED</varname>. The report contains:</para>
+        <itemizedlist>
+          <listitem>
+            <para>Page depth. Depth=1 is the front page of each site.</para>
+          </listitem>
+          <listitem>
+            <para>HTTP code. This is the result code. HTTP codes below 100 are internally used for error conditions in which a successful connection with the HTTP server was not completed.</para>
+          </listitem>
+          <listitem>
+            <para>Mime type. Normally, images or multimedia files are not downloaded by the crawler. However, web servers can respond with any mime-type, so this is a list of mime-types of successfully downloaded pages.</para>
+          </listitem>
+          <listitem>
+            <para>Document age in months and years. This is the date of last modification minus the date of last visit. To account for differences in the clock of servers, any timestamp in the future, but less than 1 day, is considered as if it were now.</para>
+          </listitem>
+          <listitem>
+            <para>Several link score measures, including pagerank, weighted link rank, hub score, authority score, in-degree and out-degree.</para>
+          </listitem>
+          <listitem>
+            <para>Raw content length. The size of unparsed data is the number of bytes actually transfered. There is a limit on the number of bytes downloaded, see <varname>WIRE_CONF:config/harvester/maxfilesize</varname> for the limit.</para>
+          </listitem>
+          <listitem>
+            <para>Content length, the number of bytes kept after removing most of the formatting tags.</para>
+          </listitem>
+        </itemizedlist>
+        <para>Additionally, scatter plots will be generated using a sample of the documents. Use <varname>WIRE_CONF:config/analysis/doc/sample-every</varname> to control the size of the sample. Note that if the sample size is changed, it is necessary to re-run the <command>wire-info-analysis</command> program.</para>
+        <para>The parameters for the data tables and graphs in this report can be found under <varname>WIRE_CONF:config/analysis/doc</varname></para>
+      </section>
+      <section id="info-report-site">
+        <title>Report about sites</title>
+        <screen>
+          <prompt>%</prompt> <userinput><command>wire-info-analysis</command> --sitelink-analysis</userinput>
+          <prompt>%</prompt> <userinput><command>wire-info-analysis</command> --site-statistics</userinput>
+          <prompt>%</prompt> <userinput><command>wire-report-site</command> </userinput>
+        </screen>
+        <para>This report includes statistics about websites.</para>
+        <para>Note that it is likely that the crawler does not download the entire websites, so some statistics must be considered as bounds on the data. E.g. the content length of the website downloaded by the crawler is a lower bound on the size of the website itself.</para>
+        <para>The age of the oldest page of a website is a lower bound on the age of the website itself. e.g.: if the oldest page in a website is 6 months old, then the website exists at least since 6 months ago. The age of the newest page of a website is an upper bound on the update frequency of the website. e.g.: if the newest page in a website is 6 months old, then the website was updated at most 6 months ago.</para>
+        <para>The contents of the report include:</para>
+        <itemizedlist>
+          <listitem>
+            <para>Top websites by number of pages, size, etc.</para>
+          </listitem>
+          <listitem>
+            <para>Raw content length. Number of bytes downloaded.</para>
+          </listitem>
+          <listitem>
+            <para>Sum of several link analysis statistics.</para>
+          </listitem>
+          <listitem>
+            <para>In-degree and out-degree. Number of different sites pointing to/from this site.</para>
+          </listitem>
+          <listitem>
+            <para>Siterank. This is like pagerank, but applied to sites.</para>
+          </listitem>
+          <listitem>
+            <para>Cumulative distribution and histograms of these statistics.</para>
+          </listitem>
+        </itemizedlist>
+        <para>Several scatter plot are also generated relating different statistics. This is done using a sample of one every <varname>WIRE_CONF:config/analysis/site/scatter-plot-every</varname> sites. Changing this number requires to execute the wire-info-analysis program again.</para>
+      </section>
+      <section id="info-report-link">
+        <title>Report about the graph of links between sites</title>
+        <screen>
+          <prompt>%</prompt> <userinput><command>wire-info-analysis</command> --sitelink-analysis</userinput>
+          <prompt>%</prompt> <userinput><command>wire-report-sitelink</command> </userinput>
+        </screen>
+        <para>This report includes information about the graph of links between sites.</para>
+        <para>The contents include:</para>
+        <itemizedlist>
+          <listitem>
+            <para>Size of components, related to the main strongly connected components.</para>
+          </listitem>
+          <listitem>
+            <para>Histogram of strongly-connected component sizes.</para>
+          </listitem>
+        </itemizedlist>
+      </section>
+      <section id="info-report-harvest">
+        <title>Report about the harvest batches</title>
+        <screen>
+          <prompt>%</prompt> <userinput><command>wire-info-analysis</command> --harvest-analysis</userinput>
+          <prompt>%</prompt> <userinput><command>wire-report-harvest</command> </userinput>
+        </screen>
+        <para>This report includes information about the cumulative score acquired during each harvest round. In all the graphs, time is plotted against some score. This is done to analyze how quickly is the crawler finding important pages in terms of e.g.: link score.</para>
+        <para>The contents of this report include:</para>
+        <itemizedlist>
+          <listitem>
+            <para>All the relevant data about each harvest round.</para>
+          </listitem>
+          <listitem>
+            <para>Number of sites included in each round.</para>
+          </listitem>
+          <listitem>
+            <para>Number of pages successfully downloaded.</para>
+          </listitem>
+        </itemizedlist>
+      </section>
+      <section id="info-report-lang">
+        <title>Report about document languages</title>
+        <screen>
+          <prompt>%</prompt> <userinput><command>wire-info-analysis</command> --lang-statistics</userinput>
+          <prompt>%</prompt> <userinput><command>wire-report-lang</command> </userinput>
+        </screen>
+        <para>This report contains statistics about the languages in which documents are written. The heuristic used involves several files containing frequent words on different languages. See <varname>WIRE_CONF:config/analysis/lang</varname> for details.</para>
+        <para>This report also contains the number of pages in each language found at each page depth.</para>
+      </section>
+      <section id="info-report-extension">
+        <title>Report about the link extensions</title>
+        <screen>
+          <prompt>%</prompt> <userinput><command>wire-info-analysis</command> --extension-statistics</userinput>
+          <prompt>%</prompt> <userinput><command>wire-report-extension</command> </userinput>
+        </screen>
+        <para>The links to external domain include images (mostly banners, pointing to .net or .com domains). That's why there is a list that includes only pages. Links to external domains are affected by:</para>
+        <orderedlist numeration="arabic">
+          <listitem>
+            <para>How big are external domains, i.e.: .COM is very large and hence very linked</para>
+          </listitem>
+          <listitem>
+            <para>There are copies of Open Directory Project data everywhere, so you will always find links to very small countries</para>
+          </listitem>
+          <listitem>
+            <para>Popular country-code top level domains that are not used by their meaning as countries; here are some examples:</para>
+          </listitem>
+        </orderedlist>
+        <informaltable frame="all">
+          <tgroup cols="3">
+            <tbody>
+              <row>
+                <entry>Country Code</entry>
+                <entry>Country</entry>
+                <entry>Comercial usage</entry>
+              </row>
+              <row>
+                <entry>.WS</entry>
+                <entry>Samoa</entry>
+                <entry>WebSite</entry>
+              </row>
+              <row>
+                <entry>.TV</entry>
+                <entry>Tuvalu</entry>
+                <entry>TeleVision</entry>
+              </row>
+              <row>
+                <entry>.TO</entry>
+                <entry>Tonga</entry>
+                <entry>Used in "go.to/...", "crawl.to/", etc.</entry>
+              </row>
+              <row>
+                <entry>.TK</entry>
+                <entry>Tokelau</entry>
+                <entry>It sounds cool ?</entry>
+              </row>
+              <row>
+                <entry>.NU</entry>
+                <entry>Niue</entry>
+                <entry>Sounds like "new"</entry>
+              </row>
+            </tbody>
+          </tgroup>
+        </informaltable>
+        <para>This report contains the following information:</para>
+        <itemizedlist>
+          <listitem>
+            <para>Most linked top level domains.</para>
+          </listitem>
+          <listitem>
+            <para>Most linked top level domains vs size of domains. This is the ratio between the number of links found and the actual size of a domain. If links were uniformly distributed, this should be 1 for each domain, but they are not, and this list attempts to reflect which domains are more popular.</para>
+          </listitem>
+          <listitem>
+            <para>Most linked file type extensions, by file type.</para>
+          </listitem>
+        </itemizedlist>
+        <para>The file type extensions can be configured using <varname>WIRE_CONF:config/analysis/extension</varname></para>
+      </section>
+    </section>
+  </chapter>
+  <chapter id="index">
+    <title>Indexing and searching</title>
+		<para>WIRE includes a program for creating a swish-e index. This program depends on <ulink url="http://swish-e.org/">SWISH-e</ulink> to work.</para>
+
+		<section id="index-create">
+			<title>Creating the index</title>
+				<para>To create the index, use:</para>
+				<screen>
+					<prompt>%</prompt> <userinput><command>wire-search-indexer</command> --format swish-e --config --index</userinput>
+				</screen>
+				<para>This command first creates a configuration file for SWISH-E (option --config), and then executes SWISH-E (option --index). If you want more control over the indexation parameters, first execute with --config, then edit the configuration file manyall, then execute with --index.</para>
+				<para>SWISH-E extracts the data according to the configuration file, and will call <command>wire-search-feeder</command>, which generates an output that is read by <command>swish-e</command> and then indexed. The index is generated in the <filename>index</filename> subdirectory of the collection. Please refer to the swish-e documentation for instructions on how to search using this index.</para>
+				<para>If you want to create a partial index, starting with document number <varname>FIRST_DOCID</varname> up to document number <varname>LAST_DOCID</varname>, use:</para>
+				<screen>
+					<prompt>%</prompt> <userinput><command>wire-search-indexer</command> --format swish-e --from <varname>FIRST_DOCID</varname> --to <varname>LAST_DOCID</varname></userinput>
+				</screen>
+		</section>
+		<section id="index-use">
+				<title>Using the index: normal search</title>
+				<para>To execute a query, first create the index using the procedure described above.</para>
+				<para>Verify that the index file was created. See the file <filename>index/index.swish-e</filename> under your collection's directory.</para>
+				<para>To execute a query, use the following (replace "BASE" by the directory of your collection):</para>
+				<screen>
+					<prompt>%</prompt> <userinput><command>swish-e</command> -w <varname>query</varname> -f <varname>BASE</varname>/index/index.swish-e</userinput>
+				</screen>
+					<para>Certain properties are saved to the index (e.g.: <filename>swishdescription</filename> contains the first bytes of the text), to see the list of properties, use:</para>
+				<screen>
+					<prompt>%</prompt> <userinput><command>swish-e</command> -T INDEX_METANAMES -f <varname>BASE</varname>/index/index.swish-e</userinput>
+				</screen>
+		</section>
+		<!--
+		<section id="index-persistent">
+		<title>Using the index: persistent query daemon</title>
+				<para>A problem with searching using a command line is that it is slow when dealing with too many queries, mainly because portions of the index have to be loaded in memory every time a query is executed. This can be solved using some degree of persistency in the server-side.</para>
+				<para>We have used the <command>swished</command> package to achieve this kind of persistency. That package runs as an mod-perl application in an Apache2 server. This is the procedure we have used:</para>
+				<itemizedlist>
+						<listitem><para>Install the <ulink url="http://joshr.com/src/swished/">swished</ulink> package.</para></listitem>
+						<listitem><para>View the <filename>README</filename> inside the <filename>swished</filename> package. It includes instructions for using Apache2 for accesing the package, we appended the following to the <filename>/etc/apache2/apache2.conf</filename> file (replace "BASE" by the directory of your collection):</para>
+						<screen>
+PerlRequire /usr/local/swished/lib/startup.pl
+PerlPassEnv SWISHED_INDEX_DEFAULT
+&lt;Location /swished&gt;
+		PerlResponseHandler SWISHED::Handler
+		PerlSetEnv SWISHED_INDEX_DEFAULT BASE/index/index.swish-e
+		SetHandler perl-script
+&lt;/Location&gt;
+
+						</screen>
+						</listitem>
+						<listitem><para>Restart the apache2 server. Watch for errors in the server's error log.</para></listitem>
+						<listitem><para>Test the search engine's daemon using: <command>lynx "http://localhost/swished?w=<varname>QUERY</varname>"</command></para></listitem>
+						<listitem><para>Install the <ulink url="http://joshr.com/src/SWISH-API-Remote/">SWISH::API::Remote</ulink> perl package if you want to write a CGI script for accessing the collection.</para></listitem>
+					</itemizedlist>
+		</section>
+		-->
+			
+	</chapter>
+
+  <chapter id="history">
+    <title>Version history</title>
+	<section><title>Version 0.22</title>
+	<itemizedlist>
+		<listitem><para>Fixed an issue in a 64bit architecture when the metaidx is more than 4GB; and a rare issue with the gatherer when the parser returns an empty document -- thanks Attila Zs&eacute;der</para></listitem>
+	</itemizedlist>
+	</section>
+    <section><title>Version 0.21</title>
+	<itemizedlist>
+		<listitem><para>Fixed compilation issues in a 64bits architecture, warnings in universalchardet, and a bug in urlidx.cc with respect to relative paths starting in a dynamic URL -- thanks Rhodrigo Meza.</para></listitem>
+	</itemizedlist>
+	</section>
+    <section><title>Version 0.20</title>
+	<itemizedlist>
+		<listitem><para>Fixed compilation warnings and added a --texts option to the export.</para></listitem>
+	</itemizedlist>
+	</section>
+    <section><title>Version 0.19</title>
+	<itemizedlist>
+		<listitem><para>Fixed a bug in wire-bot-harvester that affected a tiny portion of web servers (old versions of Netscape Enterprise Server and others). Now all the lines in the HTTP request end in \r\n instead of \n -- thanks Rhodrigo Meza for reporting and help debugging this.</para></listitem>
+	</itemizedlist>
+	</section>
+    <section><title>Version 0.18</title>
+	<itemizedlist>
+		<listitem><para>Fixed bug in wire-bot-seeder, the outlinks of the last document were not being processed -- thanks Dmitry Ruzanov, Sergei Shebanin and Ivan Sigaev for reporting this.</para></listitem>
+	</itemizedlist>
+	</section>
+    <section><title>Version 0.17</title>
+	<itemizedlist>
+		<listitem><para>Fixed bug in wire-info-statistics --lang-analysis (perfhash was too small).</para></listitem>
+	</itemizedlist>
+	</section>
+    <section><title>Version 0.16</title>
+	<itemizedlist>
+		<listitem><para>Fixed nasty bug in parsing of ROBOTS.TXT files (was saving siteid instead of docid). Thanks to Peter Halacsy and Daniel Varga for reporting the error.</para></listitem>
+		<listitem><para>Several fixes to prevent buffer overflow errors.</para></listitem>
+	</itemizedlist>
+	</section>
+    <section><title>Version 0.15</title>
+	<itemizedlist>
+		<listitem><para>Implemented Locality-Sensitive Hashing Sketches using the irudiko library. This was done by Angelo Romano; to use it you can set the parameter <varname>WIRE_CONF:gatherer/use-sketches</varname> in the configuration file. This will compute a sketch for each document, which later you can extract using wire-info-extract.</para></listitem>
+	</itemizedlist>
+</section>
+    <section><title>Version 0.14</title>
+	<itemizedlist>
+		<listitem><para>Fixed bug in checking site length.</para></listitem>
+	</itemizedlist>
+</section>
+    <section><title>Version 0.13</title>
+	<itemizedlist>
+		<listitem><para>Fixed bug that increased CPU usage when there were just a few sites available.</para></listitem>
+		<listitem><para>Documented IP=x.x.x.x extension.</para></listitem>
+		<listitem><para>Included link to patched ADNS version in documentation -- thanks to <ulink url="http://hugo.vulcano.cl/">Hugo Salgado</ulink> and <ulink url="http://www.rho.cl/">Rhodrigo Meza</ulink>.</para></listitem>
+	</itemizedlist>
+	</section>
+    <section><title>Version 0.12</title>
+	<itemizedlist>
+		<listitem><para>Exports links to text shows only the links among OK pages and/or redirects.</para></listitem>
+		<listitem><para>Redirects are considered in PageRank and HITS computation.</para></listitem>
+		<listitem><para>Fixed error in parsing of robots.txt for cases with multiple user-agent matches.</para></listitem>
+		<listitem><para>Fixed bug in number format of report library (thanks Bartek!).</para></listitem>
+	</itemizedlist>
+	</section>
+    <section><title>Version 0.11</title>
+	<itemizedlist>
+		<listitem><para>Added an option to reduce disk space by keeping only stats on the links to multimedia files. See the sample configuration file: <varname>config/seeder/extensions/</varname>. If you are upgrading, we recommend you to copy this part of the sample configuration file to your own.</para></listitem>
+		<listitem><para>Fixed warnings during the compilation</para></listitem>
+		<listitem><para>Fixed a nasty bug in the parser, that affected the caption of links under some circumstances</para></listitem>
+		<listitem><para>Fixed a bug that appeared when the domain suffix was .none, the external links among sites were not saved</para></listitem>
+	</itemizedlist>
+     </section>
+    <section><title>Version 0.10</title>
+	<itemizedlist>
+		<listitem><para>Improved performance, reduced memory usage of the seeder and manager program</para></listitem>
+		<listitem><para>Fixed bug of URL parsing that can cause an unusually high (more than 40%) number of broken links if certain special characters are present in URLs. The error was detected during a crawl of the Polish web, previous crawls should not be affected.</para></listitem>
+	</itemizedlist>
+     </section>
+    <section><title>Version 0.9b</title>
+	<itemizedlist>
+		<listitem><para>Fixed a bug with the gatherer and collections with more than 50 million documents</para></listitem>
+	</itemizedlist>
+     </section>
+    <section><title>Version 0.9</title>
+	<itemizedlist>
+		<listitem><para>Added support for MD5</para></listitem>
+		<listitem><para>Added configuration settings for UTF-8 conversion</para></listitem>
+		<listitem><para>Added default configuration settings</para></listitem>
+	</itemizedlist>
+     </section>
+    <section><title>Version 0.8</title>
+	<itemizedlist>
+		<listitem><para>Introduced the UTF-8 converter</para></listitem>
+	</itemizedlist>
+     </section>
+  </chapter>
+
+  <chapter id="bugs">
+    <title>Known bugs</title>
+	<itemizedlist>
+		<listitem><para>"Chunked" content-encoding is not supported properly, meaning that some hex numbers (indicating the size of each chunk) will appear in the middle of some pages.</para></listitem>
+		<listitem><para>Dictionary-based language detection does not work to well, it would be much better to use a bayesian detector. To work around this, you can extract a part of the collection and then run a language detector externally</para></listitem>
+	</itemizedlist>
+  </chapter>
+
+  <chapter id="acknowledgements">
+    <title>Acknowledgements</title>
+    <para>This project is funded by the Center for Web Research.</para>
+    <para>The Center for Web Research (CWR) is possible thanks to the Millennium Program.</para>
+    <para>Design:</para>
+    <itemizedlist>
+      <listitem>
+        <para>Ricardo Baeza-Yates</para>
+      </listitem>
+      <listitem>
+        <para>Carlos Castillo</para>
+      </listitem>
+    </itemizedlist>
+    <para>Programming:</para>
+    <itemizedlist>
+      <listitem>
+        <para>Carlos Castillo - Web crawler and repository</para>
+      </listitem>
+      <listitem>
+        <para>Emilio Davis - Swish-e integration and weighted link score</para>
+      </listitem>
+      <listitem>
+        <para>Felipe Lalanne - Charset detection and several bugfixes</para>
+      </listitem>
+    </itemizedlist>
+  </chapter>
+</book>

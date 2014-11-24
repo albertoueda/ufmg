@@ -1,0 +1,12 @@
+LangThaiModel.o: LangThaiModel.cpp /usr/include/stdc-predef.h \
+ nsSBCharSetProber.h ../config.h nsCharSetProber.h nsPRTypes.h
+
+/usr/include/stdc-predef.h:
+
+nsSBCharSetProber.h:
+
+../config.h:
+
+nsCharSetProber.h:
+
+nsPRTypes.h:

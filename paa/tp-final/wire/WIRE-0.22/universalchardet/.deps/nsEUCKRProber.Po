@@ -1,0 +1,19 @@
+nsEUCKRProber.o: nsEUCKRProber.cpp /usr/include/stdc-predef.h \
+ nsEUCKRProber.h ../config.h nsCharSetProber.h nsPRTypes.h \
+ nsCodingStateMachine.h nsPkgInt.h CharDistribution.h
+
+/usr/include/stdc-predef.h:
+
+nsEUCKRProber.h:
+
+../config.h:
+
+nsCharSetProber.h:
+
+nsPRTypes.h:
+
+nsCodingStateMachine.h:
+
+nsPkgInt.h:
+
+CharDistribution.h:

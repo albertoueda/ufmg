@@ -1,0 +1,12 @@
+nsMBCSSM.o: nsMBCSSM.cpp /usr/include/stdc-predef.h \
+ nsCodingStateMachine.h ../config.h nsPkgInt.h nsPRTypes.h
+
+/usr/include/stdc-predef.h:
+
+nsCodingStateMachine.h:
+
+../config.h:
+
+nsPkgInt.h:
+
+nsPRTypes.h:

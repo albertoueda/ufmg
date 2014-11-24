@@ -1,0 +1,8 @@
+italianstemmer.o: italianstemmer.cc /usr/include/stdc-predef.h \
+ italianstemmer.h ../config.h
+
+/usr/include/stdc-predef.h:
+
+italianstemmer.h:
+
+../config.h:
