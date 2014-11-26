@@ -1,0 +1,36 @@
+
+- Cumulative PageRank
+- For the value of an object in the index, V (p), a product function is proposed:
+    V (p) = IntrinsicQuality(p) α × RepresentationalQuality(p) β × Freshness(p) γ
+    
+- Figure 7.1: Operation of the manager program with K = 2. The two pages with the highest
+    expected profit are assigned to this batch.
+    
+Data structures
+
+Grava em arquivo e em memória
+
+
+@inproceedings{Ehrig:2003:OCW:952532.952761,
+ author = {Ehrig, Marc and Maedche, Alexander},
+ title = {Ontology-focused Crawling of Web Documents},
+ booktitle = {Proceedings of the 2003 ACM Symposium on Applied Computing},
+ series = {SAC '03},
+ year = {2003},
+ isbn = {1-58113-624-2},
+ location = {Melbourne, Florida},
+ pages = {1174--1178},
+ numpages = {5},
+ url = {http://doi.acm.org/10.1145/952532.952761},
+ doi = {10.1145/952532.952761},
+ acmid = {952761},
+ publisher = {ACM},
+ address = {New York, NY, USA},
+ keywords = {Semantic Web, Web Searching and Crawling},
+} 
+
+@MISC{Ehrig03ontology-focusedcrawling,
+    author = {Marc Ehrig and Alexander Maedche},
+    title = {Ontology-Focused Crawling of Web Documents},
+    year = {2003}
+}
