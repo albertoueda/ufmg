@@ -88,9 +88,17 @@ O objetivo deste trabalho é transformar o \textit{general web crawler} de refer
 
 Em seguida, executaremos testes de coleta para os dois algoritmos - original e modificado - e faremos a comparação dos resultados obtidos. Dado um tópico-alvo para a coleta, espera-se que o algoritmo adaptado seja melhor em termos de espaço e memória que o original. Mais especificamente, o \textit{focused crawler} deverá encontrar as páginas mais relevantes antes do \textit{crawler} genérico. Parte das mesmas métricas utilizadas para avaliar o \textit{WIRE} serão aplicadas para o nosso coletor e os resultados serão apresentados.
 
-
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Modelagem através de um Grafo}
+
 Considerando as páginas da \textit{Web} como vértices e os diversos \textit{links} encontrados como arestas, pode-se aplicar diferentes algoritmos para a seleção \textit{on-line} (em tempo de execução) dos \textit{links} que o nosso \textit{focused crawler} irá visitar em um nova coleta. Possíveis estratégias de escolha (\textit{selection policy}) para o coletor baseiam-se, por exemplo, em: buscas em largura \cite{najork}, indicador \textit{PageRank} \cite{cho} ou até mesmo no uso de algoritmos genéticos \cite{johnson}. 
+
+\begin{figure}[H]
+     \centering
+     \includegraphics[scale=0.4]{figures/pagerank.png}
+     \caption{}
+     \label{bsp}
+\end{figure}
 
 Levando-se em conta que não é possível coletar todas as páginas da \textit{Web}, devido à enorme quantidade de páginas e sua característica mutável, é importante encontrar as páginas mais relevantes o quanto antes. Quanto mais rápido uma página muito relevante for encontrada (de acordo com o indicador considerado), melhor a qualidade dos resultados obtidos em um dado instante de tempo da execução do coletor.
 
@@ -129,7 +137,7 @@ De forma geral, os coletores podem ser divididos em diversas categorias, conform
 
 
 
-\section{Baseline}
+\section{Baseline: WIRE}
 
 O \textit{baseline} para este trabalho é o \textit{WIRE}, um \textit{general web crawler} desenvolvido por Carlos Castillo em seu doutorado na Universidade do Chile \cite{carlos}. Este coletor foi construído visando-se alto desempenho e boa escalabilidade, respeitando as políticas de restricões a visitas de robôs a servidores \textit{Web}.
 
@@ -193,7 +201,23 @@ A condição de parada depende do objetivo do usuário, que pode priorizar cober
 
 \section{Heurística Implementada}
 
-\section{Análise de Complexidade dos Algoritmos}
+
+\begin{figure}[H]
+     \centering
+     \includegraphics[scale=0.4]{figures/football-cloud.png}
+     \caption{http://jasondavies.com/wordcloud.}
+     \label{bsp}
+\end{figure}
+
+\section{Análise Teórica de Complexidade}
+
+\begin{figure}[H]
+     \centering
+     \includegraphics[scale=0.4]{figures/complexity.png}
+     \caption{}
+     \label{bsp}
+\end{figure}
+
 \subsection{Complexidade de Tempo}
 \subsection{Complexidade de Espaço}
 
@@ -201,8 +225,7 @@ A condição de parada depende do objetivo do usuário, que pode priorizar cober
 \subsection{Tempo de Execução}
 \subsection{Uso de Memória}
 \subsection{Qualidade da Resposta}
-\subsection{Melhor Caso}
-\subsection{Pior Caso}
+%\subsection{Melhores e Piores Casos}
 
 \section{Trabalhos Futuros}
 \section{Conclusão}
