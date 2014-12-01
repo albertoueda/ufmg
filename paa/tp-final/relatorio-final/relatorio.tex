@@ -289,9 +289,9 @@ Portanto, as complexidades de ambos os algoritmos podem ser descritas como a seg
 \subsection{Complexidade de Tempo}
 %------------------------------------------------------
 
-Há duas intervenções no algoritmo: uma para contagem de palavras e outras para análise de \textit{URLs}. A contagem é feita de maneira direta, comparando-se com uma lista \textit{stopwords} e atualizando a lista incrementando a frequência de um termo cada vez que ele é encontrado em uma página. Tal algoritmo não depende do tamanho de $V$ ou de $A$ e portanto possui complexidade de tempo constante em relação à instância do problema. 
+Há duas intervenções no algoritmo: uma para contagem de palavras e outras para análise de \textit{URLs}. A contagem é feita de maneira direta, comparando-se com uma lista \textit{stopwords} e atualizando a lista incrementando a frequência de um termo cada vez que ele é encontrado em uma página. Tal algoritmo não depende do tamanho de $V$ ou de $A$ e portanto possui uma complexidade de tempo $a$ constante em relação à instância do problema. 
 
-O mesmo ocorre com a análise e pontuação de \textit{URLs}. Dadas as $n$ palavras mais frequentes da lista de termos, cada um é procurado diretamente na \textit{URL}, sem utilização de análises semânticas ou ontologias, como alguns estudos encontrados durante a pesquisa sugerem. Esta análise não depende das características do grafo do problema, logo também possui complexidade de tempo contante em relação à $V$ e $E$.
+O mesmo ocorre com a análise e pontuação de \textit{URLs}. Dadas as $n$ palavras mais frequentes da lista de termos, cada um é procurado diretamente na \textit{URL}, sem utilização de análises semânticas ou ontologias, como alguns estudos encontrados durante a pesquisa sugerem. Esta análise não depende das características do grafo do problema, logo também possui uma complexidade de tempo $b$ contante em relação à $V$ e $E$.
 
 Como a multiplicação por constantes não muda a complexidade de um algoritmo, a complexidade de tempo da heurística também é $O(V+E)$.
 
@@ -299,7 +299,7 @@ Como a multiplicação por constantes não muda a complexidade de um algoritmo, 
 \subsection{Complexidade de Espaço}
 %------------------------------------------------------
 
-Em relação ao \textit{baseline}, o espaço adicional utilizado
+Em relação ao \textit{baseline}, o espaço adicional utilizado se refere à lista para contagem de palavras. O tamanho desta lista depende diretamente do número de palavras possíveis em um idioma, subtraindo-se preposições, artigos, advérbios, etc (\textit{stopwords}). Logo, o tamanho deste espaço não depende da instância do grafo e é limitado superiormente por uma constante $c$, por exemplo.
 
 Novamente, como a multiplicação por constantes não muda a complexidade de um algoritmo, a complexidade de espaço da heurística também é $O(V+E)$.
 
@@ -329,7 +329,15 @@ Novamente, como a multiplicação por constantes não muda a complexidade de um 
 
 \section{Trabalhos Futuros}
 
+Ao longo do projeto foram percebidas melhorias ou ideias que podem ser implementadas em trabalhos futuros. Entre elas, destacam-se: utilização de uma ontologia ao invés da contagem simples de palavras, passando a utilizar as relações entre as palavras encontradas para determinar as sentenças mais relevantes, por exemplo; detecção de \textit{spams} (e outras informações não relevantes) durante a coleta, a fim de evitar que palavras que são comuns mas não são relevantes direcionem incorretamente a coleta para outros tópicos de interesse; e por último, reduzir, se possível, o problema da coleta da \textit{Web} para um problema conhecido de grafos - como por exemplo, o problema do Clique - para então utilizar as técnicas mais modernas para resolução deste problema.
+
 \section{Conclusão}
+
+A coleta de páginas da \textit{Web} mostra-se ser um problema real, moderno e desafiador. Devido ao grande volume de dados, dinamismo de conteúdo e a existência de diferentes características que podem ser aproveitadas na implementação de coletores, o problema pode ser atacado de diversas formas distintas, buscando-se o resultado mais próximo possível de uma solução exata. Durante o trabalho, tive um grande aprendizado neste campo de pesquisa da área de Recuperação de Informação, que é a área onde pretendo seguir em meu futuro acadêmico.
+
+A pesquisa e implementações de heurísticas mostraram que mesmo ideias simples como a deste trabalho podem ter resultados de boa qualidade em relação aos \textit{baselines} utilizados. Porém, deve-se atentar também para os casos em que tais heurísticas não superam - ou nem mesmo ficam próximas - dos resultados de um algoritmo de referência, em geral, um que já tenha sido publicado em conferências ou em revistas científicas.
+
+Os conceitos, as técnicas e a experiência adquiridas na disciplina de \textit{Projeto e Análise de Algoritmos} foram bastante úteis para elaboração deste trabalho, tanto em termos individuais como nas discussões em grupo com outros colegas da disciplina. Por meio deste trabalho prático, muito do aprendizado obtido teve de ser testado, revisto ou mesmo alterado durante todas as fases do projeto.
 
 % Referências
 \bibliographystyle{plain}%amsalpha
