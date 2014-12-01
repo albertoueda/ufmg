@@ -1,8 +1,3 @@
-% TO DO
-% Colocar tópicos de PAA
-% Tirar que o desejado é melhorar
-
-
 \documentclass[a4paper,12pt,titlepage]{article}
 %\usepackage[T1]{fontenc}
 
@@ -69,24 +64,37 @@ Projeto e Análise de Algoritmos\\ \
 
 Coletores de páginas da \textit{Web} constituem o primeiro passo para a implementação de máquinas de busca modernas. De forma geral, um coletor - em inglês, \textit{crawler} - é um sistema que faz requisições a servidores da \textit{Web} de forma planejada e automática, coleta parte ou todo o conteúdo das páginas devolvidas pelas requisições e utiliza este novo conteúdo para realizar novas requisições \cite{b}. Estima-se que hoje mais de 10\% das visitas a \textit{Websites} sejam feitas por coletores \cite{nielsen}.
 
+O primeiro coletor \textit{Web} conhecido foi criado em 1993 por Matthew Gray - então graduando do MIT - e chamava-se WWWW (\textit{World Wide Web Wanderer)}. Comprovando a forte relação com a história dos sistemas de busca na \textit{Web}, no mesmo ano foi lançada também a primeira máquina de busca conhecida, ALIWEB, criada por Martijn Koster \cite{b}. Nesta época, um número razoável de servidores para se obter uma boa cobertura da rede girava em torno de apenas alguns milhares. Desde então, o número de \textit{hosts} tem aumentado em alta velocidade  (chegando a praticamente dobrar a cada ano, de 1993 a 1996 \cite{gray}), tornando as máquinas de busca ainda mais necessárias e, consequentemente, também os coletores de dados.
+
+Deste modo, podemos fazer a seguinte pergunta: como coletar as páginas da \textit{Web} de forma eficiente em termos de tempo e espaço, mantendo um nível mínimo de qualidade do resultado?
+
+\subsection{Dificuldade do Problema}
+
 Hoje, mesmo as principais máquinas de busca cobrem apenas uma parte da \textit{Web} atual. Em 2005, foi demonstrado que o nível de cobertura das principais máquinas de buscas existentes está entre 58\% e 76\% da \textit{Web} \cite{gulli}. Além disso, o custo da utilização da rede também deve ser considerado. Em 2004, tal custo foi estimado em US\$ 1,5 milhão para coletores de larga escala \cite{craswell}. 
 
-\subsection{Dificuldade do problema}
+Outra característica que torna o problema difícil é a velocidade em que a \textit{Web} se modifica. Devido à facilidade de acesso e à alta disponibilidade de servidores nos dias atuais, a cada minuto novas páginas são criadas, modificadas ou removidas da \textit{Web}. Em todos os casos, a relevância de cada página existente pode aumentar ou diminuir, conforme as novas características da \textit{Web}. A figura abaixo ilustra esta ideia.
 
-... Desta forma solução exata para o problema é impraticável.
+\begin{figure}[H]
+     \centering
+     \includegraphics[scale=0.3]{figures/stars.png}
+     \caption{coletar documentos da \textit{Web} pode ser visto como analisar um céu estrelado. No momento em que podemos visualizá-lo, o cenário real já se modificou.}
+     \label{bsp}
+\end{figure}
+
+Portanto, tal problema pode ser considerado de difícil resolução, dado o dinamismo e o tamanho da entrada necessária para uma solução exata.
 
 \subsection{Objetivos do Trabalho}
 
-A ideia deste trabalho é modificar um algoritmo existente de um coletor genérico (\textit{General Crawler}) e transformá-lo em um coletor temático (\textit{Focused Crawler}) - que concentra-se em um único tópico de interesse - visando aumentar tanto a qualidade quanto a cobertura das páginas coletadas em relação ao algoritmo original.
+O objetivo deste trabalho é modificar um algoritmo existente de um \textit{Web Crawler}, construindo uma heurística que visa aumentar a qualidade das páginas coletadas em relação ao algoritmo original, nos casos específicos em que o coletor deve se concentrar em um determinado tópico de interesse.
 
-Mais especificamente, este trabalho consistirá em alterações no escalonamento de longo prazo de um \textit{General Crawler}, direcionando as requisições de \textit{downloads} para páginas relevantes a um tópico pré-estabelecido, por meio de consultas de referência (\textit{driving queries}) ou documentos de exemplo (como um conjunto de páginas \textit{Web}).
+Mais especificamente, este trabalho consistirá em alterações no escalonamento de longo prazo de um coletor, direcionando as requisições de \textit{downloads} para páginas relevantes a um tópico pré-estabelecido, utilizando na análise de futuros \textit{links} os termos mais frequentes das páginas já coletadas.
 
 
 \subsection{Abordagem Utilizada}
 
-O objetivo deste trabalho é transformar o \textit{general web crawler} de referência em um \textit{focused crawler}, melhorando os resultados obtidos pelo coletor original, dado um tema específico. Para isso, modificaremos a estratégia que um coletor genérico utiliza para determinar quais são os próximos \textit{links} que devem ser processados. No caso do \textit{WIRE}, devemos alterar seu escalonamento de longo-prazo (componente \textit{manager}, conforme seção anterior), substituindo parte do código por um novo algoritmo de escolha das próximas páginas que deverão ser coletadas.
+Para isso, modificaremos a estratégia que o coletor utiliza para determinar quais são os próximos \textit{links} que devem ser processados. No caso do \textit{WIRE}, nosso \textit{baseline}, devemos alterar seu escalonamento de longo-prazo (componente \textit{manager}, descrito na seção 3), substituindo parte do código por um novo algoritmo de escolha das próximas páginas que deverão ser coletadas.
 
-Em seguida, executaremos testes de coleta para os dois algoritmos - original e modificado - e faremos a comparação dos resultados obtidos. Dado um tópico-alvo para a coleta, espera-se que o algoritmo adaptado seja melhor em termos de espaço e memória que o original. Mais especificamente, o \textit{focused crawler} deverá encontrar as páginas mais relevantes antes do \textit{crawler} genérico. Parte das mesmas métricas utilizadas para avaliar o \textit{WIRE} serão aplicadas para o nosso coletor e os resultados serão apresentados.
+Em seguida, executaremos testes de coleta para os dois algoritmos - original e modificado - e faremos a comparação dos resultados obtidos. Dado um tópico-alvo para a coleta, espera-se que o algoritmo adaptado seja melhor em termos de espaço e memória que o original. Mais tecnicamente, nosso \textit{crawler} deverá encontrar parte das páginas mais relevantes \textit{antes} do coletor do \textit{baseline}. 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Modelagem através de um Grafo}
@@ -126,7 +134,13 @@ Já sob a perspectiva macroscópica, podemos identificar uma estrutura \textit{b
 Devido a estas perspectivas, muitos \textit{crawlers} são implementados de modo a beneficiar-se destas informações. Este é o caso do WIRE \cite{carlos}, o \textit{general web crawler} que é nosso \textit{baseline} para este trabalho. 
 
 De forma geral, os coletores podem ser divididos em diversas categorias, conforme mostra a figura a seguir. Em cada categoria é possível identificar quais critérios são os mais importantes em uma coleta. É importante notar que um coletor genérico deve equilibrar todos os critérios apresentados, enquanto para um coletor temático a relevância das páginas e o quanto estão atualizadas são os critérios mais importantes, podendo haver detrimento do critério de representação (o quanto a página coletada reproduz o conteúdo original). 
-\\ \ 
+
+Relaxamento: dado um grafo G(V,A) e um inteiro k, em que: 
+os vértices de G são páginas da Web, 
+as arestas representam os links entre estas páginas, e
+cada vértice possui uma pontuação de relevância não-conhecida a priori,
+
+percorrer um caminho que maximiza as pontuações dos vértices visitando no máximo k páginas. \\ 
 
 \begin{figure}[H]
      \centering
@@ -137,9 +151,11 @@ De forma geral, os coletores podem ser divididos em diversas categorias, conform
 
 
 
-\section{Baseline: WIRE}
+\section{Baseline}
 
-O \textit{baseline} para este trabalho é o \textit{WIRE}, um \textit{general web crawler} desenvolvido por Carlos Castillo em seu doutorado na Universidade do Chile \cite{carlos}. Este coletor foi construído visando-se alto desempenho e boa escalabilidade, respeitando as políticas de restricões a visitas de robôs a servidores \textit{Web}.
+\subsection{WIRE}
+
+O \textit{baseline} para este trabalho é o \textit{WIRE} (\textit{Web Information Retrieval Environment}), um \textit{general web crawler} desenvolvido por Carlos Castillo em seu doutorado na Universidade do Chile \cite{carlos}. Este coletor foi construído visando-se alto desempenho e boa escalabilidade, respeitando as políticas de restricões a visitas de robôs a servidores \textit{Web}.
 
 O \textit{WIRE} foi desenvolvido para realizar integrações com máquinas de busca, como é comum no caso de coletores \textit{web}. A figura a seguir mostra o ciclo de funcionamento de um sistema completo, desde a coleta até a busca em si.
 
@@ -156,7 +172,7 @@ O objetivo principal do \textit{WIRE} é realizar a caracterização da \textit{
 
 \begin{figure}[H]
      \centering
-     \includegraphics[scale=0.6]{figures/wire-architecture.png}
+     \includegraphics[scale=0.4]{figures/wire-architecture.png}
      \caption{Áreas de atuação do \textit{WIRE} (em preto) e trabalhos futuros (em cinza) \cite{carlos}.}
      \label{bsp}
 \end{figure}
@@ -199,8 +215,25 @@ O algoritmo utiliza listas de adjacências para representar a estrutura de \text
 A condição de parada depende do objetivo do usuário, que pode priorizar cobertura (continuar até que não haja páginas no domínio de interesse, demandando potencialmente um tempo inviável) ou por critério de tempo (encerra-se quando atingir um nível determinado de cobertura). O estudo do \textit{WIRE} mostrou que a partir de uma coleta com 50\% de uma grande coleção de páginas, já é possível atingir 80\% do valor total do \textit{PageRank} dessa coleção \cite{carlos}.
 
 
-\section{Heurística Implementada}
+\begin{figure}[H]
+     \centering
+     \includegraphics[scale=0.4]{figures/manager.png}
+     \caption{Operation of the manager program with K = 2. The two pages with the highest expected profit are assigned to this batch..}
+     \label{bsp}
+\end{figure}
 
+
+\begin{figure}[H]
+     \centering
+     \includegraphics[scale=0.5]{figures/harvester.png}
+     \caption{Operation of the manager program with K = 2. The two pages with the highest expected profit are assigned to this batch..}
+     \label{bsp}
+\end{figure}
+
+
+\section{Heurística}
+
+\subsection{Ideia}
 
 \begin{figure}[H]
      \centering
@@ -208,6 +241,18 @@ A condição de parada depende do objetivo do usuário, que pode priorizar cober
      \caption{http://jasondavies.com/wordcloud.}
      \label{bsp}
 \end{figure}
+
+\subsection{Implementação}
+
+Contagem de palavras (Gatherer)
+Análise de URL's e Pontuações (Manager)
+
+
+For the value of an object in the index, V (p), a product function is proposed: \\
+
+$V(p) = IntrinsicQuality(p)^\alpha \ \times \ RepresentationalQuality(p)^\beta \ \times \ Freshness(p)^\gamma$
+
+
 
 \section{Análise Teórica de Complexidade}
 
