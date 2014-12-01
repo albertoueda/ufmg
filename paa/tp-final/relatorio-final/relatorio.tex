@@ -239,43 +239,84 @@ A condição de parada depende do objetivo do usuário, que pode priorizar cober
 \section{Heurística}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+%------------------------------------------------------
 \subsection{Ideia}
+%------------------------------------------------------
+
+Nossa heurística utiliza a seguinte hipótese: dado um conjunto inicial de \textit{websites} relevantes para um determinado tópico de interesse, os termos mais frequentes destes domínios são termos relevantes para o tópico de interesse. 
+
+Podemos então construir tal lista de palavras frequentes e procurar no texto das \textit{URLs} a existência ou não destes termos, adicionando uma pontuação maior às \textit{URLs} que os possuem, proporcionalmente ao número de termos encontrados. À medida que a coleta prossegue, tal lista é atualizada de modo a conter sempre as palavras mais frequentes nas páginas encontradas, aumentando assim o "conhecimento" do coletor.
+
+São exemplos de tópicos de interesse: futebol, esportes, política, economia, concursos públicos, etc.
+
+A seguir, um exemplo ilustrativo de nuvem de palavras construída para o tópico $futebol$, por meio de algumas páginas de notícias sobre o assunto. Quanto maior uma palavra na nuvem, mais ela é frequente nos documentos da \textit{Web} encontrados. \\
 
 \begin{figure}[H]
      \centering
      \includegraphics[scale=0.35]{figures/football-cloud.png}
-     \caption{http://jasondavies.com/wordcloud.}
+     \caption{Nuvem de palavras para o tópico "futebol", gerada no \textit{website}: http://jasondavies.com/wordcloud.}
      \label{bsp}
 \end{figure}
 
+%------------------------------------------------------
 \subsection{Implementação}
+%------------------------------------------------------
 
-Contagem de palavras (Gatherer)
-Análise de URL's e Pontuações (Manager)
+Há duas intervenções necessárias para a implementação desta heurística. 
 
+A primeira é a contagem de palavras, que é feita no componente \textit{Gatherer}. Esta é a fase da coleta em que são extraídos os \textit{links} do conteúdo das páginas, que serão posteriormente utilizados em novas coletas. Com o conteúdo disponível, analisamos o texto e atualizamos a lista de palavras mais frequentes. Tal contagem de palavras é feita da maneira mais direta possível, atualizando o contador conforme cada nova palavra da página em \textit{html}. A única sofisticação é a utilização de uma lista de palavras não relevantes da língua (\textit{stopwords}), como artigos, preposições, advérbios, etc.
 
-For the value of an object in the index, V (p), a product function is proposed: \\
+A segunda intervenção é no componente \textit{Manager}, que atribui pontuações para \textit{URLs} baseado nas informações que o coletor possui até então. Dado um número $n$ (configurável), busca-se na \textit{URL} cada uma das $n$ palavras mais frequentes. Quanto mais palavras forem encontradas, maior é a pontuação da \textit{URL}.
 
-$V(p) = IntrinsicQuality(p)^\alpha \ \times \ RepresentationalQuality(p)^\beta \ \times \ Freshness(p)^\gamma$
-
-
-
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Análise Teórica de Complexidade}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Partindo do problema modelado em um grafo G(V,E) em que os vértices são páginas da \textit{Web} e as arestas representam os links entre estas páginas, o algoritmo do baseline tem a mesma característica da busca em largura, que é a de não repetir vértices nem arestas durante sua execução. Dada uma página cujos \textit{links} já foram extraídos, o coletor não repete o processamento para esta página novamente. O mesmo raciocínio aplica-se às arestas: um mesmo \textit{link} não é analisado novamente após já ter sido pontuado.
+
+Como é explicado nas próximas subseções, a heurística adotada não altera as complexidades de tempo e espaço do baseline, por se tratarem de modificações que possuem complexidade constante em relação à $V$ e $E$. 
+
+Portanto, as complexidades de ambos os algoritmos podem ser descritas como a seguir:
 
 \begin{figure}[H]
      \centering
      \includegraphics[scale=0.4]{figures/complexity.png}
-     \caption{}
+     \caption{$a$, $b$, $c$: constantes em relação a $V$ e $E$.}
      \label{bsp}
 \end{figure}
 
+%------------------------------------------------------
 \subsection{Complexidade de Tempo}
-\subsection{Complexidade de Espaço}
+%------------------------------------------------------
 
+Há duas intervenções no algoritmo: uma para contagem de palavras e outras para análise de \textit{URLs}. A contagem é feita de maneira direta, comparando-se com uma lista \textit{stopwords} e atualizando a lista incrementando a frequência de um termo cada vez que ele é encontrado em uma página. Tal algoritmo não depende do tamanho de $V$ ou de $A$ e portanto possui complexidade de tempo constante em relação à instância do problema. 
+
+O mesmo ocorre com a análise e pontuação de \textit{URLs}. Dadas as $n$ palavras mais frequentes da lista de termos, cada um é procurado diretamente na \textit{URL}, sem utilização de análises semânticas ou ontologias, como alguns estudos encontrados durante a pesquisa sugerem. Esta análise não depende das características do grafo do problema, logo também possui complexidade de tempo contante em relação à $V$ e $E$.
+
+Como a multiplicação por constantes não muda a complexidade de um algoritmo, a complexidade de tempo da heurística também é $O(V+E)$.
+
+%------------------------------------------------------
+\subsection{Complexidade de Espaço}
+%------------------------------------------------------
+
+Em relação ao \textit{baseline}, o espaço adicional utilizado
+
+Novamente, como a multiplicação por constantes não muda a complexidade de um algoritmo, a complexidade de espaço da heurística também é $O(V+E)$.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Análise Experimental dos Algoritmos}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%------------------------------------------------------
 \subsection{Tempo de Execução}
+%------------------------------------------------------
+
+%------------------------------------------------------
 \subsection{Uso de Memória}
+
+%------------------------------------------------------
 \subsection{Qualidade da Resposta}
+%------------------------------------------------------
 
 \begin{figure}[H]
      \centering
@@ -287,6 +328,7 @@ $V(p) = IntrinsicQuality(p)^\alpha \ \times \ RepresentationalQuality(p)^\beta \
 %\subsection{Melhores e Piores Casos}
 
 \section{Trabalhos Futuros}
+
 \section{Conclusão}
 
 % Referências
