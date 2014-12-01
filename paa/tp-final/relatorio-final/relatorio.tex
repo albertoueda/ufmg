@@ -18,6 +18,7 @@
 \usepackage{listings}
 \usepackage{tabularx}
 \usepackage{lipsum}
+\usepackage{enumitem}
 
 \hypersetup{
     colorlinks=true,       
@@ -66,6 +67,15 @@ Coletores de páginas da \textit{Web} constituem o primeiro passo para a impleme
 
 O primeiro coletor \textit{Web} conhecido foi criado em 1993 por Matthew Gray - então graduando do MIT - e chamava-se WWWW (\textit{World Wide Web Wanderer)}. Comprovando a forte relação com a história dos sistemas de busca na \textit{Web}, no mesmo ano foi lançada também a primeira máquina de busca conhecida, ALIWEB, criada por Martijn Koster \cite{b}. Nesta época, um número razoável de servidores para se obter uma boa cobertura da rede girava em torno de apenas alguns milhares. Desde então, o número de \textit{hosts} tem aumentado em alta velocidade  (chegando a praticamente dobrar a cada ano, de 1993 a 1996 \cite{gray}), tornando as máquinas de busca ainda mais necessárias e, consequentemente, também os coletores de dados.
 
+A figura a seguir mostra o ciclo de funcionamento de um sistema completo, desde a coleta até a busca em si.
+
+\begin{figure}[H]
+     \centering
+     \includegraphics[scale=0.6]{figures/search-engine-cycle.png}
+     \caption{Ciclo de uma máquina de busca \cite{carlos}.}
+     \label{bsp}
+\end{figure}
+
 Deste modo, podemos fazer a seguinte pergunta: como coletar as páginas da \textit{Web} de forma eficiente em termos de tempo e espaço, mantendo um nível mínimo de qualidade do resultado?
 
 \subsection{Dificuldade do Problema}
@@ -98,22 +108,30 @@ Em seguida, executaremos testes de coleta para os dois algoritmos - original e m
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Modelagem através de um Grafo}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-Considerando as páginas da \textit{Web} como vértices e os diversos \textit{links} encontrados como arestas, pode-se aplicar diferentes algoritmos para a seleção \textit{on-line} (em tempo de execução) dos \textit{links} que o nosso \textit{focused crawler} irá visitar em um nova coleta. Possíveis estratégias de escolha (\textit{selection policy}) para o coletor baseiam-se, por exemplo, em: buscas em largura \cite{najork}, indicador \textit{PageRank} \cite{cho} ou até mesmo no uso de algoritmos genéticos \cite{johnson}. 
+Considerando as páginas da \textit{Web} como vértices e os diversos \textit{links} encontrados como arestas, pode-se aplicar diferentes algoritmos para a seleção \textit{on-line} (em tempo de execução) dos \textit{links} que o nosso \textit{crawler} irá visitar em um nova coleta. Possíveis estratégias de escolha (\textit{selection policy}) para o coletor baseiam-se, por exemplo, em: buscas em largura \cite{najork}, indicador \textit{PageRank} \cite{cho} ou até mesmo no uso de algoritmos genéticos \cite{johnson}. 
 
 \begin{figure}[H]
      \centering
-     \includegraphics[scale=0.4]{figures/pagerank.png}
-     \caption{}
+     \includegraphics[scale=0.3]{figures/pagerank.png}
+     \caption{Um dos indicadores mais conhecidos em recuperação de informação, o \textit{PageRank} mede a relevância de uma página da \textit{Web} considerando, por exemplo, o número de \textit{links} que apontam para esta página e a relevância das origens destes \textit{links}. Na figura, quanto maior o tamanho do círculo (página da \textit{Web}), maior sua relevância.}
      \label{bsp}
 \end{figure}
 
 Levando-se em conta que não é possível coletar todas as páginas da \textit{Web}, devido à enorme quantidade de páginas e sua característica mutável, é importante encontrar as páginas mais relevantes o quanto antes. Quanto mais rápido uma página muito relevante for encontrada (de acordo com o indicador considerado), melhor a qualidade dos resultados obtidos em um dado instante de tempo da execução do coletor.
 
-Logo, considerar a estrutura da \textit{Web} é interessante para a implementação de um \textit{crawler} de alto desempenho. Tal estrutura pode ser analisada sob duas perspectivas: \textit{microscópica} e \textit{macroscópica}.
+Podemos então pensar no seguinte problema: dado um grafo $G(V,A)$ e um inteiro $k$, em que: 
+\begin{itemize}[leftmargin=1.6cm]
+    \item os vértices de $G$ são páginas da Web, 
+    \item as arestas representam os links entre estas páginas, e
+    \item cada vértice possui uma pontuação de relevância não-conhecida a priori,
+\end{itemize}
+percorrer um caminho que maximiza as pontuações dos vértices visitando no máximo $k$ páginas. \\ 
+
+Desta forma, para a implementação de um \textit{crawler} de alto desempenho, é interessante considerar a estrutura da \textit{Web} atual. Tal estrutura pode ser analisada sob duas perspectivas: \textit{microscópica} e \textit{macroscópica}.
 
 Sob uma perspectiva microscópica, percebe-se que a estrutura dos \textit{links} não se assemelha a um arranjo aleatório. Ao invés disso, é comum identificar \textit{hubs} e redes \textit{scale-free} {\cite{barabasi}}, como ilustrado na figura abaixo.
-\\ \ 
 
 \begin{figure}[H]
      \centering
@@ -131,44 +149,30 @@ Já sob a perspectiva macroscópica, podemos identificar uma estrutura \textit{b
      \label{bsp}
 \end{figure}
 
-Devido a estas perspectivas, muitos \textit{crawlers} são implementados de modo a beneficiar-se destas informações. Este é o caso do WIRE \cite{carlos}, o \textit{general web crawler} que é nosso \textit{baseline} para este trabalho. 
+Devido a estas perspectivas, muitos \textit{crawlers} são implementados de modo a beneficiar-se destas informações. Este é o caso do WIRE \cite{carlos}, o \textit{web crawler} que é nosso \textit{baseline} neste trabalho. 
 
-De forma geral, os coletores podem ser divididos em diversas categorias, conforme mostra a figura a seguir. Em cada categoria é possível identificar quais critérios são os mais importantes em uma coleta. É importante notar que um coletor genérico deve equilibrar todos os critérios apresentados, enquanto para um coletor temático a relevância das páginas e o quanto estão atualizadas são os critérios mais importantes, podendo haver detrimento do critério de representação (o quanto a página coletada reproduz o conteúdo original). 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Baseline}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-Relaxamento: dado um grafo G(V,A) e um inteiro k, em que: 
-os vértices de G são páginas da Web, 
-as arestas representam os links entre estas páginas, e
-cada vértice possui uma pontuação de relevância não-conhecida a priori,
-
-percorrer um caminho que maximiza as pontuações dos vértices visitando no máximo k páginas. \\ 
+De forma geral, os coletores podem ser divididos em diversas categorias, conforme mostra a figura a seguir. Em cada categoria é possível identificar quais critérios são os mais importantes em uma coleta. 
 
 \begin{figure}[H]
      \centering
-     \includegraphics[scale=0.4]{figures/crawlers-types.png}
+     \includegraphics[scale=0.5]{figures/crawlers-types.png}
      \caption{Tipos de coletores \cite{carlos}.}
      \label{bsp}
 \end{figure}
 
+Por exemplo, em um coletor que visa reproduzir inteiramente o conteúdo das páginas em determinado instante de tempo, a \textit{qualidade da representação} é o critério mais importante; já o \textit{nível de atualização (freshness)} das páginas não é um critério tão relevante quanto o anterior. 
 
-
-\section{Baseline}
+Nosso baseline, descrito a seguir, é um coletor do tipo genérico. Ou seja, um coletor que tenta equilibrar os três critérios de qualidade, sem focar especificamente em algum destes critérios. Ao invés de apresentar os melhores resultados para um determinado critério, tal coletor tenta garantir um mínimo de qualidade em cada um deles.
 
 \subsection{WIRE}
 
-O \textit{baseline} para este trabalho é o \textit{WIRE} (\textit{Web Information Retrieval Environment}), um \textit{general web crawler} desenvolvido por Carlos Castillo em seu doutorado na Universidade do Chile \cite{carlos}. Este coletor foi construído visando-se alto desempenho e boa escalabilidade, respeitando as políticas de restricões a visitas de robôs a servidores \textit{Web}.
+O \textit{baseline} para este trabalho é o \textit{WIRE} (\textit{Web Information Retrieval Environment}), um \textit{web crawler} desenvolvido por Carlos Castillo em seu doutorado na Universidade do Chile \cite{carlos}. Este coletor foi construído visando-se alto desempenho e boa escalabilidade, respeitando as políticas de restricões a visitas de robôs a servidores \textit{Web}. 
 
-O \textit{WIRE} foi desenvolvido para realizar integrações com máquinas de busca, como é comum no caso de coletores \textit{web}. A figura a seguir mostra o ciclo de funcionamento de um sistema completo, desde a coleta até a busca em si.
-
-\begin{figure}[H]
-     \centering
-     \includegraphics[scale=0.2]{figures/search-engine-cycle.png}
-     \caption{Ciclo de uma máquina de busca \cite{carlos}.}
-     \label{bsp}
-\end{figure}
-
-\ \\
-
-O objetivo principal do \textit{WIRE} é realizar a caracterização da \textit{Web}, a partir dos dados coletados pelo \textit{crawler}. A figura abaixo encontra-se na tese de doutorado em que o \textit{WIRE} foi proposto. Ela mostra trabalhos futuros que podem utilizar este coletor, representados em cinza claro. Nota-se que o objetivo de nosso trabalho (construir um \textit{focused crawler}) está entre os itens citados.
+O objetivo principal do \textit{WIRE} é realizar a caracterização da \textit{Web}, a partir dos dados coletados. A figura abaixo é uma representação em alto nível da função do coletor e possíveis integrações com outros objetivos de trabalho, representados em cinza claro.
 
 \begin{figure}[H]
      \centering
@@ -188,7 +192,7 @@ O algoritmo deste \textit{baseline} é representado em alto nível pela figura a
      \label{bsp}
 \end{figure}
 
-Cada componente é descrito a seguir: 
+Cada componente é descrito abaixo: 
 
 \begin{itemize}
 \item \textit{Manager}: realiza os cálculos da relevância de cada página coletada e as atualizações no escalonamento de longo-prazo;
@@ -209,35 +213,37 @@ O algoritmo utiliza listas de adjacências para representar a estrutura de \text
 \item (\textit{Harvester}) Determina-se como as $k$ páginas serão coletadas (observando regras de "bom comportamento" para coletores);
 \item Coleta-se todas as páginas de acordo com as regras determinadas no item anterior;
 \item (\textit{Gatherer}) As informações coletadas são tratadas, armazenando-se o que é relevante e descartando o restante do material coletado;
-\item São enviadas para o \textit{Seeder} as novas \textit{URLs} encontradas nas páginas coletadas e reinicia-se o processo, agora sem a necessidade de arquivos de inicialização;
+\item São enviadas para o \textit{Seeder} as novas \textit{URLs} encontradas nas páginas coletadas e reinicia-se o processo, agora sem a necessidade de arquivos de inicialização.
 \end{enumerate}
 
-A condição de parada depende do objetivo do usuário, que pode priorizar cobertura (continuar até que não haja páginas no domínio de interesse, demandando potencialmente um tempo inviável) ou por critério de tempo (encerra-se quando atingir um nível determinado de cobertura). O estudo do \textit{WIRE} mostrou que a partir de uma coleta com 50\% de uma grande coleção de páginas, já é possível atingir 80\% do valor total do \textit{PageRank} dessa coleção \cite{carlos}.
-
+A seguir, um exemplo de como o \textit{manager} calcula as pontuações de cada \textit{URL} e escolhe as próximas páginas para \textit{download}.
 
 \begin{figure}[H]
      \centering
-     \includegraphics[scale=0.4]{figures/manager.png}
-     \caption{Operation of the manager program with K = 2. The two pages with the highest expected profit are assigned to this batch..}
+     \includegraphics[scale=0.3]{figures/manager.png}
+     \caption{Exemplo de escolha do \textit{Manager}. O lucro (\textit{profit}) é a relevância estimada para a página, calculada a partir de seu nível de atualização e indicadores de qualidade como, por exemplo, a relevância das páginas de origem.}
      \label{bsp}
 \end{figure}
 
+A condição de parada depende do objetivo do usuário, que pode priorizar cobertura (continuar até que não haja páginas no domínio de interesse, demandando potencialmente um tempo inviável) ou por critério de tempo (encerra-se quando atingir um nível determinado de cobertura). O estudo do \textit{WIRE} mostrou que a partir de uma coleta com 50\% de uma grande coleção de páginas, já é possível atingir 80\% do valor total do \textit{PageRank} dessa coleção \cite{carlos}.
 
 \begin{figure}[H]
      \centering
      \includegraphics[scale=0.5]{figures/harvester.png}
-     \caption{Operation of the manager program with K = 2. The two pages with the highest expected profit are assigned to this batch..}
+     \caption{Representação da coleta de \textit{Websites} e suas respectivas páginas, realizada pelo \textit{Wire}.}
      \label{bsp}
 \end{figure}
 
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Heurística}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \subsection{Ideia}
 
 \begin{figure}[H]
      \centering
-     \includegraphics[scale=0.4]{figures/football-cloud.png}
+     \includegraphics[scale=0.35]{figures/football-cloud.png}
      \caption{http://jasondavies.com/wordcloud.}
      \label{bsp}
 \end{figure}
@@ -270,6 +276,14 @@ $V(p) = IntrinsicQuality(p)^\alpha \ \times \ RepresentationalQuality(p)^\beta \
 \subsection{Tempo de Execução}
 \subsection{Uso de Memória}
 \subsection{Qualidade da Resposta}
+
+\begin{figure}[H]
+     \centering
+     \includegraphics[scale=0.45]{figures/performance.png}
+     \caption{Gráfico com os desempenhos de diferentes estratégias para escalonamento de longo prazo  \cite{carlos}.}
+     \label{bsp}
+\end{figure}
+
 %\subsection{Melhores e Piores Casos}
 
 \section{Trabalhos Futuros}
@@ -288,12 +302,6 @@ $V(p) = IntrinsicQuality(p)^\alpha \ \times \ RepresentationalQuality(p)^\beta \
 Na tese de doutorado de Carlos Castillo, diferentes estratégias foram testadas para se medir o desempenho do \textit{WIRE}. Nenhuma leva em conta o caráter temático do coletor, já que o objetivo de seu trabalho era a implementação de um \textit{crawler} de uso geral.
 Porém, pode-se ter uma ideia do que esperamos com nosso trabalho visualizando o gráfico a seguir, obtido da tese em que o \textit{WIRE} foi apresentado. Para cada estratégia (linha), quanto antes a mesma atingir o \textit{PageRank} \cite{pagerank} máximo (igual a 1), melhor é a estratégia, como dito na seção de modelagem. Dado um tema específico, nosso \textit{focused crawler} poderá ser representado por uma nova linha no gráfico. É desejado que a mesma esteja acima (encontre as páginas mais relevantes antes) das estratégias do \textit{crawler} original.
 
-\begin{figure}[H]
-     \centering
-     %\includegraphics[scale=0.45]{figures/performance.png}
-     \caption{Gráfico com os desempenhos de diferentes estratégias para escalonamento de longo prazo  \cite{carlos}.}
-     \label{bsp}
-\end{figure}
 \end{comment}
 
 
