@@ -7,6 +7,7 @@
 \usepackage[utf8x]{inputenc}
 \usepackage{indentfirst}
 \usepackage{graphicx}
+\usepackage[font=small,margin=2cm]{caption}
 %\usepackage{times}
 \usepackage{ucs}
 \usepackage{float}    
@@ -87,11 +88,11 @@ Outra característica que torna o problema difícil é a velocidade em que a \te
 \begin{figure}[H]
      \centering
      \includegraphics[scale=0.3]{figures/stars.png}
-     \caption{coletar documentos da \textit{Web} pode ser visto como analisar um céu estrelado. No momento em que podemos visualizá-lo, o cenário real já se modificou.}
+     \caption{coletar documentos da \textit{Web} pode ser visto como analisar um céu estrelado. No momento em que podemos visualizá-lo, o cenário real já se modificou \cite{carlos}.}
      \label{bsp}
 \end{figure}
 
-Portanto, tal problema pode ser considerado de difícil resolução, dado o dinamismo e o tamanho da entrada necessária para uma solução exata.
+Portanto, tal problema pode ser considerado de difícil resolução, dado a característica dinâmica da \textit{Web} e o tamanho da entrada necessária para uma solução exata.
 
 \subsection{Objetivos do Trabalho}
 
@@ -102,7 +103,7 @@ Mais especificamente, este trabalho consistirá em alterações no escalonamento
 
 \subsection{Abordagem Utilizada}
 
-Para isso, modificaremos a estratégia que o coletor utiliza para determinar quais são os próximos \textit{links} que devem ser processados. No caso do \textit{WIRE}, nosso \textit{baseline}, devemos alterar seu escalonamento de longo-prazo (componente \textit{manager}, descrito na seção 3), substituindo parte do código por um novo algoritmo de escolha das próximas páginas que deverão ser coletadas.
+Para isso, modificaremos a estratégia que o coletor utiliza para determinar quais são os próximos \textit{links} que devem ser processados. No caso do \textit{WIRE}, nosso \textit{baseline}, devemos alterar seu escalonamento de longo-prazo (componente \textit{manager}, descrito na seção 3, substituindo parte do código por um novo algoritmo de escolha das próximas páginas que deverão ser coletadas.
 
 Em seguida, executaremos testes de coleta para os dois algoritmos - original e modificado - e faremos a comparação dos resultados obtidos. Dado um tópico-alvo para a coleta, espera-se que o algoritmo adaptado seja melhor em termos de espaço e memória que o original. Mais tecnicamente, nosso \textit{crawler} deverá encontrar parte das páginas mais relevantes \textit{antes} do coletor do \textit{baseline}. 
 
@@ -121,9 +122,9 @@ Considerando as páginas da \textit{Web} como vértices e os diversos \textit{li
 
 Levando-se em conta que não é possível coletar todas as páginas da \textit{Web}, devido à enorme quantidade de páginas e sua característica mutável, é importante encontrar as páginas mais relevantes o quanto antes. Quanto mais rápido uma página muito relevante for encontrada (de acordo com o indicador considerado), melhor a qualidade dos resultados obtidos em um dado instante de tempo da execução do coletor.
 
-Podemos então pensar no seguinte problema: dado um grafo $G(V,A)$ e um inteiro $k$, em que: 
+Podemos então pensar no seguinte problema: dado um grafo $G(V,E)$ e um inteiro $k$, em que: 
 \begin{itemize}[leftmargin=1.6cm]
-    \item os vértices de $G$ são páginas da Web, 
+    \item os vértices de $G$ são páginas da \textit{Web}, 
     \item as arestas representam os links entre estas páginas, e
     \item cada vértice possui uma pontuação de relevância não-conhecida a priori,
 \end{itemize}
@@ -307,23 +308,51 @@ Novamente, como a multiplicação por constantes não muda a complexidade de um 
 \section{Análise Experimental dos Algoritmos}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-%------------------------------------------------------
-\subsection{Tempo de Execução}
-%------------------------------------------------------
+A seguir alguns dos resultados obtidos pela heurística e pelo \textit{baseline}. De um modo geral, o tempo de execução foi maior na heurística, conforme esperado devido às mudanças no algoritmo. O espaço utilizado é ligeiramente maior, devido ao fato do espaço extra utilizado (lista de termos comuns) ser pequeno em relação à grande quantidade de memória que já é alocada para armazenamento dos dados coletados.
 
-%------------------------------------------------------
-\subsection{Uso de Memória}
+Em relação à qualidade da resposta, os experimentos apresentaram tanto casos em que o resultado da heurística supera o do \textit{baseline} quanto alguns casos em que a coleta realizada pela heurística fica abaixo do algoritmo de referência, em termos de qualidade. Mais detalhes são descritos na subseção a seguir.
+
+\begin{figure}[H]
+     \centering
+     \includegraphics[scale=1]{figures/tempo.png}
+     \caption{Memória utilizada pelos algoritmos.}
+     \label{bsp}
+\end{figure}
+
+
+\begin{figure}[H]
+     \centering
+     \includegraphics[scale=1]{figures/tempo-ciclo2.png}
+     \caption{Tempo gasto pelos algoritmos para um ciclo de coleta (intervalo de tempo entre duas execuções do componente \textit{manager}).}
+     \label{bsp}
+\end{figure}
+
+%\subsection{Tempo de Execução}
+%\subsection{Uso de Memória}
 
 %------------------------------------------------------
 \subsection{Qualidade da Resposta}
 %------------------------------------------------------
 
+Um modo de avaliar a qualidade da coleta é utilizar um ambiente controlado de teste, em que os \textit{pageranks} das páginas já são conhecidos. Neste ambiente, podemos então comparar diversos resultados de coletas. Quanto mais rápido o \textit{pagerank} cumulativo cresce durante uma coleta, mais páginas relevantes foram encontradas durante um determinado instante do tempo. Logo, maior a qualidade do coletor.
+
 \begin{figure}[H]
      \centering
      \includegraphics[scale=0.45]{figures/performance.png}
-     \caption{Gráfico com os desempenhos de diferentes estratégias para escalonamento de longo prazo  \cite{carlos}.}
+     \caption{Gráfico com os desempenhos de diferentes estratégias para escalonamento de longo prazo \cite{carlos}. A linha contínua representa a estratégia omnisciente, em que o coletar já conhece todas os \textit{pageranks} e toma decisões baseando-se nesse conhecimento. Nenhuma estratégia pode ser melhor que a omnisciente. A estratégia \textit{larger-sites-first} (páginas com mais \textit{links} primeiro) é a estratégia utilizada pelo \textit{baseline WIRE}.}
      \label{bsp}
 \end{figure}
+
+As seguintes instâncias apresentaram resultados de qualidade diferentes para os algoritmos.
+
+\begin{figure}[H]
+     \centering
+     \includegraphics[scale=1]{figures/h1.png}
+     \includegraphics[scale=1]{figures/h2.png}
+     \caption{Qualidade dos resultados para dois grupos diferentes de páginas iniciais. Acima, o resultado da heurística teve maior qualidade. Abaixo, o algoritmo do \textit{baseline} teve melhor resultado.}
+     \label{bsp}
+\end{figure}
+
 
 %\subsection{Melhores e Piores Casos}
 
