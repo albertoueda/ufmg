@@ -1,0 +1,154 @@
+/**
+ * Latin Search Engine
+ *
+ * Compress a small Collection in host17
+ * Index it
+ * Copy to garnize
+ *
+ * Test web interface
+ *
+ *
+ * Itamar Sakae Viana Hata
+ * Alberto Ueda
+ */
+#include <iostream>
+#include <string>
+#include <cassert>
+#include <thread>
+#include <mutex>
+
+#include "Runs.h"
+#include "ParserDocument.h"
+#include "ParserManager.h"
+#include "ricplib/CollectionReader.h"
+#include "ricplib/CollectionWriter.h"
+#include "ricplib/Document.h"
+#include "crawler/CollectionAppender.h"
+#include "ExternalMergeSort.h"
+
+#include "DocInfo.h"
+#include "Query.h"
+
+#include "UrlNormalization.h"
+#include <vector>
+
+using namespace std;
+
+Config* Config::config = NULL;
+
+
+/**
+ * To see the parameters of the application look at common.h;
+ *
+ * The memory restriction is handle in files AsyncWritter.h and ExternalMergeSort.cpp
+ * The compression of the tuples is made by the class MyStream that uses the class HeliasDeltaCompression.
+ * The htmlcxx library was used to parse the html data and handle the encoding.
+ * The ricplib library was used to uncompress the HTML pages.
+ *
+ * There are 4 major components in this application:
+ *   HtmlParser: Parses the HTML and stores the words.
+ *   Runs Creation: Creates the run's files with 4-tuples to feed the Merge Sort.
+ *   Merge Sort: Merges the run's files and store the final 3-tuple.
+ *   Query: Boolean model of query.
+ *
+ *   The components HtmlParser and Runs are execute together.
+ *   The components HtmlParser, Runs and Merge Sort can be done in a N-threads. It is a parameter of the
+ *   application. The default is 4 threads.
+ *
+ *   The written of the tuples is done asynchronously if there are more than one thread available.
+ *
+ */
+
+// $ ./indexer ../input ../output 1 2 ir_2016_pages_ index_test.txt
+
+// ueda@zecarneiro:/mnt/hd0/alberto/bitbucket/ufmg/ir-teacher/search-engine-latin/src$ 
+// ./indexer /media/ueda/Constellation1/IR_2016_htmls/Thiago/ /media/ueda/Constellation1/IR_2016_htmls/Thiago/output/ 1 2 ir_2016_pages_ 
+
+// $ split FILE -d -b 10M students_pages_ --additional-suffix=.txt --numeric-suffixes=11 --verbose
+// Rename
+// $ i=430; for file in *; do echo "$file" $(printf "students_pages_%d.txt" $i); i=$((i+1)); done
+// ./se -q -c ../input/toyExample/
+// ./se -i -c ../input/toyExample/ -n indexToCompressedColection.txt
+//  make && ./indexer ../output/integration/ output_index.txt 2> ../output/integration/check.txt
+//
+// src$ make && ./indexer ../input/main/ ../input/main/ 3 3 main_ main_index.txt compressed_ 2> ../input/main/check.txt
+//
+// Garnize
+// http://garnize.latin.dcc.ufmg.br/ri-2016/search/index.php
+// scp -r * ueda@garnize:/var/www/ri-2016/search
+// scp -r input/main/ src/se ueda@garnize:/var/www/ri-2016/search
+// scp /tmp/*.bin /tmp/*.txt ueda@garnize:/tmp/
+//  terminate called after throwing an instance of 'htmlcxx::Uri::Exception'
+//   what():  Invalid character after ':'
+// Aborted (core dumped)
+int main(int argc, char **argv) {
+ 	Config* config = Config::Instance();
+ 	//To see the parameters of the application look at common.h;
+ 	config->parseArgs(argc, argv);
+
+//	string input_index = "input_index.txt";
+//	if (argc > 6) {
+//		input_index = argv[6];
+//	}
+//
+//	// Appender
+//	RICPNS::CollectionAppender *appender;
+//	appender = new RICPNS::CollectionAppender(argv[1], input_index, // after test let it be the input_index
+//										  argv[2], string(argv[5]) + "index.txt",
+//										  argv[5]);
+//	appender->append(atoi(argv[3]), atoi(argv[4]));
+//	delete appender;
+//
+////	// Writer
+////	RICPNS::CollectionWriter *writer;
+////	writer = new RICPNS::CollectionWriter(argv[1], input_index,
+////									  argv[2], string(argv[7]) + "index.txt",
+////									  argv[7]);
+////	writer->dump();
+////	delete writer;
+//
+//	//	Reader
+//	RICPNS::Document doc;
+//	RICPNS::CollectionReader *reader;
+//	reader = new RICPNS::CollectionReader(argv[1], string(argv[5]) + "index.txt");
+//
+//	while (reader->getNextDocument(doc)) {
+//		clog << "----------------------------- HTML BEGIN" << endl;
+//		clog << doc.getURL() << endl;
+//		clog << doc.getText() << endl;
+//		clog << "----------------------------- HTML END" << endl;
+//	}
+
+	// Indexer
+ 	if(config->mustCreateIndex) {
+ 		Timer timer;
+ 		timer.start();
+
+ 		ParserManager pmanager;
+ 		pmanager.parseAndCreateRuns();
+
+ 		clog << "Time TOTAL: " << timer.stopAndGetSeconds() << endl;
+ 	}
+ 	if(config->mustexecuteQueries) {
+ 		Query::executeQueries();
+ 	}
+ 	clog << "END\n";
+
+ //
+ //	vector<string> urls = {
+ //			"http://findaschool.org?country=brazil",
+ //			"http://www.letraselivros.com.br?option=com_content&amp;task=view&amp;id=257&amp;itemid=65"
+ //	};
+ //
+ //	for(string& url : urls){
+ //		cout << url << " ";
+ //		string server = getServerUrl(url);
+ //		cout << server << " ";
+ //		cout << getActualPath(url, server.size());
+ //		cout << endl;
+ //	}
+
+	cout << "\nThe program has successfuly finished." << endl;
+
+	return 0;
+}

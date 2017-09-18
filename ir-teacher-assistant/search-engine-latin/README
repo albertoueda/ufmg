@@ -1,0 +1,48 @@
+
+Ola, para executar a aplicacao:
+===============================
+
+1) Ambiente: instalar Apache Server 2 e Php 5.
+	$ apt-get install apache2
+	$ apt-get install php5 libapache2-mod-php5
+	Acessar http://localhost e verificar a instalação.
+	Referencia: https://www.howtoforge.com/ubuntu-lamp-server-with-apache2-php5-mysql-on-14.04-lts
+
+2) Acessar diretorio src/
+
+3) $ make
+
+4) Criacao dos indices:
+   $ ./tp1 -i -c [caminho do diretorio com arquivo de indices para colecao] -n [nome do arquivo com indices para colecao]
+
+5) Copiar a pasta 'relevantes-34' (presente no mesmo diretorio deste arquivo) para a pasta especificada por '-c' no comando anterior (caminho do diretorio com arquivo de indices para colecao)
+
+6) Executar processador de consultas:
+   $ ./tp1 -q -c [caminho do diretorio com arquivo de indices para colecao
+
+7) Copiar a pasta 'html' inteira para o diretorio /var/www do Apache. 
+   (Antes pode ser necessario dar permissao de leitura e escrita no diretorio)
+
+8) Acessar [http://localhost/index.php] para consultas.
+
+ 
+Notas:
+======
+	- Os arquivos de indices invertidos e todos os demais são gerados em /tmp/
+
+	- Caso a mensagem "Exception was caught:Could not bind to port." for exibida, executar: 
+		$ fuser -k -n tcp 3000
+
+	- Caso uma das seguintes mensagens for exibida em qualquer ponto da execucao:
+
+		a) "terminate called after throwing an instance of 'std::length_error'
+		    what():  basic_string::_S_create
+		    Abortado (imagem do núcleo gravada)"
+
+		b) "invalid byte: [BYTE]"
+
+		realizar a limpeza do diretório /tmp/ e executar o programa novamente.
+	
+		
+Alberto Ueda 
+albertoueda@gmail.com

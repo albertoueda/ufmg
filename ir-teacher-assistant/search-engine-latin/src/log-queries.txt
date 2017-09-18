@@ -1,0 +1,66 @@
+Loading answer key
+Caching answer key
+Caching for model 0
+Caching for model 1
+Caching for model 2
+Caching for model 3
+Caching for model 4
+Caching for model 5
+Caching for model 6
+Caching for model 7
+Query engine is ready.
+QueryString: 0;0,1,2;teste
+QueryString: 0;0,1,2;JOgador
+The word jogador was not indexed
+QueryString: 0;0,1,2;JOgador
+The word jogador was not indexed
+QueryString: 0;0,1,2;heap
+The word heap was not indexed
+QueryString: 0;0,1,2;a
+QueryString: 0;0,1,2;2
+QueryString: 0;0,1,2;futebol
+The word futebol was not indexed
+QueryString: 0;0,1,2;bola
+The word bola was not indexed
+QueryString: 0;0,1,2;site
+QueryString: 0;1,2;site
+QueryString: 0;0,1,2;site
+QueryString: 0;0,2;site
+QueryString: 0;2;site
+QueryString: 0;2;globo
+Loading answer key
+Caching answer key
+Caching for model 0
+Caching for model 1
+Caching for model 2
+Caching for model 3
+Caching for model 4
+Caching for model 5
+Caching for model 6
+Caching for model 7
+Query engine is ready.
+QueryString: 0;3;2
+QueryString: 0;3;site
+QueryString: 0;2,3;site
+QueryString: 0;0,2,3;site
+QueryString: 0;0,1,2,3;site
+QueryString: 0;0,1,2,3,4;site
+Loading answer key
+Caching answer key
+Caching for model 0
+Caching for model 1
+Caching for model 2
+Caching for model 3
+Caching for model 4
+Caching for model 5
+Caching for model 6
+Caching for model 7
+Query engine is ready.
+QueryString: 0;0,1,2,3,4;teste
+QueryString: 0;0,1,2,3,4;teste
+QueryString: 0;0,1,2,3,4;teste
+QueryString: 0;0,1,2,3,4;teste
+QueryString: 0;0,1,2,3,4;teste
+QueryString: 0;0,1,2,3,4;teste
+QueryString: 0;0,1,2,3,4;teste
+QueryString: 0;0,1,2,3,4;teste

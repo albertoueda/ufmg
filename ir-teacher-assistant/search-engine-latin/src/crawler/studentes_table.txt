@@ -1,0 +1,172 @@
+# i=531; for file in *; do mv "$file" $(printf "students_pages_%d.txt" $i); i=$((i+1)); done
+ueda@host17:/mnt/hd0/ueda/ir-2016-ta$ ls *
+counter  students_table.txt
+
+Alex:
+output                 students_pages_23.txt  students_pages_38.txt  students_pages_52.txt  students_pages_67.txt  students_pages_81.txt
+students_pages_0.txt   students_pages_24.txt  students_pages_39.txt  students_pages_53.txt  students_pages_68.txt  students_pages_82.txt
+students_pages_10.txt  students_pages_25.txt  students_pages_3.txt   students_pages_54.txt  students_pages_69.txt  students_pages_83.txt
+students_pages_11.txt  students_pages_26.txt  students_pages_40.txt  students_pages_55.txt  students_pages_6.txt   students_pages_84.txt
+students_pages_12.txt  students_pages_27.txt  students_pages_41.txt  students_pages_56.txt  students_pages_70.txt  students_pages_85.txt
+students_pages_13.txt  students_pages_28.txt  students_pages_42.txt  students_pages_57.txt  students_pages_71.txt  students_pages_86.txt
+students_pages_14.txt  students_pages_29.txt  students_pages_43.txt  students_pages_58.txt  students_pages_72.txt  students_pages_87.txt
+students_pages_15.txt  students_pages_2.txt   students_pages_44.txt  students_pages_59.txt  students_pages_73.txt  students_pages_88.txt
+students_pages_16.txt  students_pages_30.txt  students_pages_45.txt  students_pages_5.txt   students_pages_74.txt  students_pages_89.txt
+students_pages_17.txt  students_pages_31.txt  students_pages_46.txt  students_pages_60.txt  students_pages_75.txt  students_pages_8.txt
+students_pages_18.txt  students_pages_32.txt  students_pages_47.txt  students_pages_61.txt  students_pages_76.txt  students_pages_90.txt
+students_pages_19.txt  students_pages_33.txt  students_pages_48.txt  students_pages_62.txt  students_pages_77.txt  students_pages_91.txt
+students_pages_1.txt   students_pages_34.txt  students_pages_49.txt  students_pages_63.txt  students_pages_78.txt  students_pages_92.txt
+students_pages_20.txt  students_pages_35.txt  students_pages_4.txt   students_pages_64.txt  students_pages_79.txt  students_pages_93.txt
+students_pages_21.txt  students_pages_36.txt  students_pages_50.txt  students_pages_65.txt  students_pages_7.txt   students_pages_94.txt
+students_pages_22.txt  students_pages_37.txt  students_pages_51.txt  students_pages_66.txt  students_pages_80.txt  students_pages_9.txt
+
+Juan:
+students_pages_95.txt  students_pages_96.txt
+
+Gestefane:
+students_pages_100.txt  students_pages_101.txt  students_pages_102.txt
+
+Luiz:
+students_pages_105.txt  students_pages_110.txt  students_pages_115.txt  students_pages_120.txt  students_pages_125.txt  students_pages_130.txt
+students_pages_106.txt  students_pages_111.txt  students_pages_116.txt  students_pages_121.txt  students_pages_126.txt  students_pages_131.txt
+students_pages_107.txt  students_pages_112.txt  students_pages_117.txt  students_pages_122.txt  students_pages_127.txt  students_pages_132.txt
+students_pages_108.txt  students_pages_113.txt  students_pages_118.txt  students_pages_123.txt  students_pages_128.txt
+students_pages_109.txt  students_pages_114.txt  students_pages_119.txt  students_pages_124.txt  students_pages_129.txt
+
+Marina:
+students_pages_133.txt  students_pages_136.txt  students_pages_139.txt  students_pages_142.txt  students_pages_145.txt
+students_pages_134.txt  students_pages_137.txt  students_pages_140.txt  students_pages_143.txt  students_pages_146.txt
+students_pages_135.txt  students_pages_138.txt  students_pages_141.txt  students_pages_144.txt  students_pages_147.txt
+
+Marlon:
+students_pages_148.txt  students_pages_150.txt  students_pages_152.txt  students_pages_154.txt  students_pages_156.txt
+students_pages_149.txt  students_pages_151.txt  students_pages_153.txt  students_pages_155.txt
+
+Rodrigo:
+students_pages_157.txt  students_pages_182.txt  students_pages_207.txt  students_pages_232.txt  students_pages_257.txt  students_pages_282.txt
+students_pages_158.txt  students_pages_183.txt  students_pages_208.txt  students_pages_233.txt  students_pages_258.txt  students_pages_283.txt
+students_pages_159.txt  students_pages_184.txt  students_pages_209.txt  students_pages_234.txt  students_pages_259.txt  students_pages_284.txt
+students_pages_160.txt  students_pages_185.txt  students_pages_210.txt  students_pages_235.txt  students_pages_260.txt  students_pages_285.txt
+students_pages_161.txt  students_pages_186.txt  students_pages_211.txt  students_pages_236.txt  students_pages_261.txt  students_pages_286.txt
+students_pages_162.txt  students_pages_187.txt  students_pages_212.txt  students_pages_237.txt  students_pages_262.txt  students_pages_287.txt
+students_pages_163.txt  students_pages_188.txt  students_pages_213.txt  students_pages_238.txt  students_pages_263.txt  students_pages_288.txt
+students_pages_164.txt  students_pages_189.txt  students_pages_214.txt  students_pages_239.txt  students_pages_264.txt  students_pages_289.txt
+students_pages_165.txt  students_pages_190.txt  students_pages_215.txt  students_pages_240.txt  students_pages_265.txt  students_pages_290.txt
+students_pages_166.txt  students_pages_191.txt  students_pages_216.txt  students_pages_241.txt  students_pages_266.txt  students_pages_291.txt
+students_pages_167.txt  students_pages_192.txt  students_pages_217.txt  students_pages_242.txt  students_pages_267.txt  students_pages_292.txt
+students_pages_168.txt  students_pages_193.txt  students_pages_218.txt  students_pages_243.txt  students_pages_268.txt  students_pages_293.txt
+students_pages_169.txt  students_pages_194.txt  students_pages_219.txt  students_pages_244.txt  students_pages_269.txt  students_pages_294.txt
+students_pages_170.txt  students_pages_195.txt  students_pages_220.txt  students_pages_245.txt  students_pages_270.txt  students_pages_295.txt
+students_pages_171.txt  students_pages_196.txt  students_pages_221.txt  students_pages_246.txt  students_pages_271.txt  students_pages_296.txt
+students_pages_172.txt  students_pages_197.txt  students_pages_222.txt  students_pages_247.txt  students_pages_272.txt  students_pages_297.txt
+students_pages_173.txt  students_pages_198.txt  students_pages_223.txt  students_pages_248.txt  students_pages_273.txt  students_pages_298.txt
+students_pages_174.txt  students_pages_199.txt  students_pages_224.txt  students_pages_249.txt  students_pages_274.txt  students_pages_299.txt
+students_pages_175.txt  students_pages_200.txt  students_pages_225.txt  students_pages_250.txt  students_pages_275.txt  students_pages_300.txt
+students_pages_176.txt  students_pages_201.txt  students_pages_226.txt  students_pages_251.txt  students_pages_276.txt  students_pages_301.txt
+students_pages_177.txt  students_pages_202.txt  students_pages_227.txt  students_pages_252.txt  students_pages_277.txt  students_pages_302.txt
+students_pages_178.txt  students_pages_203.txt  students_pages_228.txt  students_pages_253.txt  students_pages_278.txt  students_pages_303.txt
+students_pages_179.txt  students_pages_204.txt  students_pages_229.txt  students_pages_254.txt  students_pages_279.txt
+students_pages_180.txt  students_pages_205.txt  students_pages_230.txt  students_pages_255.txt  students_pages_280.txt
+students_pages_181.txt  students_pages_206.txt  students_pages_231.txt  students_pages_256.txt  students_pages_281.txt
+
+Thiago:
+students_pages_304.txt  students_pages_325.txt  students_pages_346.txt  students_pages_367.txt  students_pages_388.txt  students_pages_409.txt
+students_pages_305.txt  students_pages_326.txt  students_pages_347.txt  students_pages_368.txt  students_pages_389.txt  students_pages_410.txt
+students_pages_306.txt  students_pages_327.txt  students_pages_348.txt  students_pages_369.txt  students_pages_390.txt  students_pages_411.txt
+students_pages_307.txt  students_pages_328.txt  students_pages_349.txt  students_pages_370.txt  students_pages_391.txt  students_pages_412.txt
+students_pages_308.txt  students_pages_329.txt  students_pages_350.txt  students_pages_371.txt  students_pages_392.txt  students_pages_413.txt
+students_pages_309.txt  students_pages_330.txt  students_pages_351.txt  students_pages_372.txt  students_pages_393.txt  students_pages_414.txt
+students_pages_310.txt  students_pages_331.txt  students_pages_352.txt  students_pages_373.txt  students_pages_394.txt  students_pages_415.txt
+students_pages_311.txt  students_pages_332.txt  students_pages_353.txt  students_pages_374.txt  students_pages_395.txt  students_pages_416.txt
+students_pages_312.txt  students_pages_333.txt  students_pages_354.txt  students_pages_375.txt  students_pages_396.txt  students_pages_417.txt
+students_pages_313.txt  students_pages_334.txt  students_pages_355.txt  students_pages_376.txt  students_pages_397.txt  students_pages_418.txt
+students_pages_314.txt  students_pages_335.txt  students_pages_356.txt  students_pages_377.txt  students_pages_398.txt  students_pages_419.txt
+students_pages_315.txt  students_pages_336.txt  students_pages_357.txt  students_pages_378.txt  students_pages_399.txt  students_pages_420.txt
+students_pages_316.txt  students_pages_337.txt  students_pages_358.txt  students_pages_379.txt  students_pages_400.txt  students_pages_421.txt
+students_pages_317.txt  students_pages_338.txt  students_pages_359.txt  students_pages_380.txt  students_pages_401.txt  students_pages_422.txt
+students_pages_318.txt  students_pages_339.txt  students_pages_360.txt  students_pages_381.txt  students_pages_402.txt  students_pages_423.txt
+students_pages_319.txt  students_pages_340.txt  students_pages_361.txt  students_pages_382.txt  students_pages_403.txt  students_pages_424.txt
+students_pages_320.txt  students_pages_341.txt  students_pages_362.txt  students_pages_383.txt  students_pages_404.txt  students_pages_425.txt
+students_pages_321.txt  students_pages_342.txt  students_pages_363.txt  students_pages_384.txt  students_pages_405.txt  students_pages_426.txt
+students_pages_322.txt  students_pages_343.txt  students_pages_364.txt  students_pages_385.txt  students_pages_406.txt  students_pages_427.txt
+students_pages_323.txt  students_pages_344.txt  students_pages_365.txt  students_pages_386.txt  students_pages_407.txt  students_pages_428.txt
+students_pages_324.txt  students_pages_345.txt  students_pages_366.txt  students_pages_387.txt  students_pages_408.txt  students_pages_429.txt
+
+Lucas:
+students_pages_430.txt  students_pages_447.txt  students_pages_464.txt  students_pages_481.txt  students_pages_498.txt  students_pages_515.txt
+students_pages_431.txt  students_pages_448.txt  students_pages_465.txt  students_pages_482.txt  students_pages_499.txt  students_pages_516.txt
+students_pages_432.txt  students_pages_449.txt  students_pages_466.txt  students_pages_483.txt  students_pages_500.txt  students_pages_517.txt
+students_pages_433.txt  students_pages_450.txt  students_pages_467.txt  students_pages_484.txt  students_pages_501.txt  students_pages_518.txt
+students_pages_434.txt  students_pages_451.txt  students_pages_468.txt  students_pages_485.txt  students_pages_502.txt  students_pages_519.txt
+students_pages_435.txt  students_pages_452.txt  students_pages_469.txt  students_pages_486.txt  students_pages_503.txt  students_pages_520.txt
+students_pages_436.txt  students_pages_453.txt  students_pages_470.txt  students_pages_487.txt  students_pages_504.txt  students_pages_521.txt
+students_pages_437.txt  students_pages_454.txt  students_pages_471.txt  students_pages_488.txt  students_pages_505.txt  students_pages_522.txt
+students_pages_438.txt  students_pages_455.txt  students_pages_472.txt  students_pages_489.txt  students_pages_506.txt  students_pages_523.txt
+students_pages_439.txt  students_pages_456.txt  students_pages_473.txt  students_pages_490.txt  students_pages_507.txt  students_pages_524.txt
+students_pages_440.txt  students_pages_457.txt  students_pages_474.txt  students_pages_491.txt  students_pages_508.txt  students_pages_525.txt
+students_pages_441.txt  students_pages_458.txt  students_pages_475.txt  students_pages_492.txt  students_pages_509.txt  students_pages_526.txt
+students_pages_442.txt  students_pages_459.txt  students_pages_476.txt  students_pages_493.txt  students_pages_510.txt  students_pages_527.txt
+students_pages_443.txt  students_pages_460.txt  students_pages_477.txt  students_pages_494.txt  students_pages_511.txt  students_pages_528.txt
+students_pages_444.txt  students_pages_461.txt  students_pages_478.txt  students_pages_495.txt  students_pages_512.txt  students_pages_529.txt
+students_pages_445.txt  students_pages_462.txt  students_pages_479.txt  students_pages_496.txt  students_pages_513.txt  students_pages_530.txt
+students_pages_446.txt  students_pages_463.txt  students_pages_480.txt  students_pages_497.txt  students_pages_514.txt 
+
+Tiago-Alves:
+students_pages_531.txt  students_pages_588.txt  students_pages_645.txt  students_pages_702.txt  students_pages_759.txt  students_pages_816.txt
+students_pages_532.txt  students_pages_589.txt  students_pages_646.txt  students_pages_703.txt  students_pages_760.txt  students_pages_817.txt
+students_pages_533.txt  students_pages_590.txt  students_pages_647.txt  students_pages_704.txt  students_pages_761.txt  students_pages_818.txt
+students_pages_534.txt  students_pages_591.txt  students_pages_648.txt  students_pages_705.txt  students_pages_762.txt  students_pages_819.txt
+students_pages_535.txt  students_pages_592.txt  students_pages_649.txt  students_pages_706.txt  students_pages_763.txt  students_pages_820.txt
+students_pages_536.txt  students_pages_593.txt  students_pages_650.txt  students_pages_707.txt  students_pages_764.txt  students_pages_821.txt
+students_pages_537.txt  students_pages_594.txt  students_pages_651.txt  students_pages_708.txt  students_pages_765.txt  students_pages_822.txt
+students_pages_538.txt  students_pages_595.txt  students_pages_652.txt  students_pages_709.txt  students_pages_766.txt  students_pages_823.txt
+students_pages_539.txt  students_pages_596.txt  students_pages_653.txt  students_pages_710.txt  students_pages_767.txt  students_pages_824.txt
+students_pages_540.txt  students_pages_597.txt  students_pages_654.txt  students_pages_711.txt  students_pages_768.txt  students_pages_825.txt
+students_pages_541.txt  students_pages_598.txt  students_pages_655.txt  students_pages_712.txt  students_pages_769.txt  students_pages_826.txt
+students_pages_542.txt  students_pages_599.txt  students_pages_656.txt  students_pages_713.txt  students_pages_770.txt  students_pages_827.txt
+students_pages_543.txt  students_pages_600.txt  students_pages_657.txt  students_pages_714.txt  students_pages_771.txt  students_pages_828.txt
+students_pages_544.txt  students_pages_601.txt  students_pages_658.txt  students_pages_715.txt  students_pages_772.txt  students_pages_829.txt
+students_pages_545.txt  students_pages_602.txt  students_pages_659.txt  students_pages_716.txt  students_pages_773.txt  students_pages_830.txt
+students_pages_546.txt  students_pages_603.txt  students_pages_660.txt  students_pages_717.txt  students_pages_774.txt  students_pages_831.txt
+students_pages_547.txt  students_pages_604.txt  students_pages_661.txt  students_pages_718.txt  students_pages_775.txt  students_pages_832.txt
+students_pages_548.txt  students_pages_605.txt  students_pages_662.txt  students_pages_719.txt  students_pages_776.txt  students_pages_833.txt
+students_pages_549.txt  students_pages_606.txt  students_pages_663.txt  students_pages_720.txt  students_pages_777.txt  students_pages_834.txt
+students_pages_550.txt  students_pages_607.txt  students_pages_664.txt  students_pages_721.txt  students_pages_778.txt  students_pages_835.txt
+students_pages_551.txt  students_pages_608.txt  students_pages_665.txt  students_pages_722.txt  students_pages_779.txt  students_pages_836.txt
+students_pages_552.txt  students_pages_609.txt  students_pages_666.txt  students_pages_723.txt  students_pages_780.txt  students_pages_837.txt
+students_pages_553.txt  students_pages_610.txt  students_pages_667.txt  students_pages_724.txt  students_pages_781.txt  students_pages_838.txt
+students_pages_554.txt  students_pages_611.txt  students_pages_668.txt  students_pages_725.txt  students_pages_782.txt  students_pages_839.txt
+students_pages_555.txt  students_pages_612.txt  students_pages_669.txt  students_pages_726.txt  students_pages_783.txt  students_pages_840.txt
+students_pages_556.txt  students_pages_613.txt  students_pages_670.txt  students_pages_727.txt  students_pages_784.txt  students_pages_841.txt
+students_pages_557.txt  students_pages_614.txt  students_pages_671.txt  students_pages_728.txt  students_pages_785.txt  students_pages_842.txt
+students_pages_558.txt  students_pages_615.txt  students_pages_672.txt  students_pages_729.txt  students_pages_786.txt  students_pages_843.txt
+students_pages_559.txt  students_pages_616.txt  students_pages_673.txt  students_pages_730.txt  students_pages_787.txt  students_pages_844.txt
+students_pages_560.txt  students_pages_617.txt  students_pages_674.txt  students_pages_731.txt  students_pages_788.txt  students_pages_845.txt
+students_pages_561.txt  students_pages_618.txt  students_pages_675.txt  students_pages_732.txt  students_pages_789.txt  students_pages_846.txt
+students_pages_562.txt  students_pages_619.txt  students_pages_676.txt  students_pages_733.txt  students_pages_790.txt  students_pages_847.txt
+students_pages_563.txt  students_pages_620.txt  students_pages_677.txt  students_pages_734.txt  students_pages_791.txt  students_pages_848.txt
+students_pages_564.txt  students_pages_621.txt  students_pages_678.txt  students_pages_735.txt  students_pages_792.txt  students_pages_849.txt
+students_pages_565.txt  students_pages_622.txt  students_pages_679.txt  students_pages_736.txt  students_pages_793.txt  students_pages_850.txt
+students_pages_566.txt  students_pages_623.txt  students_pages_680.txt  students_pages_737.txt  students_pages_794.txt  students_pages_851.txt
+students_pages_567.txt  students_pages_624.txt  students_pages_681.txt  students_pages_738.txt  students_pages_795.txt  students_pages_852.txt
+students_pages_568.txt  students_pages_625.txt  students_pages_682.txt  students_pages_739.txt  students_pages_796.txt  students_pages_853.txt
+students_pages_569.txt  students_pages_626.txt  students_pages_683.txt  students_pages_740.txt  students_pages_797.txt  students_pages_854.txt
+students_pages_570.txt  students_pages_627.txt  students_pages_684.txt  students_pages_741.txt  students_pages_798.txt  students_pages_855.txt
+students_pages_571.txt  students_pages_628.txt  students_pages_685.txt  students_pages_742.txt  students_pages_799.txt  students_pages_856.txt
+students_pages_572.txt  students_pages_629.txt  students_pages_686.txt  students_pages_743.txt  students_pages_800.txt  students_pages_857.txt
+students_pages_573.txt  students_pages_630.txt  students_pages_687.txt  students_pages_744.txt  students_pages_801.txt  students_pages_858.txt
+students_pages_574.txt  students_pages_631.txt  students_pages_688.txt  students_pages_745.txt  students_pages_802.txt  students_pages_859.txt
+students_pages_575.txt  students_pages_632.txt  students_pages_689.txt  students_pages_746.txt  students_pages_803.txt  students_pages_860.txt
+students_pages_576.txt  students_pages_633.txt  students_pages_690.txt  students_pages_747.txt  students_pages_804.txt  students_pages_861.txt
+students_pages_577.txt  students_pages_634.txt  students_pages_691.txt  students_pages_748.txt  students_pages_805.txt  students_pages_862.txt
+students_pages_578.txt  students_pages_635.txt  students_pages_692.txt  students_pages_749.txt  students_pages_806.txt  students_pages_863.txt
+students_pages_579.txt  students_pages_636.txt  students_pages_693.txt  students_pages_750.txt  students_pages_807.txt  students_pages_864.txt
+students_pages_580.txt  students_pages_637.txt  students_pages_694.txt  students_pages_751.txt  students_pages_808.txt  students_pages_865.txt
+students_pages_581.txt  students_pages_638.txt  students_pages_695.txt  students_pages_752.txt  students_pages_809.txt  students_pages_866.txt
+students_pages_582.txt  students_pages_639.txt  students_pages_696.txt  students_pages_753.txt  students_pages_810.txt  students_pages_867.txt
+students_pages_583.txt  students_pages_640.txt  students_pages_697.txt  students_pages_754.txt  students_pages_811.txt  students_pages_868.txt
+students_pages_584.txt  students_pages_641.txt  students_pages_698.txt  students_pages_755.txt  students_pages_812.txt  students_pages_869.txt
+students_pages_585.txt  students_pages_642.txt  students_pages_699.txt  students_pages_756.txt  students_pages_813.txt
+students_pages_586.txt  students_pages_643.txt  students_pages_700.txt  students_pages_757.txt  students_pages_814.txt
+students_pages_587.txt  students_pages_644.txt  students_pages_701.txt  students_pages_758.txt  students_pages_815.txt
+

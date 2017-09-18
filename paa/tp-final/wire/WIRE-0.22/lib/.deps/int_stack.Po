@@ -1,8 +1,0 @@
-int_stack.o: int_stack.cc /usr/include/stdc-predef.h int_stack.h \
- ../config.h
-
-/usr/include/stdc-predef.h:
-
-int_stack.h:
-
-../config.h:

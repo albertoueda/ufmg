@@ -1,0 +1,76 @@
+#include "CollectionAppender.h"
+#include "common.h"
+#include <iostream>
+#include <string>
+#include <openssl/md5.h>
+
+//#define AES_BLOCK_SIZE 16
+
+using namespace std;
+
+Config* Config::config = NULL;
+
+RICPNS::CollectionAppender *appender;
+
+
+string url_md5(const string s) {
+	unsigned char digest[MD5_DIGEST_LENGTH];
+	char string[] = "happy";
+	MD5((unsigned char*) &string, strlen(string), (unsigned char*) &digest);
+	char mdString[33];
+	for(int i = 0; i < 16; i++)
+		 sprintf(&mdString[i*2], "%02x", (unsigned int)digest[i]);
+
+	return mdString;
+}
+
+// Normalizes URL, removing "www." and last "/"
+string getNormalizedUrl(string url){
+	string delimitation ("www.");
+
+	size_t found = url.find(delimitation); // Locate the position where "www." starts in the url
+	// Test if "www." is within the url
+	if (found != std::string::npos){
+		// Teste if "www." starts in the beginning of the url, or after "http://" or "https://"
+		if ((!found)||(found >= 7 && found <= 8)){
+			url = url.erase(0, found + delimitation.size());
+		}
+	}
+
+	if (url.back() == '/'){
+		url.pop_back();
+	}
+
+	return url;
+
+	// tests
+	// cout << getNormalizedUrl("http://www.uol.com.br/") << endl;
+	// cout << getNormalizedUrl("https://www.uol.com.br//") << endl;
+	// cout << getNormalizedUrl("http://uol.com.br///") << endl;
+	// cout << getNormalizedUrl("www.uol.com.br") << endl;
+	// cout << getNormalizedUrl("uol.com.br") << endl;
+	// cout << getNormalizedUrl("http:uol.com.br") << endl;
+}
+
+// $ ./indexer ../input ../output 1 2 ir_2016_pages_ index_test.txt
+
+// ueda@zecarneiro:/mnt/hd0/alberto/bitbucket/ufmg/ir-teacher/search-engine-latin/src$ 
+// ./indexer /media/ueda/Constellation1/IR_2016_htmls/Thiago/ /media/ueda/Constellation1/IR_2016_htmls/Thiago/output/ 1 2 ir_2016_pages_ 
+
+// $ split FILE -d -b 10M students_pages_ --additional-suffix=.txt --numeric-suffixes=11 --verbose
+// Rename
+// $ i=430; for file in *; do echo "$file" $(printf "students_pages_%d.txt" $i); i=$((i+1)); done
+int main(int argc, char **argv) {
+	string input_index = "input_index.txt";
+	if (argc > 6) {
+		input_index = argv[6];
+	}
+
+	appender = new RICPNS::CollectionAppender(argv[1], input_index,
+										  	  argv[2], string(argv[5]) + "index.txt",
+											  argv[5]);
+	appender->append(atoi(argv[3]), atoi(argv[4]));
+
+	clog << "\nThe program has successfuly finished.\n";
+	return 0;
+}

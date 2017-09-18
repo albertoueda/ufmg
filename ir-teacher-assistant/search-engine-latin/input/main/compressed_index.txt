@@ -1,0 +1,9 @@
+http://www.abrinstal.org.br compressed_0 0 4152 18048
+http://www.sitedasoldagem.com.br compressed_0 4152 24036 94502
+http://www.acfenacon.com.br/politica compressed_0 24036 24047 3
+http://www.storehosting.com.br/certificado-ssl compressed_0 24047 28287 20061
+http://www.defesa.gov.br/relacoes-internacionais/missoes-de-paz compressed_0 28287 37332 38360
+http://status.hosthp.com.br compressed_0 37332 40377 22382
+http://ilustracaodeideias.com.br/servicos compressed_0 40377 62722 76662
+http://www.intranetportal.org.br/wp/guia-fornecedores compressed_0 62722 92432 120472
+www.NOVAURL.org.br compressed_0 92432 92449 12

