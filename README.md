@@ -1,4 +1,4 @@
-UFMG
-====
+ufmg-msc
+========
 
-Trabalhos e Exercícios da UFMG
+Programming Assignments @ UFMG (MSc)
